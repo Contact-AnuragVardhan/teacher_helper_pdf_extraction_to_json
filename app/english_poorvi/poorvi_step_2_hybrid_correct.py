@@ -27,6 +27,7 @@ The actual corrected visible panel text is included as deterministic visual corr
 from __future__ import annotations
 
 import argparse
+import logging
 import json
 import os
 import re
@@ -36,6 +37,19 @@ from pathlib import Path
 from typing import Any
 
 import fitz  # PyMuPDF
+
+
+LOGGER = logging.getLogger("english_poorvi.step2_hybrid_correct")
+
+
+def setup_logging(level: str = "INFO") -> None:
+    """Configure console logging for command-line debugging."""
+    numeric_level = getattr(logging, str(level).upper(), logging.INFO)
+    logging.basicConfig(
+        level=numeric_level,
+        format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+    )
+
 
 
 TITLE_NORMALIZE = {
@@ -513,7 +527,14 @@ def main() -> None:
     parser.add_argument("--output-json", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--skip-tesseract-audit", action="store_true")
+    parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     args = parser.parse_args()
+    setup_logging(args.log_level)
+    LOGGER.info("Starting Step 2 hybrid correction")
+    LOGGER.debug(
+        "Arguments: pdf=%s input_json=%s output_json=%s report=%s skip_tesseract_audit=%s",
+        args.pdf, args.input_json, args.output_json, args.report, args.skip_tesseract_audit,
+    )
 
     if not args.pdf.exists():
         raise FileNotFoundError(args.pdf)
@@ -523,10 +544,17 @@ def main() -> None:
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.report.parent.mkdir(parents=True, exist_ok=True)
 
+    LOGGER.info("Reading Step 1 JSON: %s", args.input_json)
     data = json.loads(args.input_json.read_text(encoding="utf-8"))
     extraction = data["extraction"]
+    LOGGER.info(
+        "Loaded Step 1 JSON: sections=%s pages=%s",
+        len(extraction.get("section_index", [])),
+        len(extraction.get("page_extractions", [])),
+    )
 
     normalize_titles_in_place(extraction)
+    LOGGER.info("Building corrected page extractions")
     new_pages, transcripts, unit_level_pages = build_corrected_pages(
         extraction,
         args.pdf,
@@ -537,7 +565,12 @@ def main() -> None:
     extraction["transcripts"] = transcripts
     extraction["unit_level_pages"] = unit_level_pages
 
+    LOGGER.info(
+        "Corrected pages built: pages=%s transcripts=%s unit_level_pages=%s",
+        len(new_pages), len(transcripts), len(unit_level_pages),
+    )
     corrections = rebuild_lessons_and_index(extraction, new_pages)
+    LOGGER.info("Rebuilt lessons and section_index: corrections=%s", corrections)
 
     extraction["notes"] = (extraction.get("notes") or []) + [
         "Hybrid correction applied: graphic-story panel text was added for Rama to the Rescue pages 38-41 using rendered-page OCR audit and visual correction.",
@@ -564,9 +597,12 @@ def main() -> None:
     data["metadata"]["copyright_status"] = "copyrighted_ncert_textbook_reprint_2026_27"
 
     errors, warnings = validate(extraction, corrections)
+    LOGGER.info("Step 2 validation completed: errors=%s warnings=%s", len(errors), len(warnings))
 
     args.output_json.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     write_report(args.report, extraction, corrections, errors, warnings)
+    LOGGER.info("Step 2 wrote JSON: %s", args.output_json)
+    LOGGER.info("Step 2 wrote report: %s", args.report)
 
     print(f"Wrote {args.output_json} ({args.output_json.stat().st_size / 1024:.1f} KB)")
     print(f"Wrote {args.report}")
