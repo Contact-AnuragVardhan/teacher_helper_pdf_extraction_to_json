@@ -1,0 +1,80 @@
+{
+  "book_name": "poorvi_grade6_english",
+  "book_title": "Poorvi Grade 6 English",
+  "grade": 6,
+  "subject": "English",
+  "pdf_offset": 16,
+  "pdf_page_count": 180,
+  "subsection_policy": "maintained_static_day_ranges_read_from_json_file",
+  "chapters": [
+    {
+      "sequence": 1,
+      "chapter_name": "A Bottle of Dew",
+      "book_page": 1,
+      "start_pdf_page": 17,
+      "end_pdf_page": 28,
+      "days": [
+        {"day": 1, "start_book_page": 1, "end_book_page": 3, "start_pdf_page": 17, "end_pdf_page": 19, "range_source": "maintained_static_json"},
+        {"day": 2, "start_book_page": 4, "end_book_page": 7, "start_pdf_page": 20, "end_pdf_page": 23, "range_source": "maintained_static_json"},
+        {"day": 3, "start_book_page": 8, "end_book_page": 9, "start_pdf_page": 24, "end_pdf_page": 25, "range_source": "maintained_static_json"},
+        {"day": 4, "start_book_page": 10, "end_book_page": 12, "start_pdf_page": 26, "end_pdf_page": 28, "range_source": "maintained_static_json"}
+      ]
+    },
+    {
+      "sequence": 2,
+      "chapter_name": "The Raven and the Fox",
+      "book_page": 13,
+      "start_pdf_page": 29,
+      "end_pdf_page": 35,
+      "days": [
+        {"day": 1, "start_book_page": 13, "end_book_page": 15, "start_pdf_page": 29, "end_pdf_page": 31, "range_source": "maintained_static_json"},
+        {"day": 2, "start_book_page": 16, "end_book_page": 17, "start_pdf_page": 32, "end_pdf_page": 33, "range_source": "maintained_static_json"},
+        {"day": 3, "start_book_page": 18, "end_book_page": 19, "start_pdf_page": 34, "end_pdf_page": 35, "range_source": "maintained_static_json"}
+      ]
+    },
+    {
+      "sequence": 3,
+      "chapter_name": "Rama to the Rescue",
+      "book_page": 20,
+      "start_pdf_page": 36,
+      "end_pdf_page": 54,
+      "days": [
+        {"day": 1, "start_book_page": 20, "end_book_page": 24, "start_pdf_page": 36, "end_pdf_page": 40, "range_source": "maintained_static_json"},
+        {"day": 2, "start_book_page": 25, "end_book_page": 29, "start_pdf_page": 41, "end_pdf_page": 45, "range_source": "maintained_static_json"},
+        {"day": 3, "start_book_page": 30, "end_book_page": 34, "start_pdf_page": 46, "end_pdf_page": 50, "range_source": "maintained_static_json"},
+        {"day": 4, "start_book_page": 35, "end_book_page": 38, "start_pdf_page": 51, "end_pdf_page": 54, "range_source": "maintained_static_json"}
+      ]
+    },
+    {
+      "sequence": 4,
+      "chapter_name": "The Unlikely Best Friends",
+      "book_page": 39,
+      "start_pdf_page": 55,
+      "end_pdf_page": 67,
+      "days": [
+        {"day": 1, "start_book_page": 39, "end_book_page": 43, "start_pdf_page": 55, "end_pdf_page": 59, "range_source": "maintained_static_json"},
+        {"day": 2, "start_book_page": 44, "end_book_page": 48, "start_pdf_page": 60, "end_pdf_page": 64, "range_source": "maintained_static_json"},
+        {"day": 3, "start_book_page": 49, "end_book_page": 51, "start_pdf_page": 65, "end_pdf_page": 67, "range_source": "maintained_static_json"}
+      ]
+    },
+    {
+      "sequence": 5,
+      "chapter_name": "A Friend's Prayer",
+      "book_page": 52,
+      "start_pdf_page": 68,
+      "end_pdf_page": 180,
+      "days": [
+        {"day": 1, "start_book_page": 52, "end_book_page": 63, "start_pdf_page": 68, "end_pdf_page": 79, "range_source": "maintained_static_json"},
+        {"day": 2, "start_book_page": 64, "end_book_page": 74, "start_pdf_page": 80, "end_pdf_page": 90, "range_source": "maintained_static_json"},
+        {"day": 3, "start_book_page": 75, "end_book_page": 85, "start_pdf_page": 91, "end_pdf_page": 101, "range_source": "maintained_static_json"},
+        {"day": 4, "start_book_page": 86, "end_book_page": 96, "start_pdf_page": 102, "end_pdf_page": 112, "range_source": "maintained_static_json"},
+        {"day": 5, "start_book_page": 97, "end_book_page": 107, "start_pdf_page": 113, "end_pdf_page": 123, "range_source": "maintained_static_json"},
+        {"day": 6, "start_book_page": 108, "end_book_page": 118, "start_pdf_page": 124, "end_pdf_page": 134, "range_source": "maintained_static_json"},
+        {"day": 7, "start_book_page": 119, "end_book_page": 129, "start_pdf_page": 135, "end_pdf_page": 145, "range_source": "maintained_static_json"},
+        {"day": 8, "start_book_page": 130, "end_book_page": 140, "start_pdf_page": 146, "end_pdf_page": 156, "range_source": "maintained_static_json"},
+        {"day": 9, "start_book_page": 141, "end_book_page": 151, "start_pdf_page": 157, "end_pdf_page": 167, "range_source": "maintained_static_json"},
+        {"day": 10, "start_book_page": 152, "end_book_page": 164, "start_pdf_page": 168, "end_pdf_page": 180, "range_source": "maintained_static_json"}
+      ]
+    }
+  ]
+}

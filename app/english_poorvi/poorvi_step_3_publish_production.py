@@ -420,6 +420,7 @@ def build_subsections_from_day_defs(
         # Final safety clamp. This should be a no-op for embedded/default safe map
         # and for accepted external maps, but it protects Step 3 from bad input.
         original_start_pdf, original_end_pdf = start_pdf, end_pdf
+        original_start_printed, original_end_printed = start_printed, end_printed
         start_pdf = max(start_pdf, parent_start)
         end_pdf = min(end_pdf, parent_end)
         if start_pdf > end_pdf:
@@ -440,6 +441,10 @@ def build_subsections_from_day_defs(
         if original_end_pdf != end_pdf:
             end_printed = end_pdf - 16
 
+        source_range_was_clamped = (original_start_pdf != start_pdf or original_end_pdf != end_pdf)
+        if source_range_was_clamped:
+            stats["subsections_clamped_to_parent_range"] += 1
+
         pages, missing_pages = get_pages_in_range(pages_by_number, start_pdf, end_pdf)
         safe_pages = [p for p in pages if page_belongs_to_section(p, section_title)]
         raw_text, cleaned_text, removed = build_subsection_text_from_pages(safe_pages)
@@ -453,13 +458,21 @@ def build_subsections_from_day_defs(
         ]
 
         quality_flags = [generation_method]
+        if source_range_was_clamped:
+            quality_flags.append("source_days_json_clamped_to_parent_range")
         notes: list[str] = []
         if rejection_reasons:
-            notes.append("External days map for this lesson was rejected and replaced by safe auto split: " + "; ".join(rejection_reasons[:10]))
+            notes.append("Static days JSON range had safety warnings and was clamped/filtered inside the parent lesson: " + "; ".join(rejection_reasons[:10]))
         if missing_pages:
             quality_flags.append("subsection_missing_pdf_pages")
             notes.append(f"Missing PDF pages in output page_extractions: {missing_pages}")
             stats["subsections_with_missing_pages"] += 1
+        filtered_out_pages = sorted({as_int(p.get("page_number")) for p in pages if not page_belongs_to_section(p, section_title) and as_int(p.get("page_number")) is not None})
+        if filtered_out_pages:
+            quality_flags.append("non_section_pages_filtered_from_subsection_text")
+            notes.append(f"Pages filtered out because they do not belong to this lesson or are excluded content: {filtered_out_pages}")
+            stats["subsections_with_filtered_pages"] += 1
+
         if not cleaned_text:
             quality_flags.append("empty_subsection_text")
             stats["subsections_with_empty_text"] += 1
@@ -517,6 +530,12 @@ def build_subsections_from_day_defs(
             "text_length_chars": len(cleaned_text),
             "source_days_json_day": day_number,
             "source_days_json_range_source": day.get("range_source"),
+            "source_days_json_start_pdf_page": original_start_pdf,
+            "source_days_json_end_pdf_page": original_end_pdf,
+            "source_days_json_start_book_page": original_start_printed,
+            "source_days_json_end_book_page": original_end_printed,
+            "source_days_json_was_clamped_to_parent": source_range_was_clamped,
+            "filtered_out_page_numbers": filtered_out_pages,
             "notes": notes,
         }
         subsections.append(subsection)
@@ -536,27 +555,44 @@ def build_day_subsections_for_section(
     pages_by_number: dict[int, dict[str, Any]],
     stats: defaultdict[str, int],
 ) -> list[dict[str, Any]]:
-    """Build production-safe subsections for one lesson.
+    """Build subsections for one lesson from the maintained static days JSON.
 
-    The default target is up to five subsections, but short lessons get fewer
-    subsections so PDF pages are not repeated.
+    If the static JSON has a matching chapters[].days[] entry, those day ranges
+    are used as the source of truth. The final PDF range is still clamped inside
+    the semantic parent lesson boundary so a bad static range cannot swallow
+    transcript pages, unit-level pages, or another lesson.
+
+    If a lesson is missing from the JSON, we fall back to a safe automatic split.
     """
     section_title = str(section.get("section_title") or "")
     days = (days_chapter or {}).get("days", []) if days_chapter else []
-    safe, rejection_reasons = external_days_are_safe_for_section(section, days, pages_by_number) if days else (False, ["no_external_days_entry"])
 
-    if safe:
-        generation_method = "external_days_json_validated_inside_parent"
-        stats["sections_using_external_days_subsections"] += 1
-        LOGGER.info("Using validated external days map for %s", section_title)
-        return build_subsections_from_day_defs(section, days, pages_by_number, stats, generation_method)
+    if days:
+        safe, validation_reasons = external_days_are_safe_for_section(section, days, pages_by_number)
+        generation_method = "static_days_json" if safe else "static_days_json_clamped_to_parent"
+        stats["sections_using_static_days_json_subsections"] += 1
+        if safe:
+            LOGGER.info("Using static days JSON ranges for %s", section_title)
+            rejection_reasons = None
+        else:
+            stats["sections_static_days_json_needed_boundary_clamp"] += 1
+            LOGGER.warning(
+                "Static days JSON for %s needed boundary filtering/clamping. Reasons: %s",
+                section_title, validation_reasons,
+            )
+            rejection_reasons = validation_reasons
+
+        return build_subsections_from_day_defs(
+            section,
+            days,
+            pages_by_number,
+            stats,
+            generation_method,
+            rejection_reasons=rejection_reasons,
+        )
 
     stats["sections_using_auto_safe_subsections"] += 1
-    if days:
-        stats["sections_external_days_rejected"] += 1
-        LOGGER.warning("Rejected external days map for %s; using auto safe split. Reasons: %s", section_title, rejection_reasons)
-    else:
-        LOGGER.info("No external days map for %s; using auto safe split", section_title)
+    LOGGER.info("No static days JSON entry for %s; using auto safe split", section_title)
     auto_days = auto_day_defs_for_section(section, day_count=5)
     return build_subsections_from_day_defs(
         section,
@@ -564,7 +600,6 @@ def build_day_subsections_for_section(
         pages_by_number,
         stats,
         "auto_variable_split_inside_parent_lesson_no_repeated_pages",
-        rejection_reasons=rejection_reasons if days else None,
     )
 
 
@@ -575,10 +610,10 @@ def apply_days_subsections(
 ) -> None:
     """Attach Maths-style subsections to every section_index and lesson object.
 
-    Every lesson receives production-safe subsections. External JSON is used
-    only when each day range is already safe inside the parent lesson. Bad
-    external ranges are rejected and replaced by an automatic safe split. Short
-    lessons may have fewer than five subsections to avoid repeating pages.
+    Every lesson receives production-safe subsections. Matching entries from the
+    maintained static JSON are used as the source ranges, then clamped/filtered
+    inside the semantic parent lesson boundary. Missing JSON entries fall back
+    to an automatic safe split.
     """
     extraction = data["extraction"]
     pages_by_number = {
@@ -621,13 +656,15 @@ def apply_days_subsections(
         LOGGER.warning("Days JSON chapters not matched to section_index titles: %s", unmatched_days)
     extraction.setdefault("subsection_generation", {})
     extraction["subsection_generation"].update({
-        "source": "validated_days_json_with_auto_safe_fallback",
-        "policy": "variable_subsection_count; ranges_must_be_inside_semantic_parent_lesson; invalid_external_ranges_are_rejected; short_lessons_do_not_repeat_pages",
+        "source": "static_days_json_file_with_parent_boundary_clamp_and_auto_fallback",
+        "policy": "static JSON day ranges are used when present; final ranges are clamped inside semantic parent lesson; pages from other lessons/transcripts/unit activities are filtered; missing JSON entries use auto safe split",
         "sections_with_subsections": sum(1 for s in extraction.get("section_index", []) if s.get("subsections")),
         "total_subsections": stats.get("subsections_added", 0),
-        "sections_using_external_days_subsections": stats.get("sections_using_external_days_subsections", 0),
+        "sections_using_static_days_json_subsections": stats.get("sections_using_static_days_json_subsections", 0),
         "sections_using_auto_safe_subsections": stats.get("sections_using_auto_safe_subsections", 0),
-        "sections_external_days_rejected": stats.get("sections_external_days_rejected", 0),
+        "sections_static_days_json_needed_boundary_clamp": stats.get("sections_static_days_json_needed_boundary_clamp", 0),
+        "subsections_clamped_to_parent_range": stats.get("subsections_clamped_to_parent_range", 0),
+        "subsections_with_filtered_pages": stats.get("subsections_with_filtered_pages", 0),
         "unmatched_days_chapters": unmatched_days,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
     })
@@ -842,6 +879,8 @@ def write_report(path: Path, data: dict[str, Any], errors: list[str], warnings: 
         f"- subsections outside parent range: {metrics.get('subsections_outside_parent_range', stats.get('subsections_outside_parent_range', 0))}",
         f"- subsections with cross-section pages: {metrics.get('subsections_with_cross_section_or_excluded_pages', stats.get('subsections_with_cross_section_pages', 0))}",
         f"- subsections with repeated PDF pages: {metrics.get('subsections_with_repeated_pdf_pages', 0)}",
+        f"- subsections clamped to parent range: {stats.get('subsections_clamped_to_parent_range', 0)}",
+        f"- subsections with filtered pages: {stats.get('subsections_with_filtered_pages', 0)}",
         f"- noise lines removed: {stats.get('noise_lines_removed', 0)}",
         f"- front matter pages reclassified: {stats.get('front_matter_pages_reclassified', 0)}",
         "",
@@ -926,10 +965,10 @@ def publish(
     days_chapter_map = load_days_chapter_map(subsections_json)
     apply_days_subsections(data, days_chapter_map, stats)
     extraction["notes"].append(
-        "Lesson-level subsections were added using production-safe variable day ranges. "
-        "External day ranges are used only when fully inside the semantic parent lesson; "
-        "invalid/cross-lesson ranges are rejected and replaced by safe auto splits; "
-        "short lessons are not forced into repeated five-day subsections."
+        "Lesson-level subsections were added from the maintained static subsection/day JSON when available. "
+        "Final subsection ranges are clamped inside the semantic parent lesson boundary; "
+        "pages from other lessons, transcripts, and unit-level activities are filtered out; "
+        "missing JSON entries fall back to safe auto splits."
     )
 
     rebuild_front_matter(data)
@@ -980,7 +1019,7 @@ def main() -> None:
         "--subsections-json",
         type=Path,
         default=None,
-        help="Optional chapter_map_final.json containing chapters[].days[] ranges to publish as lesson subsections.",
+        help="Optional static JSON containing chapters[].days[] ranges to publish as lesson subsections.",
     )
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     args = parser.parse_args()

@@ -1,0 +1,1 @@
+python app/make_english_poorvi.py --force --subsections-json app/english_poorvi/English_Poorvi_static_subsection_ranges.json
