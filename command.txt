@@ -13,9 +13,4 @@ python app/make_physics_grade10.py `
   --force
 
 
-python app/make_physics_grade10.py `
-  --pdf input/Grade10_Physics.pdf `
-  --output-dir output/physics_tenth `
-  --subsections-json app/physics_tenth/Grade10_Physics_static_subsection_ranges.json `
-  --corrections-json app/physics_tenth/Grade10_Physics_formula_corrections.json `
-  --force
+python app/make_physics_grade10.py --force

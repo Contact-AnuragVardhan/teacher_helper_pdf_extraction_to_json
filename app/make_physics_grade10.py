@@ -55,6 +55,7 @@ STEP4_GATED_JSON = "Grade10_Physics_step4_final_artifact_gated.json"
 FINAL_ARTIFACT_REPORT = "Grade10_Physics_final_artifact_gate_report.txt"
 FINAL_ARTIFACT_REVIEW_QUEUE = "Grade10_Physics_final_artifact_review_queue.json"
 FINAL_JSON = "Grade10_Physics_production_ready.json"
+FINAL_AUDIT_JSON = "Grade10_Physics_production_audit_full.json"
 FINAL_REPORT = "Grade10_Physics_production_validation_report.txt"
 
 
@@ -175,7 +176,7 @@ def main() -> None:
         output_dir / STEP3_JSON, output_dir / STEP3_REPORT, output_dir / STEP3_REVIEW_QUEUE,
         output_dir / STEP4_JSON, output_dir / STEP4_REPORT,
         output_dir / STEP4_GATED_JSON, output_dir / FINAL_ARTIFACT_REPORT, output_dir / FINAL_ARTIFACT_REVIEW_QUEUE,
-        output_dir / FINAL_JSON, output_dir / FINAL_REPORT,
+        output_dir / FINAL_JSON, output_dir / FINAL_AUDIT_JSON, output_dir / FINAL_REPORT,
     ]
     if not args.force:
         existing = [p for p in outputs if p.exists()]
@@ -237,7 +238,8 @@ def main() -> None:
 
     print("\nDone.")
     print(f"Output dir: {output_dir}")
-    print(f"Final JSON: {output_dir / FINAL_JSON}")
+    print(f"Final DB JSON: {output_dir / FINAL_JSON}")
+    print(f"Full audit JSON: {output_dir / FINAL_AUDIT_JSON}")
     print(f"Final report: {output_dir / FINAL_REPORT}")
     print(f"Formula review queue: {output_dir / STEP3_REVIEW_QUEUE}")
     if not args.skip_final_artifact_gate:

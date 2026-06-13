@@ -19,6 +19,11 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Iterable
 
+from physics_step_5_publish_production import (
+    _cleanup_decorative_ocr_artifacts,
+    _scan_remaining_decorative_ocr_artifacts,
+)
+
 from physics_common import (
     CONTEXTUAL_FINAL_ARTIFACT_RE,
     FINAL_ARTIFACT_RE,
@@ -138,7 +143,7 @@ def scan_page_extractions(data: dict[str, Any]) -> list[dict[str, Any]]:
     for page_idx, page in enumerate(data.get("page_extractions") or []):
         if not page.get("include_in_lesson_text"):
             continue
-        for field in ["text", "text_plain", "production_text", "production_text_plain"]:
+        for field in ["text", "text_plain", "production_text", "production_text_plain", "production_safe_text", "safe_text", "safe_text_plain"]:
             value = page.get(field)
             if not isinstance(value, str) or not value.strip():
                 continue
@@ -235,17 +240,39 @@ def build_report(queue: dict[str, Any]) -> str:
 def run_gate(input_json: Path, output_json: Path, review_queue: Path, report: Path | None, allow_artifacts: bool = False) -> tuple[dict[str, Any], dict[str, Any], str]:
     src = read_json(input_json)
     data = copy.deepcopy(src)
+
+    # First remove known decorative OCR divider lines from production-facing text.
+    # The old gate reported blocker_count=0 because these lines were not matched
+    # by the formula/math artifact regexes and production_safe_text was not scanned.
+    decorative_cleanup_summary = _cleanup_decorative_ocr_artifacts(data)
+    decorative_blockers = _scan_remaining_decorative_ocr_artifacts(data)
+
     items = scan_final_artifacts(data)
+    for blocker in decorative_blockers:
+        items.append({
+            "artifact_id": f"final_artifact_{len(items) + 1:04d}",
+            "source_path": blocker.get("path"),
+            "field": str(blocker.get("path", "")).split(".")[-1],
+            "line_no": blocker.get("line"),
+            "reasons": ["decorative_ocr_noise_remaining_after_cleanup"],
+            "text": blocker.get("text"),
+            "instruction": "Fix the final decorative OCR cleanup rule before production publish.",
+        })
     queue = build_queue(items)
     report_text = build_report(queue)
 
     stats = dict(data.get("extraction", {}).get("statistics") or {})
+    stats["decorative_ocr_lines_removed"] = int(decorative_cleanup_summary.get("decorative_ocr_lines_removed") or 0)
+    stats["decorative_ocr_text_fields_cleaned"] = int(decorative_cleanup_summary.get("decorative_ocr_text_fields_cleaned") or 0)
+    stats["final_decorative_ocr_blockers"] = len(decorative_blockers)
     stats["final_artifact_blockers"] = len(items)
     data["final_artifact_gate"] = {
         "status": queue["status"],
         "blocker_count": len(items),
         "review_queue": str(review_queue),
-        "checked_scope": "include_in_lesson_text=true page text/text_plain plus production_* fields",
+        "checked_scope": "include_in_lesson_text=true page text/text_plain/production_safe_text plus production_* fields",
+        "decorative_ocr_cleanup": decorative_cleanup_summary,
+        "final_decorative_ocr_blockers": len(decorative_blockers),
     }
     data["extraction"] = dict(data.get("extraction") or {})
     data["extraction"]["statistics"] = stats
