@@ -14,10 +14,38 @@
       "start_pdf_page": 17,
       "end_pdf_page": 28,
       "days": [
-        {"day": 1, "start_book_page": 1, "end_book_page": 3, "start_pdf_page": 17, "end_pdf_page": 19, "range_source": "maintained_static_json"},
-        {"day": 2, "start_book_page": 4, "end_book_page": 7, "start_pdf_page": 20, "end_pdf_page": 23, "range_source": "maintained_static_json"},
-        {"day": 3, "start_book_page": 8, "end_book_page": 9, "start_pdf_page": 24, "end_pdf_page": 25, "range_source": "maintained_static_json"},
-        {"day": 4, "start_book_page": 10, "end_book_page": 12, "start_pdf_page": 26, "end_pdf_page": 28, "range_source": "maintained_static_json"}
+        {
+          "day": 1,
+          "start_book_page": 1,
+          "end_book_page": 3,
+          "start_pdf_page": 17,
+          "end_pdf_page": 19,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 4,
+          "end_book_page": 7,
+          "start_pdf_page": 20,
+          "end_pdf_page": 23,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 8,
+          "end_book_page": 9,
+          "start_pdf_page": 24,
+          "end_pdf_page": 25,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 10,
+          "end_book_page": 12,
+          "start_pdf_page": 26,
+          "end_pdf_page": 28,
+          "range_source": "maintained_static_json"
+        }
       ]
     },
     {
@@ -27,9 +55,30 @@
       "start_pdf_page": 29,
       "end_pdf_page": 35,
       "days": [
-        {"day": 1, "start_book_page": 13, "end_book_page": 15, "start_pdf_page": 29, "end_pdf_page": 31, "range_source": "maintained_static_json"},
-        {"day": 2, "start_book_page": 16, "end_book_page": 17, "start_pdf_page": 32, "end_pdf_page": 33, "range_source": "maintained_static_json"},
-        {"day": 3, "start_book_page": 18, "end_book_page": 19, "start_pdf_page": 34, "end_pdf_page": 35, "range_source": "maintained_static_json"}
+        {
+          "day": 1,
+          "start_book_page": 13,
+          "end_book_page": 15,
+          "start_pdf_page": 29,
+          "end_pdf_page": 31,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 16,
+          "end_book_page": 17,
+          "start_pdf_page": 32,
+          "end_pdf_page": 33,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 18,
+          "end_book_page": 19,
+          "start_pdf_page": 34,
+          "end_pdf_page": 35,
+          "range_source": "maintained_static_json"
+        }
       ]
     },
     {
@@ -37,12 +86,48 @@
       "chapter_name": "Rama to the Rescue",
       "book_page": 20,
       "start_pdf_page": 36,
-      "end_pdf_page": 54,
+      "end_pdf_page": 51,
       "days": [
-        {"day": 1, "start_book_page": 20, "end_book_page": 24, "start_pdf_page": 36, "end_pdf_page": 40, "range_source": "maintained_static_json"},
-        {"day": 2, "start_book_page": 25, "end_book_page": 29, "start_pdf_page": 41, "end_pdf_page": 45, "range_source": "maintained_static_json"},
-        {"day": 3, "start_book_page": 30, "end_book_page": 34, "start_pdf_page": 46, "end_pdf_page": 50, "range_source": "maintained_static_json"},
-        {"day": 4, "start_book_page": 35, "end_book_page": 38, "start_pdf_page": 51, "end_pdf_page": 54, "range_source": "maintained_static_json"}
+        {
+          "day": 1,
+          "start_book_page": 20,
+          "end_book_page": 22,
+          "start_pdf_page": 36,
+          "end_pdf_page": 38,
+          "range_source": "bookspec_no_overlap_safe_update"
+        },
+        {
+          "day": 2,
+          "start_book_page": 23,
+          "end_book_page": 25,
+          "start_pdf_page": 39,
+          "end_pdf_page": 41,
+          "range_source": "bookspec_no_overlap_safe_update"
+        },
+        {
+          "day": 3,
+          "start_book_page": 26,
+          "end_book_page": 28,
+          "start_pdf_page": 42,
+          "end_pdf_page": 44,
+          "range_source": "bookspec_no_overlap_safe_update"
+        },
+        {
+          "day": 4,
+          "start_book_page": 29,
+          "end_book_page": 31,
+          "start_pdf_page": 45,
+          "end_pdf_page": 47,
+          "range_source": "bookspec_no_overlap_safe_update"
+        },
+        {
+          "day": 5,
+          "start_book_page": 32,
+          "end_book_page": 35,
+          "start_pdf_page": 48,
+          "end_pdf_page": 51,
+          "range_source": "bookspec_no_overlap_safe_update"
+        }
       ]
     },
     {
@@ -52,9 +137,30 @@
       "start_pdf_page": 55,
       "end_pdf_page": 67,
       "days": [
-        {"day": 1, "start_book_page": 39, "end_book_page": 43, "start_pdf_page": 55, "end_pdf_page": 59, "range_source": "maintained_static_json"},
-        {"day": 2, "start_book_page": 44, "end_book_page": 48, "start_pdf_page": 60, "end_pdf_page": 64, "range_source": "maintained_static_json"},
-        {"day": 3, "start_book_page": 49, "end_book_page": 51, "start_pdf_page": 65, "end_pdf_page": 67, "range_source": "maintained_static_json"}
+        {
+          "day": 1,
+          "start_book_page": 39,
+          "end_book_page": 43,
+          "start_pdf_page": 55,
+          "end_pdf_page": 59,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 44,
+          "end_book_page": 48,
+          "start_pdf_page": 60,
+          "end_pdf_page": 64,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 49,
+          "end_book_page": 51,
+          "start_pdf_page": 65,
+          "end_pdf_page": 67,
+          "range_source": "maintained_static_json"
+        }
       ]
     },
     {
@@ -62,19 +168,533 @@
       "chapter_name": "A Friend's Prayer",
       "book_page": 52,
       "start_pdf_page": 68,
-      "end_pdf_page": 180,
+      "end_pdf_page": 74,
       "days": [
-        {"day": 1, "start_book_page": 52, "end_book_page": 63, "start_pdf_page": 68, "end_pdf_page": 79, "range_source": "maintained_static_json"},
-        {"day": 2, "start_book_page": 64, "end_book_page": 74, "start_pdf_page": 80, "end_pdf_page": 90, "range_source": "maintained_static_json"},
-        {"day": 3, "start_book_page": 75, "end_book_page": 85, "start_pdf_page": 91, "end_pdf_page": 101, "range_source": "maintained_static_json"},
-        {"day": 4, "start_book_page": 86, "end_book_page": 96, "start_pdf_page": 102, "end_pdf_page": 112, "range_source": "maintained_static_json"},
-        {"day": 5, "start_book_page": 97, "end_book_page": 107, "start_pdf_page": 113, "end_pdf_page": 123, "range_source": "maintained_static_json"},
-        {"day": 6, "start_book_page": 108, "end_book_page": 118, "start_pdf_page": 124, "end_pdf_page": 134, "range_source": "maintained_static_json"},
-        {"day": 7, "start_book_page": 119, "end_book_page": 129, "start_pdf_page": 135, "end_pdf_page": 145, "range_source": "maintained_static_json"},
-        {"day": 8, "start_book_page": 130, "end_book_page": 140, "start_pdf_page": 146, "end_pdf_page": 156, "range_source": "maintained_static_json"},
-        {"day": 9, "start_book_page": 141, "end_book_page": 151, "start_pdf_page": 157, "end_pdf_page": 167, "range_source": "maintained_static_json"},
-        {"day": 10, "start_book_page": 152, "end_book_page": 164, "start_pdf_page": 168, "end_pdf_page": 180, "range_source": "maintained_static_json"}
+        {
+          "day": 1,
+          "start_book_page": 52,
+          "end_book_page": 58,
+          "start_pdf_page": 68,
+          "end_pdf_page": 74,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "chapter_name": "The Chair",
+      "book_page": 59,
+      "start_pdf_page": 75,
+      "end_pdf_page": 86,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 59,
+          "end_book_page": 61,
+          "start_pdf_page": 75,
+          "end_pdf_page": 77,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 62,
+          "end_book_page": 64,
+          "start_pdf_page": 78,
+          "end_pdf_page": 80,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 65,
+          "end_book_page": 66,
+          "start_pdf_page": 81,
+          "end_pdf_page": 82,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 67,
+          "end_book_page": 68,
+          "start_pdf_page": 83,
+          "end_pdf_page": 84,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 69,
+          "end_book_page": 70,
+          "start_pdf_page": 85,
+          "end_pdf_page": 86,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "chapter_name": "Neem Baba",
+      "book_page": 75,
+      "start_pdf_page": 91,
+      "end_pdf_page": 100,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 75,
+          "end_book_page": 76,
+          "start_pdf_page": 91,
+          "end_pdf_page": 92,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 77,
+          "end_book_page": 78,
+          "start_pdf_page": 93,
+          "end_pdf_page": 94,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 79,
+          "end_book_page": 80,
+          "start_pdf_page": 95,
+          "end_pdf_page": 96,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 81,
+          "end_book_page": 82,
+          "start_pdf_page": 97,
+          "end_pdf_page": 98,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 83,
+          "end_book_page": 84,
+          "start_pdf_page": 99,
+          "end_pdf_page": 100,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "chapter_name": "What a Bird Thought",
+      "book_page": 85,
+      "start_pdf_page": 101,
+      "end_pdf_page": 108,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 85,
+          "end_book_page": 86,
+          "start_pdf_page": 101,
+          "end_pdf_page": 102,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 87,
+          "end_book_page": 88,
+          "start_pdf_page": 103,
+          "end_pdf_page": 104,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 89,
+          "end_book_page": 90,
+          "start_pdf_page": 105,
+          "end_pdf_page": 106,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 91,
+          "end_book_page": 91,
+          "start_pdf_page": 107,
+          "end_pdf_page": 107,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 92,
+          "end_book_page": 92,
+          "start_pdf_page": 108,
+          "end_pdf_page": 108,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "chapter_name": "Spices that Heal Us",
+      "book_page": 93,
+      "start_pdf_page": 109,
+      "end_pdf_page": 116,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 93,
+          "end_book_page": 94,
+          "start_pdf_page": 109,
+          "end_pdf_page": 110,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 95,
+          "end_book_page": 96,
+          "start_pdf_page": 111,
+          "end_pdf_page": 112,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 97,
+          "end_book_page": 98,
+          "start_pdf_page": 113,
+          "end_pdf_page": 114,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 99,
+          "end_book_page": 99,
+          "start_pdf_page": 115,
+          "end_pdf_page": 115,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 100,
+          "end_book_page": 100,
+          "start_pdf_page": 116,
+          "end_pdf_page": 116,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "chapter_name": "Change of Heart",
+      "book_page": 103,
+      "start_pdf_page": 119,
+      "end_pdf_page": 130,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 103,
+          "end_book_page": 105,
+          "start_pdf_page": 119,
+          "end_pdf_page": 121,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 106,
+          "end_book_page": 108,
+          "start_pdf_page": 122,
+          "end_pdf_page": 124,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 109,
+          "end_book_page": 110,
+          "start_pdf_page": 125,
+          "end_pdf_page": 126,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 111,
+          "end_book_page": 112,
+          "start_pdf_page": 127,
+          "end_pdf_page": 128,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 113,
+          "end_book_page": 114,
+          "start_pdf_page": 129,
+          "end_pdf_page": 130,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 11,
+      "chapter_name": "The Winner",
+      "book_page": 115,
+      "start_pdf_page": 131,
+      "end_pdf_page": 137,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 115,
+          "end_book_page": 116,
+          "start_pdf_page": 131,
+          "end_pdf_page": 132,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 117,
+          "end_book_page": 118,
+          "start_pdf_page": 133,
+          "end_pdf_page": 134,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 119,
+          "end_book_page": 119,
+          "start_pdf_page": 135,
+          "end_pdf_page": 135,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 120,
+          "end_book_page": 120,
+          "start_pdf_page": 136,
+          "end_pdf_page": 136,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 121,
+          "end_book_page": 121,
+          "start_pdf_page": 137,
+          "end_pdf_page": 137,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 12,
+      "chapter_name": "Yoga—A Way of Life",
+      "book_page": 122,
+      "start_pdf_page": 138,
+      "end_pdf_page": 143,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 122,
+          "end_book_page": 123,
+          "start_pdf_page": 138,
+          "end_pdf_page": 139,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 124,
+          "end_book_page": 124,
+          "start_pdf_page": 140,
+          "end_pdf_page": 140,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 125,
+          "end_book_page": 125,
+          "start_pdf_page": 141,
+          "end_pdf_page": 141,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 126,
+          "end_book_page": 126,
+          "start_pdf_page": 142,
+          "end_pdf_page": 142,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 127,
+          "end_book_page": 127,
+          "start_pdf_page": 143,
+          "end_pdf_page": 143,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 13,
+      "chapter_name": "Hamara Bharat—Incredible India!",
+      "book_page": 131,
+      "start_pdf_page": 147,
+      "end_pdf_page": 156,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 131,
+          "end_book_page": 132,
+          "start_pdf_page": 147,
+          "end_pdf_page": 148,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 133,
+          "end_book_page": 134,
+          "start_pdf_page": 149,
+          "end_pdf_page": 150,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 135,
+          "end_book_page": 136,
+          "start_pdf_page": 151,
+          "end_pdf_page": 152,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 137,
+          "end_book_page": 138,
+          "start_pdf_page": 153,
+          "end_pdf_page": 154,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 139,
+          "end_book_page": 140,
+          "start_pdf_page": 155,
+          "end_pdf_page": 156,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 14,
+      "chapter_name": "The Kites",
+      "book_page": 141,
+      "start_pdf_page": 157,
+      "end_pdf_page": 166,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 141,
+          "end_book_page": 142,
+          "start_pdf_page": 157,
+          "end_pdf_page": 158,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 143,
+          "end_book_page": 144,
+          "start_pdf_page": 159,
+          "end_pdf_page": 160,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 145,
+          "end_book_page": 146,
+          "start_pdf_page": 161,
+          "end_pdf_page": 162,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 147,
+          "end_book_page": 148,
+          "start_pdf_page": 163,
+          "end_pdf_page": 164,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 149,
+          "end_book_page": 150,
+          "start_pdf_page": 165,
+          "end_pdf_page": 166,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 15,
+      "chapter_name": "Ila Sachani: Embroidering Dreams with her Feet",
+      "book_page": 151,
+      "start_pdf_page": 167,
+      "end_pdf_page": 175,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 151,
+          "end_book_page": 152,
+          "start_pdf_page": 167,
+          "end_pdf_page": 168,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 153,
+          "end_book_page": 154,
+          "start_pdf_page": 169,
+          "end_pdf_page": 170,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 155,
+          "end_book_page": 156,
+          "start_pdf_page": 171,
+          "end_pdf_page": 172,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 157,
+          "end_book_page": 158,
+          "start_pdf_page": 173,
+          "end_pdf_page": 174,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 159,
+          "end_book_page": 159,
+          "start_pdf_page": 175,
+          "end_pdf_page": 175,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 16,
+      "chapter_name": "National War Memorial",
+      "book_page": 160,
+      "start_pdf_page": 176,
+      "end_pdf_page": 177,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 160,
+          "end_book_page": 160,
+          "start_pdf_page": 176,
+          "end_pdf_page": 176,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 161,
+          "end_book_page": 161,
+          "start_pdf_page": 177,
+          "end_pdf_page": 177,
+          "range_source": "maintained_static_json"
+        }
       ]
     }
-  ]
+  ],
+  "_update_note": "Updated from bookspec.json only for exact matching chapter titles where Day ranges had no overlaps and fit the matching first-json chapter range. Skipped unsafe/overlapping/out-of-range sections."
 }

@@ -1,1 +1,21 @@
 python app/make_english_poorvi.py --force --subsections-json app/english_poorvi/English_Poorvi_static_subsection_ranges.json
+
+python app/maths_rsaggarwal/make_maths_rsaggarwal.py \
+  --pdf input/Maths_RSAgarwal.pdf \
+  --output-dir output/maths_rsagarwal \
+  --subsections-json app/maths_rsaggarwal/Maths_RSAgarwal_static_subsection_ranges.json \
+  --force
+
+python app/make_physics_grade10.py `
+  --pdf input/Grade10_Physics.pdf `
+  --subsections-json app/physics_tenth/Grade10_Physics_static_subsection_ranges.json `
+  --output-dir output/physics_tenth `
+  --force
+
+
+python app/make_physics_grade10.py `
+  --pdf input/Grade10_Physics.pdf `
+  --output-dir output/physics_tenth `
+  --subsections-json app/physics_tenth/Grade10_Physics_static_subsection_ranges.json `
+  --corrections-json app/physics_tenth/Grade10_Physics_formula_corrections.json `
+  --force

@@ -41,6 +41,107 @@ QA_CSV = BASE / 'Maths_RSAgarwal_math_aware_v4_pages_requiring_vision_qa.csv'
 SCRIPT_COPY = BASE / 'cleanup_maths_rsaggarwal_v4_production_safe.py'
 
 
+DEFAULT_SUBSECTIONS_JSON = 'Maths_RSAgarwal_static_subsection_ranges.json'
+
+
+def find_static_subsections_json() -> Path:
+    """Find the maintained standalone Maths RSAggarwal day/subsection JSON."""
+    env_path = os.environ.get('MATHS_RSAGGARWAL_SUBSECTIONS_JSON')
+    candidates: list[Path] = []
+    if env_path:
+        candidates.append(Path(env_path))
+    app_dir = Path(__file__).resolve().parent
+    candidates.extend([
+        PROJECT_ROOT / DEFAULT_SUBSECTIONS_JSON,
+        app_dir / DEFAULT_SUBSECTIONS_JSON,
+        app_dir / 'maths_rsaggarwal' / DEFAULT_SUBSECTIONS_JSON,
+        BASE / DEFAULT_SUBSECTIONS_JSON,
+        PROJECT_ROOT / 'output' / 'maths_rsagarwal' / DEFAULT_SUBSECTIONS_JSON,
+    ])
+    for candidate in candidates:
+        candidate = candidate if candidate.is_absolute() else PROJECT_ROOT / candidate
+        if candidate.exists():
+            return candidate
+    checked = '\n'.join(f'- {c}' for c in candidates)
+    raise FileNotFoundError(
+        f'Maintained subsection/day ranges JSON not found: {DEFAULT_SUBSECTIONS_JSON}\n'
+        'Place this standalone JSON in the project root, app/maths_rsaggarwal, or output/maths_rsagarwal, '
+        'or set MATHS_RSAGGARWAL_SUBSECTIONS_JSON to its full path.\n'
+        f'Checked:\n{checked}'
+    )
+
+
+def normalize_static_marker(label: Any) -> str:
+    label = str(label or '').strip()
+    if not label:
+        return ''
+    if re.match(r'^activity\s+\d+', label, re.IGNORECASE):
+        return 'Activity ' + re.search(r'\d+', label).group(0)
+    if re.match(r'^exercise\s+', label, re.IGNORECASE):
+        return re.sub(r'\s+', ' ', label).strip().title().replace('exercise', 'Exercise')
+    if re.match(r'^\d+[A-Za-z]?$', label):
+        return f'Exercise {label.upper()}'
+    return label
+
+
+def load_static_subsection_plan(path: Path) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]]]:
+    """Load the standalone JSON and normalize it into a chapter-number keyed map."""
+    config = json.loads(path.read_text(encoding='utf-8'))
+    chapters = config.get('chapters')
+    if not isinstance(chapters, list) or not chapters:
+        raise ValueError(f'Invalid subsection JSON. Expected non-empty chapters array: {path}')
+
+    plan: dict[str, list[dict[str, Any]]] = {}
+    for chapter in chapters:
+        chapter_number = str(chapter.get('chapter_number') or chapter.get('sequence') or '').strip()
+        if not chapter_number:
+            continue
+        rows: list[dict[str, Any]] = []
+        for idx, day in enumerate(chapter.get('days') or [], start=1):
+            day_no = int(day.get('day') or idx)
+            exercises = day.get('exercises') or []
+            if isinstance(exercises, str):
+                exercises = [exercises]
+            included = [normalize_static_marker(x) for x in exercises if str(x).strip()]
+            included = [x for x in included if x]
+            if not included:
+                if str(chapter.get('chapter_name', '')).strip().lower() == 'activities':
+                    included = [f'Activity {day_no}']
+                else:
+                    included = [f'Exercise {chapter_number}']
+            notes = []
+            if day.get('includes'):
+                notes.append(str(day.get('includes')))
+            if day.get('note'):
+                notes.append(str(day.get('note')))
+            notes.append('Subsection/day range loaded from standalone Maths_RSAgarwal_static_subsection_ranges.json; no runtime exercise detection used.')
+            rows.append({
+                'day': day_no,
+                'day_title': day.get('day_title') or f'Day {day_no}',
+                'day_type': day.get('day_type'),
+                'anchor_marker': included[0],
+                'anchor_pdf_page': day.get('end_pdf_page'),
+                'anchor_printed_page': day.get('end_book_page'),
+                'included_exercises_or_activities': included,
+                'raw_exercises': exercises,
+                'includes_text': day.get('includes'),
+                'start_page': int(day['start_pdf_page']),
+                'end_page': int(day['end_pdf_page']),
+                'printed_start_page': int(day['start_book_page']),
+                'printed_end_page': int(day['end_book_page']),
+                'range_source': day.get('range_source') or config.get('subsection_policy') or 'maintained_static_json',
+                'boundary_overlap_with_previous_day': bool(day.get('boundary_overlap_with_previous_day')),
+                'notes': notes,
+            })
+        if rows:
+            plan[chapter_number] = rows
+    return config, plan
+
+
+STATIC_SUBSECTIONS_JSON = find_static_subsections_json()
+STATIC_SUBSECTION_CONFIG, STATIC_SUBSECTION_PLAN_BY_CHAPTER = load_static_subsection_plan(STATIC_SUBSECTIONS_JSON)
+
+
 
 def slugify(value: Any) -> str:
     """Create stable lowercase ids for documentId/document_key."""
@@ -760,75 +861,115 @@ def _build_subsection_record_from_pages(
     }
 
 
+
+def build_static_subsections_for_chapter(chapter: dict[str, Any], chapter_pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Build production subsections from the maintained standalone day/subsection JSON."""
+    plan = STATIC_SUBSECTION_PLAN_BY_CHAPTER.get(str(chapter.get('chapter_number') or ''))
+    if not plan or not chapter_pages:
+        return []
+
+    page_by_number = {int(p.get('page_number')): p for p in chapter_pages if p.get('page_number') is not None}
+    chapter_start = min(page_by_number) if page_by_number else None
+    chapter_end = max(page_by_number) if page_by_number else None
+    subsections: list[dict[str, Any]] = []
+
+    for idx, item in enumerate(plan, start=1):
+        start_page = int(item['start_page'])
+        end_page = int(item['end_page'])
+        if chapter_start is not None:
+            start_page = max(start_page, chapter_start)
+        if chapter_end is not None:
+            end_page = min(end_page, chapter_end)
+
+        if end_page < start_page:
+            subsection_pages: list[dict[str, Any]] = []
+            start_page = int(item['start_page'])
+            end_page = int(item['end_page'])
+        else:
+            subsection_pages = [page_by_number[p] for p in range(start_page, end_page + 1) if p in page_by_number]
+
+        group = {
+            'anchor': {
+                'marker': item.get('anchor_marker'),
+                'page_number': item.get('anchor_pdf_page') or end_page,
+                'printed_page_number': item.get('anchor_printed_page') or item.get('printed_end_page'),
+                'canonical_source': 'maintained_static_json_day_ranges',
+                'raw_heading': item.get('day_title'),
+            },
+            'included_markers': list(item.get('included_exercises_or_activities') or []),
+            'included_marker_details': [],
+            'notes': list(item.get('notes') or []),
+        }
+        rec = _build_subsection_record_from_pages(chapter, group, idx, start_page, end_page, subsection_pages)
+
+        day_no = int(item.get('day') or idx)
+        rec['day'] = day_no
+        rec['day_title'] = item.get('day_title') or f'Day {day_no}'
+        rec['day_type'] = item.get('day_type')
+        rec['subsection_number'] = f"{chapter.get('chapter_number')}.{day_no}"
+        rec['subsection_title'] = rec['day_title']
+        rec['anchor_marker'] = item.get('anchor_marker')
+        rec['anchor_pdf_page'] = item.get('anchor_pdf_page') or end_page
+        rec['anchor_printed_page'] = item.get('anchor_printed_page') or item.get('printed_end_page')
+        rec['anchor_detection_method'] = 'maintained_static_json_day_ranges'
+        rec['anchor_raw_heading'] = item.get('day_title')
+        rec['included_exercises_or_activities'] = list(item.get('included_exercises_or_activities') or [])
+        rec['includes'] = list(item.get('included_exercises_or_activities') or [])
+        rec['exercises'] = list(item.get('raw_exercises') or [])
+        rec['day_includes'] = item.get('includes_text')
+        rec['range_source'] = item.get('range_source')
+        rec['range_source_file'] = str(STATIC_SUBSECTIONS_JSON)
+        rec['subsection_policy'] = STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file'
+        rec['day_split_policy'] = STATIC_SUBSECTION_CONFIG.get('day_split_policy')
+        rec['boundary_overlap_with_previous_day'] = bool(item.get('boundary_overlap_with_previous_day'))
+
+        rec['printed_start_page'] = item.get('printed_start_page')
+        rec['printed_end_page'] = item.get('printed_end_page')
+        rec['start_printed_page'] = item.get('printed_start_page')
+        rec['end_printed_page'] = item.get('printed_end_page')
+        rec['printed_pages'] = {'start': item.get('printed_start_page'), 'end': item.get('printed_end_page')}
+        rec['physical_printed_start_page'] = item.get('printed_start_page')
+        rec['physical_printed_end_page'] = item.get('printed_end_page')
+        rec['notes'] = list(item.get('notes') or rec.get('notes') or [])
+        subsections.append(rec)
+
+    return subsections
+
+
 def build_subsections_for_chapter(chapter: dict[str, Any], chapter_pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Build subsection/day ranges from standalone JSON only; no runtime exercise detection."""
     chapter_pages = [p for p in chapter_pages if p.get('include_in_lesson_text', True)]
     chapter_pages.sort(key=lambda p: int(p.get('page_number') or 0))
 
     if not chapter_pages or chapter.get('chapter_type') == 'appendix':
         return []
 
-    markers = detect_subsection_markers(chapter, chapter_pages)
+    static_subsections = build_static_subsections_for_chapter(chapter, chapter_pages)
+    if static_subsections:
+        return static_subsections
 
-    if not markers:
-        start_page = int(chapter_pages[0].get('page_number'))
-        end_page = int(chapter_pages[-1].get('page_number'))
-        fallback_group = {
-            'anchor': {
-                'marker': 'Chapter body',
-                'page_number': start_page,
-                'printed_page_number': chapter_pages[0].get('printed_page_number'),
-                'canonical_source': 'runtime_no_marker_fallback',
-                'raw_heading': None,
-            },
-            'included_markers': [],
-            'included_marker_details': [],
-            'notes': ['No exercise/activity heading was detected by OCR; fallback subsection covers the full chapter.'],
-        }
-        return [_build_subsection_record_from_pages(chapter, fallback_group, 1, start_page, end_page, chapter_pages)]
-
-    groups = group_subsection_markers(chapter, markers)
-
-    chapter_start = int(chapter_pages[0].get('page_number'))
-    chapter_end = int(chapter_pages[-1].get('page_number'))
-    subsections: list[dict[str, Any]] = []
-
-    is_activity_chapter = (
-        str(chapter.get('chapter_number') or '') == '24'
-        or str(chapter.get('chapter_title') or '').strip().lower() == 'activities'
-    )
-
-    for idx, group in enumerate(groups, start=1):
-        anchor_page = int(group['anchor'].get('page_number') or chapter_start)
-
-        if is_activity_chapter:
-            # Activity sections start on their own activity-heading page and run
-            # until the page before the next activity heading.
-            start_page = anchor_page
-            if idx < len(groups):
-                next_anchor_page = int(groups[idx]['anchor'].get('page_number') or chapter_end)
-                end_page = next_anchor_page - 1
-            else:
-                end_page = chapter_end
-        else:
-            # Exercise-based chapters are split as "concept before/through
-            # Exercise XA", so the exercise anchor page closes that subsection.
-            if idx == 1:
-                start_page = chapter_start
-            else:
-                prev_anchor_page = int(groups[idx - 2]['anchor'].get('page_number') or chapter_start)
-                start_page = prev_anchor_page + 1
-            end_page = chapter_end if idx == len(groups) else anchor_page
-
-        start_page = max(chapter_start, min(start_page, chapter_end))
-        end_page = max(start_page, min(end_page, chapter_end))
-
-        subsection_pages = [
-            p for p in chapter_pages
-            if start_page <= int(p.get('page_number') or -1) <= end_page
-        ]
-        subsections.append(_build_subsection_record_from_pages(chapter, group, idx, start_page, end_page, subsection_pages))
-
-    return subsections
+    # Do not dynamically infer Exercise/Activity headings here. The standalone
+    # JSON is the source of truth. Missing chapters are intentionally surfaced.
+    start_page = int(chapter_pages[0].get('page_number'))
+    end_page = int(chapter_pages[-1].get('page_number'))
+    fallback_group = {
+        'anchor': {
+            'marker': 'Chapter body',
+            'page_number': start_page,
+            'printed_page_number': chapter_pages[0].get('printed_page_number'),
+            'canonical_source': 'static_json_missing_chapter_fallback',
+            'raw_heading': None,
+        },
+        'included_markers': [],
+        'included_marker_details': [],
+        'notes': ['No maintained static day range was found for this chapter in the standalone JSON; dynamic day detection was intentionally not used.'],
+    }
+    rec = _build_subsection_record_from_pages(chapter, fallback_group, 1, start_page, end_page, chapter_pages)
+    rec['range_source'] = 'missing_from_static_subsections_json'
+    rec['range_source_file'] = str(STATIC_SUBSECTIONS_JSON)
+    rec['subsection_policy'] = STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file'
+    rec['quality_flags'] = sorted(set(rec.get('quality_flags', [])) | {'missing_static_day_range'})
+    return [rec]
 
 
 def sync_subsections_to_section_index(data: dict[str, Any]) -> None:
@@ -908,6 +1049,10 @@ def main() -> None:
     metadata['document_key'] = document_key
     metadata['source_type'] = metadata.get('source_type') or 'textbook_pdf'
 
+    data.setdefault('extraction', {})['subsection_policy'] = STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file'
+    data['extraction']['day_split_policy'] = STATIC_SUBSECTION_CONFIG.get('day_split_policy')
+    data['extraction']['subsections_json_source'] = str(STATIC_SUBSECTIONS_JSON)
+
     cleanup_counter = Counter()
 
     # Clean page fields.
@@ -984,6 +1129,9 @@ def main() -> None:
         'cleanup_rule_counts': dict(cleanup_counter),
         'total_pages': len(pages),
         'total_subsections': sum(len(ch.get('subsections', [])) for ch in data['extraction'].get('chapters', [])),
+        'subsections_json_source': str(STATIC_SUBSECTIONS_JSON),
+        'subsection_policy': STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file',
+        'subsection_plan_chapter_count': len(STATIC_SUBSECTION_PLAN_BY_CHAPTER),
         'ready_for_production_embedding_pages': len(ready_pages),
         'excluded_until_vision_qa_pages': len(excluded_pages),
         'exclusion_reason_counts': dict(reason_counts),

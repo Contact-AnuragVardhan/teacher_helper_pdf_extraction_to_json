@@ -326,47 +326,116 @@ def format_page_block(page_record: dict) -> str:
 # the page after the previous anchor page and ends on the current anchor page;
 # the final subsection runs until the end of the chapter.  If the last exercise
 # is an immediate/objective tail exercise, it is grouped with the previous anchor.
-KNOWN_SUBSECTION_PLAN_BY_CHAPTER = {'1': [{'anchor_marker': 'Exercise 1A', 'included_exercises_or_activities': ['Exercise 1A'], 'start_page': 8, 'end_page': 11, 'printed_start_page': 1, 'printed_end_page': 4, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 1B', 'included_exercises_or_activities': ['Exercise 1B'], 'start_page': 12, 'end_page': 16, 'printed_start_page': 5, 'printed_end_page': 9, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 1C', 'included_exercises_or_activities': ['Exercise 1C', 'Exercise 1D'], 'start_page': 17, 'end_page': 22, 'printed_start_page': 10, 'printed_end_page': 15, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '2': [{'anchor_marker': 'Exercise 2A', 'included_exercises_or_activities': ['Exercise 2A'], 'start_page': 23, 'end_page': 28, 'printed_start_page': 16, 'printed_end_page': 21, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 2B', 'included_exercises_or_activities': ['Exercise 2B'], 'start_page': 29, 'end_page': 33, 'printed_start_page': 22, 'printed_end_page': 26, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 2C', 'included_exercises_or_activities': ['Exercise 2C', 'Exercise 2D'], 'start_page': 34, 'end_page': 42, 'printed_start_page': 27, 'printed_end_page': 35, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '3': [{'anchor_marker': 'Exercise 3A', 'included_exercises_or_activities': ['Exercise 3A'], 'start_page': 43, 'end_page': 46, 'printed_start_page': 36, 'printed_end_page': 39, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 3B', 'included_exercises_or_activities': ['Exercise 3B'], 'start_page': 47, 'end_page': 48, 'printed_start_page': 40, 'printed_end_page': 41, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 3C', 'included_exercises_or_activities': ['Exercise 3C'], 'start_page': 49, 'end_page': 50, 'printed_start_page': 42, 'printed_end_page': 43, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 3D', 'included_exercises_or_activities': ['Exercise 3D', 'Exercise 3E'], 'start_page': 51, 'end_page': 60, 'printed_start_page': 44, 'printed_end_page': 53, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '4': [{'anchor_marker': 'Exercise 4A', 'included_exercises_or_activities': ['Exercise 4A'], 'start_page': 61, 'end_page': 67, 'printed_start_page': 54, 'printed_end_page': 60, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 4B', 'included_exercises_or_activities': ['Exercise 4B'], 'start_page': 68, 'end_page': 73, 'printed_start_page': 61, 'printed_end_page': 66, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 4C', 'included_exercises_or_activities': ['Exercise 4C'], 'start_page': 74, 'end_page': 76, 'printed_start_page': 67, 'printed_end_page': 69, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 4D', 'included_exercises_or_activities': ['Exercise 4D'], 'start_page': 77, 'end_page': 79, 'printed_start_page': 70, 'printed_end_page': 72, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 4E', 'included_exercises_or_activities': ['Exercise 4E'], 'start_page': 80, 'end_page': 82, 'printed_start_page': 73, 'printed_end_page': 75, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 4F', 'included_exercises_or_activities': ['Exercise 4F', 'Exercise 4G'], 'start_page': 83, 'end_page': 90, 'printed_start_page': 76, 'printed_end_page': 83, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '5': [{'anchor_marker': 'Exercise 5A', 'included_exercises_or_activities': ['Exercise 5A'], 'start_page': 91, 'end_page': 97, 'printed_start_page': 84, 'printed_end_page': 90, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 5B', 'included_exercises_or_activities': ['Exercise 5B', 'Exercise 5C'], 'start_page': 98, 'end_page': 103, 'printed_start_page': 91, 'printed_end_page': 96, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '6': [{'anchor_marker': 'Exercise 6A', 'included_exercises_or_activities': ['Exercise 6A'], 'start_page': 104, 'end_page': 106, 'printed_start_page': 97, 'printed_end_page': 99, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 6B', 'included_exercises_or_activities': ['Exercise 6B'], 'start_page': 107, 'end_page': 109, 'printed_start_page': 100, 'printed_end_page': 102, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 6C', 'included_exercises_or_activities': ['Exercise 6C'], 'start_page': 110, 'end_page': 111, 'printed_start_page': 103, 'printed_end_page': 104, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 6D', 'included_exercises_or_activities': ['Exercise 6D'], 'start_page': 112, 'end_page': 113, 'printed_start_page': 105, 'printed_end_page': 106, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '7': [{'anchor_marker': 'Exercise 7A', 'included_exercises_or_activities': ['Exercise 7A'], 'start_page': 114, 'end_page': 118, 'printed_start_page': 107, 'printed_end_page': 111, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 7B', 'included_exercises_or_activities': ['Exercise 7B', 'Exercise 7C'], 'start_page': 119, 'end_page': 125, 'printed_start_page': 112, 'printed_end_page': 118, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '8': [{'anchor_marker': 'Exercise 8A', 'included_exercises_or_activities': ['Exercise 8A'], 'start_page': 126, 'end_page': 131, 'printed_start_page': 119, 'printed_end_page': 124, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 8B', 'included_exercises_or_activities': ['Exercise 8B', 'Exercise 8C'], 'start_page': 132, 'end_page': 138, 'printed_start_page': 125, 'printed_end_page': 131, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '9': [{'anchor_marker': 'Exercise 9A', 'included_exercises_or_activities': ['Exercise 9A'], 'start_page': 139, 'end_page': 140, 'printed_start_page': 132, 'printed_end_page': 133, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 9B', 'included_exercises_or_activities': ['Exercise 9B', 'Exercise 9C'], 'start_page': 141, 'end_page': 144, 'printed_start_page': 134, 'printed_end_page': 137, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '10': [{'anchor_marker': 'Exercise 10A', 'included_exercises_or_activities': ['Exercise 10A'], 'start_page': 145, 'end_page': 149, 'printed_start_page': 138, 'printed_end_page': 142, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 10B', 'included_exercises_or_activities': ['Exercise 10B', 'Exercise 10C'], 'start_page': 150, 'end_page': 158, 'printed_start_page': 143, 'printed_end_page': 151, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '11': [{'anchor_marker': 'Exercise 11A', 'included_exercises_or_activities': ['Exercise 11A', 'Exercise 11B'], 'start_page': 159, 'end_page': 167, 'printed_start_page': 152, 'printed_end_page': 160, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '12': [{'anchor_marker': 'Exercise 12A', 'included_exercises_or_activities': ['Exercise 12A', 'Exercise 12B'], 'start_page': 168, 'end_page': 175, 'printed_start_page': 161, 'printed_end_page': 168, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '13': [{'anchor_marker': 'Exercise 13', 'included_exercises_or_activities': ['Exercise 13'], 'start_page': 176, 'end_page': 180, 'printed_start_page': 169, 'printed_end_page': 173, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '14': [{'anchor_marker': 'Exercise 14', 'included_exercises_or_activities': ['Exercise 14'], 'start_page': 181, 'end_page': 187, 'printed_start_page': 174, 'printed_end_page': 180, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '15': [{'anchor_marker': 'Exercise 15A', 'included_exercises_or_activities': ['Exercise 15A'], 'start_page': 188, 'end_page': 190, 'printed_start_page': 181, 'printed_end_page': 183, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 15B', 'included_exercises_or_activities': ['Exercise 15B'], 'start_page': 191, 'end_page': 193, 'printed_start_page': 184, 'printed_end_page': 186, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 15C', 'included_exercises_or_activities': ['Exercise 15C'], 'start_page': 194, 'end_page': 195, 'printed_start_page': 187, 'printed_end_page': 188, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 15D', 'included_exercises_or_activities': ['Exercise 15D'], 'start_page': 196, 'end_page': 201, 'printed_start_page': 189, 'printed_end_page': 194, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '16': [{'anchor_marker': 'Exercise 16', 'included_exercises_or_activities': ['Exercise 16'], 'start_page': 202, 'end_page': 210, 'printed_start_page': 195, 'printed_end_page': 203, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '17': [{'anchor_marker': 'Exercise 17A', 'included_exercises_or_activities': ['Exercise 17A'], 'start_page': 211, 'end_page': 211, 'printed_start_page': 204, 'printed_end_page': 204, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 17B', 'included_exercises_or_activities': ['Exercise 17B', 'Exercise 17C'], 'start_page': 212, 'end_page': 220, 'printed_start_page': 205, 'printed_end_page': 213, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '18': [{'anchor_marker': 'Exercise 18A', 'included_exercises_or_activities': ['Exercise 18A'], 'start_page': 221, 'end_page': 223, 'printed_start_page': 214, 'printed_end_page': 216, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 18B', 'included_exercises_or_activities': ['Exercise 18B'], 'start_page': 224, 'end_page': 227, 'printed_start_page': 217, 'printed_end_page': 220, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '19': [{'anchor_marker': 'Exercise 19', 'included_exercises_or_activities': ['Exercise 19'], 'start_page': 228, 'end_page': 231, 'printed_start_page': 221, 'printed_end_page': 224, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '20': [{'anchor_marker': 'Exercise 20A', 'included_exercises_or_activities': ['Exercise 20A'], 'start_page': 232, 'end_page': 236, 'printed_start_page': 225, 'printed_end_page': 229, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 20B', 'included_exercises_or_activities': ['Exercise 20B'], 'start_page': 237, 'end_page': 239, 'printed_start_page': 230, 'printed_end_page': 232, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 20C', 'included_exercises_or_activities': ['Exercise 20C'], 'start_page': 240, 'end_page': 244, 'printed_start_page': 233, 'printed_end_page': 237, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 20D', 'included_exercises_or_activities': ['Exercise 20D'], 'start_page': 245, 'end_page': 249, 'printed_start_page': 238, 'printed_end_page': 242, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 20E', 'included_exercises_or_activities': ['Exercise 20E'], 'start_page': 250, 'end_page': 254, 'printed_start_page': 243, 'printed_end_page': 247, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 20F', 'included_exercises_or_activities': ['Exercise 20F', 'Exercise 20G'], 'start_page': 255, 'end_page': 265, 'printed_start_page': 248, 'printed_end_page': 258, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection. Objective/immediate exercise(s) grouped with the preceding concept section.'}], '21': [{'anchor_marker': 'Exercise 21A', 'included_exercises_or_activities': ['Exercise 21A'], 'start_page': 266, 'end_page': 270, 'printed_start_page': 259, 'printed_end_page': 263, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 21B', 'included_exercises_or_activities': ['Exercise 21B'], 'start_page': 271, 'end_page': 273, 'printed_start_page': 264, 'printed_end_page': 266, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'},
-     {'anchor_marker': 'Exercise 21C', 'included_exercises_or_activities': ['Exercise 21C'], 'start_page': 274, 'end_page': 276, 'printed_start_page': 267, 'printed_end_page': 269, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '22': [{'anchor_marker': 'Exercise 22', 'included_exercises_or_activities': ['Exercise 22'], 'start_page': 277, 'end_page': 287, 'printed_start_page': 270, 'printed_end_page': 280, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '23': [{'anchor_marker': 'Exercise 23', 'included_exercises_or_activities': ['Exercise 23'], 'start_page': 288, 'end_page': 290, 'printed_start_page': 281, 'printed_end_page': 283, 'notes': 'Page-level range; if an exercise heading starts mid-page, the whole PDF page is assigned to this subsection.'}], '24': [{'anchor_marker': 'Activity 1', 'included_exercises_or_activities': ['Activity 1'], 'start_page': 291, 'end_page': 292, 'printed_start_page': 284, 'printed_end_page': 285, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 2', 'included_exercises_or_activities': ['Activity 2'], 'start_page': 293, 'end_page': 294, 'printed_start_page': 286, 'printed_end_page': 287, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 3', 'included_exercises_or_activities': ['Activity 3'], 'start_page': 295, 'end_page': 295, 'printed_start_page': 288, 'printed_end_page': 288, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 4', 'included_exercises_or_activities': ['Activity 4'], 'start_page': 296, 'end_page': 297, 'printed_start_page': 289, 'printed_end_page': 290, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 5', 'included_exercises_or_activities': ['Activity 5'], 'start_page': 298, 'end_page': 299, 'printed_start_page': 291, 'printed_end_page': 292, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 6', 'included_exercises_or_activities': ['Activity 6'], 'start_page': 300, 'end_page': 301, 'printed_start_page': 293, 'printed_end_page': 294, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 7', 'included_exercises_or_activities': ['Activity 7'], 'start_page': 302, 'end_page': 303, 'printed_start_page': 295, 'printed_end_page': 296, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 8', 'included_exercises_or_activities': ['Activity 8'], 'start_page': 304, 'end_page': 305, 'printed_start_page': 297, 'printed_end_page': 298, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'},
-     {'anchor_marker': 'Activity 9', 'included_exercises_or_activities': ['Activity 9'], 'start_page': 306, 'end_page': 307, 'printed_start_page': 299, 'printed_end_page': 300, 'notes': 'Chapter 24 is divided by Activity markers instead of Exercise markers.'}]}
+DEFAULT_SUBSECTIONS_JSON = 'Maths_RSAgarwal_static_subsection_ranges.json'
+
+
+def _find_static_subsections_json() -> Path:
+    """Locate the maintained day/subsection ranges JSON for this book."""
+    env_path = os.environ.get('MATHS_RSAGGARWAL_SUBSECTIONS_JSON')
+    candidates: List[Path] = []
+    if env_path:
+        candidates.append(Path(env_path))
+
+    app_dir = Path(__file__).resolve().parent
+    candidates.extend([
+        PROJECT_ROOT / DEFAULT_SUBSECTIONS_JSON,
+        app_dir / DEFAULT_SUBSECTIONS_JSON,
+        app_dir / 'maths_rsaggarwal' / DEFAULT_SUBSECTIONS_JSON,
+        OUTPUT_DIR / DEFAULT_SUBSECTIONS_JSON,
+        PROJECT_ROOT / 'output' / 'maths_rsagarwal' / DEFAULT_SUBSECTIONS_JSON,
+    ])
+
+    for candidate in candidates:
+        candidate = candidate if candidate.is_absolute() else PROJECT_ROOT / candidate
+        if candidate.exists():
+            return candidate
+
+    checked = '\n'.join(f'- {c}' for c in candidates)
+    raise FileNotFoundError(
+        f'Maintained subsection/day ranges JSON not found: {DEFAULT_SUBSECTIONS_JSON}\n'
+        'Place this standalone JSON in the project root, app/maths_rsaggarwal, or output/maths_rsagarwal, '
+        'or set MATHS_RSAGGARWAL_SUBSECTIONS_JSON to its full path.\n'
+        f'Checked:\n{checked}'
+    )
+
+
+def _normalize_static_marker(label: str, chapter_number: str) -> str:
+    """Convert JSON exercise labels like '1A' into stable labels like 'Exercise 1A'."""
+    label = str(label or '').strip()
+    if not label:
+        return ''
+    if re.match(r'^activity\s+\d+', label, re.IGNORECASE):
+        return 'Activity ' + re.search(r'\d+', label).group(0)
+    if re.match(r'^exercise\s+', label, re.IGNORECASE):
+        return re.sub(r'\s+', ' ', label).strip().title().replace('exercise', 'Exercise')
+    if re.match(r'^\d+[A-Za-z]?$', label):
+        return f'Exercise {label.upper()}'
+    return label
+
+
+def _load_static_subsection_config(path: Path) -> dict:
+    data = json.loads(path.read_text(encoding='utf-8'))
+    chapters = data.get('chapters')
+    if not isinstance(chapters, list) or not chapters:
+        raise ValueError(f'Invalid subsection JSON. Expected non-empty chapters array: {path}')
+    return data
+
+
+def _build_known_subsection_plan_from_json(config: dict) -> Dict[str, List[dict]]:
+    """Build the old internal plan shape from the standalone JSON file."""
+    plan: Dict[str, List[dict]] = {}
+    for chapter in config.get('chapters') or []:
+        chapter_number = str(chapter.get('chapter_number') or chapter.get('sequence') or '').strip()
+        if not chapter_number:
+            continue
+        day_rows: List[dict] = []
+        for idx, day in enumerate(chapter.get('days') or [], start=1):
+            day_no = int(day.get('day') or idx)
+            exercises = day.get('exercises') or []
+            if isinstance(exercises, str):
+                exercises = [exercises]
+            included = [_normalize_static_marker(x, chapter_number) for x in exercises if str(x).strip()]
+            included = [x for x in included if x]
+            if not included:
+                if str(chapter.get('chapter_name', '')).strip().lower() == 'activities':
+                    included = [f'Activity {day_no}']
+                else:
+                    included = [f'Exercise {chapter_number}']
+            anchor = included[0]
+            notes = []
+            if day.get('includes'):
+                notes.append(str(day.get('includes')))
+            if day.get('note'):
+                notes.append(str(day.get('note')))
+            notes.append('Subsection/day range loaded from standalone Maths_RSAgarwal_static_subsection_ranges.json; no runtime exercise detection used.')
+
+            day_rows.append({
+                'day': day_no,
+                'day_title': day.get('day_title') or f'Day {day_no}',
+                'day_type': day.get('day_type'),
+                'anchor_marker': anchor,
+                'anchor_pdf_page': day.get('end_pdf_page'),
+                'anchor_printed_page': day.get('end_book_page'),
+                'included_exercises_or_activities': included,
+                'raw_exercises': exercises,
+                'includes_text': day.get('includes'),
+                'start_page': int(day['start_pdf_page']),
+                'end_page': int(day['end_pdf_page']),
+                'printed_start_page': int(day['start_book_page']),
+                'printed_end_page': int(day['end_book_page']),
+                'range_source': day.get('range_source') or config.get('subsection_policy') or 'maintained_static_json',
+                'boundary_overlap_with_previous_day': bool(day.get('boundary_overlap_with_previous_day')),
+                'notes': notes,
+            })
+        if day_rows:
+            plan[chapter_number] = day_rows
+    return plan
+
+
+STATIC_SUBSECTIONS_JSON = _find_static_subsections_json()
+STATIC_SUBSECTION_CONFIG = _load_static_subsection_config(STATIC_SUBSECTIONS_JSON)
+KNOWN_SUBSECTION_PLAN_BY_CHAPTER = _build_known_subsection_plan_from_json(STATIC_SUBSECTION_CONFIG)
+
 
 TRAILING_EXERCISE_GROUPS_BY_CHAPTER = {
     '1': {'Exercise 1D'},
@@ -559,14 +628,16 @@ def build_subsection_record(chapter: dict, group: dict, idx: int, start_page: in
 
 
 def build_known_subsections_for_chapter(chapter: dict, indexed_pages: List[dict]) -> List[dict]:
-    """Use the audited R. S. Aggarwal Class 7 subsection plan when available."""
+    """Use the maintained standalone day/subsection JSON for R. S. Aggarwal Class 7."""
     plan = KNOWN_SUBSECTION_PLAN_BY_CHAPTER.get(str(chapter.get('chapter_number')))
     if not plan or not indexed_pages:
         return []
+
     page_by_number = {int(p.get('page_number')): p for p in indexed_pages if p.get('page_number') is not None}
     chapter_start = min(page_by_number) if page_by_number else None
     chapter_end = max(page_by_number) if page_by_number else None
     out: List[dict] = []
+
     for idx, item in enumerate(plan, start=1):
         start_page = int(item['start_page'])
         end_page = int(item['end_page'])
@@ -574,19 +645,46 @@ def build_known_subsections_for_chapter(chapter: dict, indexed_pages: List[dict]
             start_page = max(start_page, chapter_start)
         if chapter_end is not None:
             end_page = min(end_page, chapter_end)
-        subsection_pages = [page_by_number[p] for p in range(start_page, end_page + 1) if p in page_by_number]
+        if end_page < start_page:
+            # Keep a clear placeholder instead of silently creating a bad range.
+            start_page = int(item['start_page'])
+            end_page = int(item['end_page'])
+            subsection_pages = []
+        else:
+            subsection_pages = [page_by_number[p] for p in range(start_page, end_page + 1) if p in page_by_number]
+
         group = {
             'anchor': {
                 'marker': item['anchor_marker'],
-                'page_number': None,
-                'printed_page_number': None,
+                'page_number': item.get('anchor_pdf_page') or end_page,
+                'printed_page_number': item.get('anchor_printed_page') or item.get('printed_end_page'),
             },
             'included_markers': list(item.get('included_exercises_or_activities') or []),
             'included_marker_details': [],
-            'notes': [item.get('notes') or 'Audited subsection range for this R. S. Aggarwal Class 7 PDF.'],
+            'notes': list(item.get('notes') or []),
         }
         rec = build_subsection_record(chapter, group, idx, start_page, end_page, subsection_pages)
-        # Prefer audited printed page numbers from the plan.
+
+        day_no = int(item.get('day') or idx)
+        rec['day'] = day_no
+        rec['day_title'] = item.get('day_title') or f'Day {day_no}'
+        rec['day_type'] = item.get('day_type')
+        rec['subsection_number'] = f"{chapter.get('chapter_number')}.{day_no}"
+        rec['subsection_title'] = rec['day_title']
+        rec['anchor_marker'] = item.get('anchor_marker')
+        rec['anchor_pdf_page'] = item.get('anchor_pdf_page') or end_page
+        rec['anchor_printed_page'] = item.get('anchor_printed_page') or item.get('printed_end_page')
+        rec['included_exercises_or_activities'] = list(item.get('included_exercises_or_activities') or [])
+        rec['includes'] = list(item.get('included_exercises_or_activities') or [])
+        rec['exercises'] = list(item.get('raw_exercises') or [])
+        rec['day_includes'] = item.get('includes_text')
+        rec['range_source'] = item.get('range_source')
+        rec['range_source_file'] = str(STATIC_SUBSECTIONS_JSON)
+        rec['subsection_policy'] = STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file'
+        rec['day_split_policy'] = STATIC_SUBSECTION_CONFIG.get('day_split_policy')
+        rec['boundary_overlap_with_previous_day'] = bool(item.get('boundary_overlap_with_previous_day'))
+
+        # Prefer audited printed page numbers from the standalone JSON.
         rec['printed_start_page'] = item.get('printed_start_page')
         rec['printed_end_page'] = item.get('printed_end_page')
         rec['start_printed_page'] = item.get('printed_start_page')
@@ -594,12 +692,13 @@ def build_known_subsections_for_chapter(chapter: dict, indexed_pages: List[dict]
         rec['printed_pages'] = {'start': item.get('printed_start_page'), 'end': item.get('printed_end_page')}
         rec['physical_printed_start_page'] = item.get('printed_start_page')
         rec['physical_printed_end_page'] = item.get('printed_end_page')
+        rec['notes'] = list(item.get('notes') or rec.get('notes') or [])
         out.append(rec)
     return out
 
 
 def build_subsections_for_chapter(chapter: dict, indexed_pages: List[dict]) -> List[dict]:
-    """Build subsection array for a chapter. Existing lesson output remains unchanged."""
+    """Build subsection/day array from the standalone JSON file only."""
     if not indexed_pages or chapter.get('chapter_type') == 'appendix':
         return []
 
@@ -607,42 +706,29 @@ def build_subsections_for_chapter(chapter: dict, indexed_pages: List[dict]) -> L
     if known_subsections:
         return known_subsections
 
-    markers = detect_subsection_markers(chapter, indexed_pages)
-    if not markers:
-        # Conservative fallback: keep one subsection covering the full chapter if no exercise marker was detected.
-        start_page = int(indexed_pages[0].get('page_number'))
-        end_page = int(indexed_pages[-1].get('page_number'))
-        fallback_group = {
-            'anchor': {
-                'marker': 'Chapter body',
-                'page_number': start_page,
-                'printed_page_number': indexed_pages[0].get('printed_page_number'),
-            },
-            'included_markers': [],
-            'included_marker_details': [],
-            'notes': ['No exercise/activity heading was detected by OCR; fallback subsection covers the full chapter.'],
-        }
-        return [build_subsection_record(chapter, fallback_group, 1, start_page, end_page, indexed_pages)]
-
-    groups = group_subsection_markers(chapter, markers)
-    subsections: List[dict] = []
-    chapter_start = int(indexed_pages[0].get('page_number'))
-    chapter_end = int(indexed_pages[-1].get('page_number'))
-
-    for idx, group in enumerate(groups, start=1):
-        anchor_page = int(group['anchor'].get('page_number') or chapter_start)
-        if idx == 1:
-            start_page = chapter_start
-        else:
-            prev_anchor_page = int(groups[idx - 2]['anchor'].get('page_number') or chapter_start)
-            start_page = prev_anchor_page + 1
-        end_page = chapter_end if idx == len(groups) else anchor_page
-        start_page = max(chapter_start, min(start_page, chapter_end))
-        end_page = max(start_page, min(end_page, chapter_end))
-        subsection_pages = [p for p in indexed_pages if start_page <= int(p.get('page_number') or -1) <= end_page]
-        subsections.append(build_subsection_record(chapter, group, idx, start_page, end_page, subsection_pages))
-
-    return subsections
+    # Do not dynamically infer Exercise/Activity boundaries here. The maintained
+    # JSON is now the source of truth. If a chapter is missing from that JSON,
+    # keep one safe chapter-level subsection and make the issue visible.
+    start_page = int(indexed_pages[0].get('page_number'))
+    end_page = int(indexed_pages[-1].get('page_number'))
+    fallback_group = {
+        'anchor': {
+            'marker': 'Chapter body',
+            'page_number': start_page,
+            'printed_page_number': indexed_pages[0].get('printed_page_number'),
+        },
+        'included_markers': [],
+        'included_marker_details': [],
+        'notes': [
+            'No maintained static day range was found for this chapter in the standalone JSON; dynamic day detection was intentionally not used.'
+        ],
+    }
+    rec = build_subsection_record(chapter, fallback_group, 1, start_page, end_page, indexed_pages)
+    rec['range_source'] = 'missing_from_static_subsections_json'
+    rec['range_source_file'] = str(STATIC_SUBSECTIONS_JSON)
+    rec['subsection_policy'] = STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file'
+    rec['quality_flags'] = sorted(set(rec.get('quality_flags', [])) | {'missing_static_day_range'})
+    return [rec]
 
 
 def main():
@@ -880,6 +966,9 @@ def main():
             'answers_start_page': 308,
             'answers_end_page': total_pdf_pages,
             'printed_page_offset': PRINTED_OFFSET,
+            'subsection_policy': STATIC_SUBSECTION_CONFIG.get('subsection_policy') or 'maintained_static_day_ranges_read_from_json_file',
+            'day_split_policy': STATIC_SUBSECTION_CONFIG.get('day_split_policy'),
+            'subsections_json_source': str(STATIC_SUBSECTIONS_JSON),
             'math_ocr_profile': {
                 'method': 'rendered_page_ocr_before_embedding_mixed_resolution_cache',
                 'engine': 'tesseract',
@@ -893,6 +982,7 @@ def main():
             'notes': [
                 'This JSON regenerates page text from rendered page images instead of relying on the corrupt selectable PDF/OCR layer.',
                 'The chapter ranges come from the book contents page. Printed page 1 maps to PDF page 8.',
+                'Subsection/day ranges are loaded from the maintained standalone Maths_RSAgarwal_static_subsection_ranges.json file; runtime exercise/day detection is not used.',
                 'For math RAG, use page_extractions.text or lesson_text from this file, not selectable_text.',
                 'Tesseract OCR is much cleaner than the embedded/selectable text for this scanned PDF, but stacked fractions, powers, and dense answer-key layouts can still require manual QA or Mathpix/LLM-vision for perfect LaTeX.',
             ],
@@ -921,6 +1011,8 @@ def main():
                 'total_pages': total_pdf_pages,
                 'assigned_content_pages': sum(1 for p in page_extractions if p.get('include_in_lesson_text')),
                 'total_subsections': sum(len(ch.get('subsections', [])) for ch in chapters_out),
+                'subsections_json_source': str(STATIC_SUBSECTIONS_JSON),
+                'subsection_plan_chapter_count': len(KNOWN_SUBSECTION_PLAN_BY_CHAPTER),
                 'front_matter_page_count': len(front_matter_pages),
                 'empty_or_no_text_pages': empty_pages,
                 'pages_with_suspicious_unicode_in_final_ocr_text': suspicious_pages,

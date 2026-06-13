@@ -1,0 +1,260 @@
+{
+  "book_name": "modern_abc_physics_grade10",
+  "book_title": "Modern's abc+ Science Physics for Class-X",
+  "grade": 10,
+  "subject": "Physics",
+  "pdf_offset": 0,
+  "pdf_page_count": 282,
+  "subsection_policy": "practice_exercise_based_static_day_ranges",
+  "page_numbering_note": "start_book_page/end_book_page are chapter-local printed pages (for example 1/1, 2/1, 3/1). days correspond to Practice Exercise subsections such as 1A, 1B, 1C.",
+  "chapters": [
+    {
+      "sequence": 1,
+      "chapter_name": "Electricity",
+      "book_page": 1,
+      "book_page_label": "1/1",
+      "start_pdf_page": 8,
+      "end_pdf_page": 35,
+      "days": [
+        {
+          "day": 1,
+          "subsection_code": "1A",
+          "start_book_page": 1,
+          "end_book_page": 8,
+          "start_pdf_page": 8,
+          "end_pdf_page": 15,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 2,
+          "subsection_code": "1B",
+          "start_book_page": 9,
+          "end_book_page": 22,
+          "start_pdf_page": 16,
+          "end_pdf_page": 29,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 3,
+          "subsection_code": "1C",
+          "start_book_page": 23,
+          "end_book_page": 28,
+          "start_pdf_page": 30,
+          "end_pdf_page": 35,
+          "range_source": "practice_exercise_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "book_page": 1,
+      "book_page_label": "2/1",
+      "start_pdf_page": 76,
+      "end_pdf_page": 98,
+      "days": [
+        {
+          "day": 1,
+          "subsection_code": "2A",
+          "start_book_page": 1,
+          "end_book_page": 3,
+          "start_pdf_page": 76,
+          "end_pdf_page": 78,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 2,
+          "subsection_code": "2B",
+          "start_book_page": 4,
+          "end_book_page": 9,
+          "start_pdf_page": 79,
+          "end_pdf_page": 84,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 3,
+          "subsection_code": "2C",
+          "start_book_page": 10,
+          "end_book_page": 12,
+          "start_pdf_page": 85,
+          "end_pdf_page": 87,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 4,
+          "subsection_code": "2D",
+          "start_book_page": 13,
+          "end_book_page": 16,
+          "start_pdf_page": 88,
+          "end_pdf_page": 91,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 5,
+          "subsection_code": "2E",
+          "start_book_page": 17,
+          "end_book_page": 23,
+          "start_pdf_page": 92,
+          "end_pdf_page": 98,
+          "range_source": "practice_exercise_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "chapter_name": "Sources of Energy",
+      "book_page": 1,
+      "book_page_label": "3/1",
+      "start_pdf_page": 126,
+      "end_pdf_page": 156,
+      "days": [
+        {
+          "day": 1,
+          "subsection_code": "3A",
+          "start_book_page": 1,
+          "end_book_page": 4,
+          "start_pdf_page": 126,
+          "end_pdf_page": 129,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 2,
+          "subsection_code": "3B",
+          "start_book_page": 5,
+          "end_book_page": 8,
+          "start_pdf_page": 130,
+          "end_pdf_page": 133,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 3,
+          "subsection_code": "3C",
+          "start_book_page": 9,
+          "end_book_page": 13,
+          "start_pdf_page": 134,
+          "end_pdf_page": 138,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 4,
+          "subsection_code": "3D",
+          "start_book_page": 14,
+          "end_book_page": 15,
+          "start_pdf_page": 139,
+          "end_pdf_page": 140,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 5,
+          "subsection_code": "3E",
+          "start_book_page": 16,
+          "end_book_page": 20,
+          "start_pdf_page": 141,
+          "end_pdf_page": 145,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 6,
+          "subsection_code": "3F",
+          "start_book_page": 21,
+          "end_book_page": 24,
+          "start_pdf_page": 146,
+          "end_pdf_page": 149,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 7,
+          "subsection_code": "3G",
+          "start_book_page": 25,
+          "end_book_page": 31,
+          "start_pdf_page": 150,
+          "end_pdf_page": 156,
+          "range_source": "practice_exercise_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "chapter_name": "Reflection and Refraction",
+      "book_page": 1,
+      "book_page_label": "4/1",
+      "start_pdf_page": 176,
+      "end_pdf_page": 217,
+      "days": [
+        {
+          "day": 1,
+          "subsection_code": "4A",
+          "start_book_page": 1,
+          "end_book_page": 5,
+          "start_pdf_page": 176,
+          "end_pdf_page": 180,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 2,
+          "subsection_code": "4B",
+          "start_book_page": 6,
+          "end_book_page": 9,
+          "start_pdf_page": 181,
+          "end_pdf_page": 184,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 3,
+          "subsection_code": "4C",
+          "start_book_page": 10,
+          "end_book_page": 28,
+          "start_pdf_page": 185,
+          "end_pdf_page": 203,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 4,
+          "subsection_code": "4D",
+          "start_book_page": 29,
+          "end_book_page": 42,
+          "start_pdf_page": 204,
+          "end_pdf_page": 217,
+          "range_source": "practice_exercise_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "book_page": 1,
+      "book_page_label": "5/1",
+      "start_pdf_page": 252,
+      "end_pdf_page": 264,
+      "days": [
+        {
+          "day": 1,
+          "subsection_code": "5A",
+          "start_book_page": 1,
+          "end_book_page": 6,
+          "start_pdf_page": 252,
+          "end_pdf_page": 257,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 2,
+          "subsection_code": "5B",
+          "start_book_page": 7,
+          "end_book_page": 10,
+          "start_pdf_page": 258,
+          "end_pdf_page": 261,
+          "range_source": "practice_exercise_static_json"
+        },
+        {
+          "day": 3,
+          "subsection_code": "5C",
+          "start_book_page": 11,
+          "end_book_page": 13,
+          "start_pdf_page": 262,
+          "end_pdf_page": 264,
+          "range_source": "practice_exercise_static_json"
+        }
+      ]
+    }
+  ]
+}

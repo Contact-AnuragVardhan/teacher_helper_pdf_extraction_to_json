@@ -1,0 +1,1324 @@
+{
+  "documentId": "maths-rsaggarwal-class-7-bharati-bhawan-2023",
+  "document_key": "mother-miracle-class-7-maths-rsaggarwal",
+  "book_name": "maths_rsaggarwal_class7",
+  "book_title": "Mathematics for Class 7",
+  "grade": 7,
+  "subject": "Maths",
+  "publisher": "Bharati Bhawan",
+  "author": "R S Aggarwal",
+  "structure_type": "chapters",
+  "pdf_offset": 7,
+  "pdf_page_count": 325,
+  "content_start_pdf_page": 8,
+  "content_end_pdf_page": 307,
+  "answers_start_pdf_page": 308,
+  "answers_end_pdf_page": 325,
+  "subsection_policy": "exercise_aligned_day_ranges_read_from_json_file",
+  "day_split_policy": {
+    "primary_rule": "Each teaching day runs from the start of a teaching section through the exercise that follows it.",
+    "consecutive_exercise_rule": "If an exercise is immediately followed by another exercise/objective exercise/review/test without new teaching text, keep it in the same day as the previous exercise.",
+    "activity_rule": "The Activities chapter is split one activity per day.",
+    "boundary_page_rule": "Some pages contain the end of one exercise and the start of the next teaching section; those days intentionally share the boundary PDF page and the anchors/included topics define the exact slice."
+  },
+  "validation_summary": {
+    "chapters": 24,
+    "day_ranges": 64,
+    "errors": [],
+    "has_boundary_page_overlaps": true
+  },
+  "chapters": [
+    {
+      "sequence": 1,
+      "chapter_number": 1,
+      "chapter_name": "Integers",
+      "book_page": 1,
+      "start_book_page": 1,
+      "end_book_page": 15,
+      "start_pdf_page": 8,
+      "end_pdf_page": 22,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Integers: introduction, addition and subtraction",
+          "start_book_page": 1,
+          "end_book_page": 5,
+          "start_pdf_page": 8,
+          "end_pdf_page": 12,
+          "includes": "Chapter opening through end of Exercise 1A; includes natural/whole numbers, integers, addition and subtraction of integers.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "1A"
+          ],
+          "note": "Boundary page also starts the next topic after Exercise 1A; use anchors if exact text slicing is required.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Integers: multiplication",
+          "start_book_page": 5,
+          "end_book_page": 10,
+          "start_pdf_page": 12,
+          "end_pdf_page": 17,
+          "includes": "After Exercise 1A through end of Exercise 1B; includes multiplication rules, properties, examples and Exercise 1B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "1B"
+          ],
+          "note": "Starts on shared boundary page because multiplication begins on the same page where Exercise 1A ends.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 3,
+          "day_title": "Integers: division and review",
+          "start_book_page": 10,
+          "end_book_page": 15,
+          "start_pdf_page": 17,
+          "end_pdf_page": 22,
+          "includes": "After Exercise 1B through chapter end; includes division of integers, Exercises 1C and 1D, Things to Remember and Test Paper 1.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "1C",
+            "1D"
+          ],
+          "note": "Exercises 1C and 1D are grouped because Exercise 1D follows 1C without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "chapter_number": 2,
+      "chapter_name": "Fractions",
+      "book_page": 16,
+      "start_book_page": 16,
+      "end_book_page": 35,
+      "start_pdf_page": 23,
+      "end_pdf_page": 42,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Fractions: types, comparison, addition and subtraction",
+          "start_book_page": 16,
+          "end_book_page": 22,
+          "start_pdf_page": 23,
+          "end_pdf_page": 29,
+          "includes": "Chapter opening through end of Exercise 2A; includes fraction types, equivalent/like/unlike fractions, comparison, addition and subtraction.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "2A"
+          ],
+          "note": "Boundary page also starts multiplication of fractions after Exercise 2A.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Fractions: multiplication",
+          "start_book_page": 22,
+          "end_book_page": 27,
+          "start_pdf_page": 29,
+          "end_pdf_page": 34,
+          "includes": "After Exercise 2A through end of Exercise 2B; includes product of fractions, use of “of”, applications and Exercise 2B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "2B"
+          ],
+          "note": "Starts on shared boundary page because multiplication begins on the same page where Exercise 2A ends.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 3,
+          "day_title": "Fractions: division and review",
+          "start_book_page": 27,
+          "end_book_page": 35,
+          "start_pdf_page": 34,
+          "end_pdf_page": 42,
+          "includes": "After Exercise 2B through chapter end; includes reciprocal, division of fractions, Exercises 2C and 2D, Things to Remember and Test Paper 2.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "2C",
+            "2D"
+          ],
+          "note": "Exercises 2C and 2D are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "chapter_number": 3,
+      "chapter_name": "Decimals",
+      "book_page": 36,
+      "start_book_page": 36,
+      "end_book_page": 53,
+      "start_pdf_page": 43,
+      "end_pdf_page": 60,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Decimals: place value, comparison and conversion",
+          "start_book_page": 36,
+          "end_book_page": 39,
+          "start_pdf_page": 43,
+          "end_pdf_page": 46,
+          "includes": "Chapter opening through end of Exercise 3A; includes decimal notation, like/unlike decimals, comparison and conversion.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "3A"
+          ],
+          "note": "Boundary page also starts addition and subtraction after Exercise 3A.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Decimals: addition and subtraction",
+          "start_book_page": 39,
+          "end_book_page": 41,
+          "start_pdf_page": 46,
+          "end_pdf_page": 48,
+          "includes": "After Exercise 3A through end of Exercise 3B; includes addition/subtraction methods and Exercise 3B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "3B"
+          ],
+          "note": "Starts on shared boundary page because addition/subtraction begins after Exercise 3A on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 3,
+          "day_title": "Decimals: multiplication",
+          "start_book_page": 41,
+          "end_book_page": 44,
+          "start_pdf_page": 48,
+          "end_pdf_page": 51,
+          "includes": "After Exercise 3B through end of Exercise 3C; includes multiplication by powers of 10, whole numbers and decimals.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "3C"
+          ],
+          "note": "Starts on shared boundary page because multiplication begins after Exercise 3B on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 4,
+          "day_title": "Decimals: division and review",
+          "start_book_page": 44,
+          "end_book_page": 53,
+          "start_pdf_page": 51,
+          "end_pdf_page": 60,
+          "includes": "After Exercise 3C through chapter end; includes division of decimals, Exercises 3D and 3E, Things to Remember and Test Paper 3.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "3D",
+            "3E"
+          ],
+          "note": "Exercises 3D and 3E are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "chapter_number": 4,
+      "chapter_name": "Rational Numbers",
+      "book_page": 54,
+      "start_book_page": 54,
+      "end_book_page": 83,
+      "start_pdf_page": 61,
+      "end_pdf_page": 90,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Rational numbers: definitions and equivalent forms",
+          "start_book_page": 54,
+          "end_book_page": 61,
+          "start_pdf_page": 61,
+          "end_pdf_page": 68,
+          "includes": "Chapter opening through end of Exercise 4A; includes natural/whole/integer/fraction review, rational numbers, equivalent rational numbers and standard form.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Rational numbers: number line and comparison",
+          "start_book_page": 62,
+          "end_book_page": 67,
+          "start_pdf_page": 69,
+          "end_pdf_page": 74,
+          "includes": "Representation on the number line and comparison through end of Exercise 4B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4B"
+          ],
+          "note": "Starts after Exercise 4A; no overlap needed because the next teaching section starts on a later page.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 3,
+          "day_title": "Rational numbers: addition",
+          "start_book_page": 67,
+          "end_book_page": 70,
+          "start_pdf_page": 74,
+          "end_pdf_page": 77,
+          "includes": "Addition of rational numbers through end of Exercise 4C.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4C"
+          ],
+          "note": "Starts on shared boundary page because addition begins after Exercise 4B on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 4,
+          "day_title": "Rational numbers: subtraction",
+          "start_book_page": 70,
+          "end_book_page": 73,
+          "start_pdf_page": 77,
+          "end_pdf_page": 80,
+          "includes": "Subtraction and additive inverse through end of Exercise 4D.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4D"
+          ],
+          "note": "Starts on shared boundary page because subtraction begins after Exercise 4C on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 5,
+          "day_title": "Rational numbers: multiplication",
+          "start_book_page": 73,
+          "end_book_page": 76,
+          "start_pdf_page": 80,
+          "end_pdf_page": 83,
+          "includes": "Multiplication and multiplicative inverse concepts through end of Exercise 4E.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4E"
+          ],
+          "note": "Starts on shared boundary page because multiplication begins after Exercise 4D on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 6,
+          "day_title": "Rational numbers: division and review",
+          "start_book_page": 76,
+          "end_book_page": 83,
+          "start_pdf_page": 83,
+          "end_pdf_page": 90,
+          "includes": "Division of rational numbers, Exercises 4F and 4G, Things to Remember and Test Paper 4.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "4F",
+            "4G"
+          ],
+          "note": "Exercises 4F and 4G are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "chapter_number": 5,
+      "chapter_name": "Exponents",
+      "book_page": 84,
+      "start_book_page": 84,
+      "end_book_page": 96,
+      "start_pdf_page": 91,
+      "end_pdf_page": 103,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Exponents: laws of exponents",
+          "start_book_page": 84,
+          "end_book_page": 91,
+          "start_pdf_page": 91,
+          "end_pdf_page": 98,
+          "includes": "Chapter opening through end of Exercise 5A; includes powers, base/exponent and laws of exponents.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "5A"
+          ],
+          "note": "Boundary page also starts standard form after Exercise 5A.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Exponents: standard form and review",
+          "start_book_page": 91,
+          "end_book_page": 96,
+          "start_pdf_page": 98,
+          "end_pdf_page": 103,
+          "includes": "After Exercise 5A through chapter end; includes standard form, Exercises 5B and 5C, Things to Remember and Test Paper 5.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "5B",
+            "5C"
+          ],
+          "note": "Exercises 5B and 5C are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "chapter_number": 6,
+      "chapter_name": "Algebraic Expressions",
+      "book_page": 97,
+      "start_book_page": 97,
+      "end_book_page": 106,
+      "start_pdf_page": 104,
+      "end_pdf_page": 113,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Algebraic expressions: terms, like terms, addition and subtraction",
+          "start_book_page": 97,
+          "end_book_page": 101,
+          "start_pdf_page": 104,
+          "end_pdf_page": 108,
+          "includes": "Chapter opening through end of Exercise 6A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "6A"
+          ],
+          "note": "Boundary page also starts multiplication after Exercise 6A.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Algebraic expressions: multiplication of monomials",
+          "start_book_page": 101,
+          "end_book_page": 103,
+          "start_pdf_page": 108,
+          "end_pdf_page": 110,
+          "includes": "After Exercise 6A through end of Exercise 6B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "6B"
+          ],
+          "note": "Starts on shared boundary page because multiplication begins after Exercise 6A on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 3,
+          "day_title": "Algebraic expressions: monomial by polynomial",
+          "start_book_page": 103,
+          "end_book_page": 105,
+          "start_pdf_page": 110,
+          "end_pdf_page": 112,
+          "includes": "After Exercise 6B through end of Exercise 6C.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "6C"
+          ],
+          "note": "Starts on shared boundary page because the next multiplication section begins after Exercise 6B on the same page.",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 4,
+          "day_title": "Algebraic expressions: polynomial products",
+          "start_book_page": 105,
+          "end_book_page": 106,
+          "start_pdf_page": 112,
+          "end_pdf_page": 113,
+          "includes": "After Exercise 6C through chapter end; includes Exercise 6D.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "6D"
+          ],
+          "note": "Starts on shared boundary page because the final product section begins after Exercise 6C on the same page.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "chapter_number": 7,
+      "chapter_name": "Linear Equations in One Variable",
+      "book_page": 107,
+      "start_book_page": 107,
+      "end_book_page": 118,
+      "start_pdf_page": 114,
+      "end_pdf_page": 125,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Linear equations: solving equations",
+          "start_book_page": 107,
+          "end_book_page": 113,
+          "start_pdf_page": 114,
+          "end_pdf_page": 120,
+          "includes": "Chapter opening through end of Exercise 7A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "7A"
+          ],
+          "note": "Boundary page also starts word problems after Exercise 7A.",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Linear equations: word problems and review",
+          "start_book_page": 113,
+          "end_book_page": 118,
+          "start_pdf_page": 120,
+          "end_pdf_page": 125,
+          "includes": "After Exercise 7A through chapter end; includes Exercise 7B, Exercise 7C and Test Paper 7.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "7B",
+            "7C"
+          ],
+          "note": "Exercise 7C is grouped with Exercise 7B because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": true
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "chapter_number": 8,
+      "chapter_name": "Ratio and Proportion",
+      "book_page": 119,
+      "start_book_page": 119,
+      "end_book_page": 131,
+      "start_pdf_page": 126,
+      "end_pdf_page": 138,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Ratio: definitions, equivalent ratios and comparison",
+          "start_book_page": 119,
+          "end_book_page": 125,
+          "start_pdf_page": 126,
+          "end_pdf_page": 132,
+          "includes": "Chapter opening through end of Exercise 8A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "8A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Proportion and review",
+          "start_book_page": 126,
+          "end_book_page": 131,
+          "start_pdf_page": 133,
+          "end_pdf_page": 138,
+          "includes": "Proportion concepts through chapter end; includes Exercises 8B and 8C and Test Paper 8.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "8B",
+            "8C"
+          ],
+          "note": "Exercises 8B and 8C are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "chapter_number": 9,
+      "chapter_name": "Unitary Method",
+      "book_page": 132,
+      "start_book_page": 132,
+      "end_book_page": 137,
+      "start_pdf_page": 139,
+      "end_pdf_page": 144,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Unitary method: direct variation",
+          "start_book_page": 132,
+          "end_book_page": 133,
+          "start_pdf_page": 139,
+          "end_pdf_page": 140,
+          "includes": "Chapter opening through end of Exercise 9A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "9A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Unitary method: inverse variation and review",
+          "start_book_page": 134,
+          "end_book_page": 137,
+          "start_pdf_page": 141,
+          "end_pdf_page": 144,
+          "includes": "Inverse variation through chapter end; includes Exercises 9B and 9C and Test Paper 9.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "9B",
+            "9C"
+          ],
+          "note": "Exercise 9C is grouped with 9B because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "chapter_number": 10,
+      "chapter_name": "Percentage",
+      "book_page": 138,
+      "start_book_page": 138,
+      "end_book_page": 151,
+      "start_pdf_page": 145,
+      "end_pdf_page": 158,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Percentage: conversion basics",
+          "start_book_page": 138,
+          "end_book_page": 142,
+          "start_pdf_page": 145,
+          "end_pdf_page": 149,
+          "includes": "Chapter opening through end of Exercise 10A; includes per cent, fractions to percentages, percentages to fractions, ratios and decimals.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "10A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Percentage: word problems and review",
+          "start_book_page": 143,
+          "end_book_page": 151,
+          "start_pdf_page": 150,
+          "end_pdf_page": 158,
+          "includes": "Word problems on percentage through chapter end; includes Exercises 10B and 10C and Test Paper 10.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "10B",
+            "10C"
+          ],
+          "note": "Exercise 10C is grouped with 10B because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 11,
+      "chapter_number": 11,
+      "chapter_name": "Profit and Loss",
+      "book_page": 152,
+      "start_book_page": 152,
+      "end_book_page": 160,
+      "start_pdf_page": 159,
+      "end_pdf_page": 167,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Profit and loss",
+          "start_book_page": 152,
+          "end_book_page": 160,
+          "start_pdf_page": 159,
+          "end_pdf_page": 167,
+          "includes": "Entire chapter; includes terms, solved examples, Exercises 11A and 11B and Test Paper 11.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "11A",
+            "11B"
+          ],
+          "note": "Exercises 11A and 11B are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 12,
+      "chapter_number": 12,
+      "chapter_name": "Simple Interest",
+      "book_page": 161,
+      "start_book_page": 161,
+      "end_book_page": 168,
+      "start_pdf_page": 168,
+      "end_pdf_page": 175,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Simple interest",
+          "start_book_page": 161,
+          "end_book_page": 168,
+          "start_pdf_page": 168,
+          "end_pdf_page": 175,
+          "includes": "Entire chapter; includes interest concepts, formula use, Exercises 12A and 12B and Test Paper 12.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "12A",
+            "12B"
+          ],
+          "note": "Exercises 12A and 12B are grouped because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 13,
+      "chapter_number": 13,
+      "chapter_name": "Lines and Angles",
+      "book_page": 169,
+      "start_book_page": 169,
+      "end_book_page": 173,
+      "start_pdf_page": 176,
+      "end_pdf_page": 180,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Lines and angles",
+          "start_book_page": 169,
+          "end_book_page": 173,
+          "start_pdf_page": 176,
+          "end_pdf_page": 180,
+          "includes": "Entire chapter; includes supplementary/complementary angles, adjacent angles, linear pairs, vertically opposite angles and Exercise 13.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "13"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 14,
+      "chapter_number": 14,
+      "chapter_name": "Properties of Parallel Lines",
+      "book_page": 174,
+      "start_book_page": 174,
+      "end_book_page": 180,
+      "start_pdf_page": 181,
+      "end_pdf_page": 187,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Properties of parallel lines",
+          "start_book_page": 174,
+          "end_book_page": 180,
+          "start_pdf_page": 181,
+          "end_pdf_page": 187,
+          "includes": "Entire chapter; includes transversals, corresponding/alternate/interior angles and Exercise 14.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "14"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 15,
+      "chapter_number": 15,
+      "chapter_name": "Properties of Triangles",
+      "book_page": 181,
+      "start_book_page": 181,
+      "end_book_page": 194,
+      "start_pdf_page": 188,
+      "end_pdf_page": 201,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Triangles: types and angle sum property",
+          "start_book_page": 181,
+          "end_book_page": 183,
+          "start_pdf_page": 188,
+          "end_pdf_page": 190,
+          "includes": "Chapter opening through end of Exercise 15A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "15A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Triangles: exterior angle property",
+          "start_book_page": 184,
+          "end_book_page": 186,
+          "start_pdf_page": 191,
+          "end_pdf_page": 193,
+          "includes": "Exterior and interior opposite angles through end of Exercise 15B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "15B"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 3,
+          "day_title": "Triangles: triangle inequality",
+          "start_book_page": 187,
+          "end_book_page": 188,
+          "start_pdf_page": 194,
+          "end_pdf_page": 195,
+          "includes": "Triangle inequality through end of Exercise 15C.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "15C"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 4,
+          "day_title": "Triangles: Pythagoras theorem and review",
+          "start_book_page": 189,
+          "end_book_page": 194,
+          "start_pdf_page": 196,
+          "end_pdf_page": 201,
+          "includes": "Pythagoras theorem through chapter end; includes Exercise 15D and Things to Remember.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "15D"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 16,
+      "chapter_number": 16,
+      "chapter_name": "Congruence",
+      "book_page": 195,
+      "start_book_page": 195,
+      "end_book_page": 203,
+      "start_pdf_page": 202,
+      "end_pdf_page": 210,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Congruence",
+          "start_book_page": 195,
+          "end_book_page": 203,
+          "start_pdf_page": 202,
+          "end_pdf_page": 210,
+          "includes": "Entire chapter; includes congruent figures, congruence of triangles, illustrative examples, Exercise 16 and Things to Remember.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "16"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 17,
+      "chapter_number": 17,
+      "chapter_name": "Constructions",
+      "book_page": 204,
+      "start_book_page": 204,
+      "end_book_page": 213,
+      "start_pdf_page": 211,
+      "end_pdf_page": 220,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Constructions: parallel lines",
+          "start_book_page": 204,
+          "end_book_page": 204,
+          "start_pdf_page": 211,
+          "end_pdf_page": 211,
+          "includes": "Construction of parallel lines through end of Exercise 17A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "17A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Constructions: triangles and review",
+          "start_book_page": 205,
+          "end_book_page": 213,
+          "start_pdf_page": 212,
+          "end_pdf_page": 220,
+          "includes": "Construction of triangles through chapter end; includes Exercises 17B and 17C and Test Paper 17.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "17B",
+            "17C"
+          ],
+          "note": "Exercise 17C is grouped with 17B because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 18,
+      "chapter_number": 18,
+      "chapter_name": "Reflection and Rotational Symmetry",
+      "book_page": 214,
+      "start_book_page": 214,
+      "end_book_page": 220,
+      "start_pdf_page": 221,
+      "end_pdf_page": 227,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Reflection symmetry",
+          "start_book_page": 214,
+          "end_book_page": 216,
+          "start_pdf_page": 221,
+          "end_pdf_page": 223,
+          "includes": "Reflection symmetry through end of Exercise 18A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "18A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Rotational symmetry",
+          "start_book_page": 217,
+          "end_book_page": 220,
+          "start_pdf_page": 224,
+          "end_pdf_page": 227,
+          "includes": "Rotational symmetry and figures with line and rotational symmetry through end of Exercise 18B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "18B"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 19,
+      "chapter_number": 19,
+      "chapter_name": "Three-Dimensional Shapes",
+      "book_page": 221,
+      "start_book_page": 221,
+      "end_book_page": 224,
+      "start_pdf_page": 228,
+      "end_pdf_page": 231,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Three-dimensional shapes",
+          "start_book_page": 221,
+          "end_book_page": 224,
+          "start_pdf_page": 228,
+          "end_pdf_page": 231,
+          "includes": "Entire chapter; includes solid shapes, faces/edges/vertices/nets and Exercise 19.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "19"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 20,
+      "chapter_number": 20,
+      "chapter_name": "Mensuration",
+      "book_page": 225,
+      "start_book_page": 225,
+      "end_book_page": 258,
+      "start_pdf_page": 232,
+      "end_pdf_page": 265,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Mensuration: rectangles and squares",
+          "start_book_page": 225,
+          "end_book_page": 229,
+          "start_pdf_page": 232,
+          "end_pdf_page": 236,
+          "includes": "Areas of rectilinear figures, rectangles, squares and walls through end of Exercise 20A.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Mensuration: area between rectangles",
+          "start_book_page": 230,
+          "end_book_page": 234,
+          "start_pdf_page": 237,
+          "end_pdf_page": 241,
+          "includes": "Area between rectangles through end of Exercise 20B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20B"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 3,
+          "day_title": "Mensuration: parallelograms and rhombuses",
+          "start_book_page": 235,
+          "end_book_page": 237,
+          "start_pdf_page": 242,
+          "end_pdf_page": 244,
+          "includes": "Areas of parallelograms and rhombuses through end of Exercise 20C.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20C"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 4,
+          "day_title": "Mensuration: triangles",
+          "start_book_page": 238,
+          "end_book_page": 243,
+          "start_pdf_page": 245,
+          "end_pdf_page": 250,
+          "includes": "Areas of triangles through end of Exercise 20D.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20D"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 5,
+          "day_title": "Mensuration: circumference of a circle",
+          "start_book_page": 244,
+          "end_book_page": 247,
+          "start_pdf_page": 251,
+          "end_pdf_page": 254,
+          "includes": "Circumference of a circle through end of Exercise 20E.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20E"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 6,
+          "day_title": "Mensuration: area of a circle and review",
+          "start_book_page": 248,
+          "end_book_page": 258,
+          "start_pdf_page": 255,
+          "end_pdf_page": 265,
+          "includes": "Area of a circle through chapter end; includes Exercises 20F and 20G and Test Paper 20.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "20F",
+            "20G"
+          ],
+          "note": "Exercise 20G is grouped with 20F because the objective exercise follows without a new teaching section.",
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 21,
+      "chapter_number": 21,
+      "chapter_name": "Collection and Organisation of Data (Mean, Median and Mode)",
+      "book_page": 259,
+      "start_book_page": 259,
+      "end_book_page": 269,
+      "start_pdf_page": 266,
+      "end_pdf_page": 276,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Data handling: data, organisation and mean",
+          "start_book_page": 259,
+          "end_book_page": 263,
+          "start_pdf_page": 266,
+          "end_pdf_page": 270,
+          "includes": "Chapter opening through end of Exercise 21A; includes raw data, tabulation, statistics and mean.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "21A"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Data handling: median",
+          "start_book_page": 264,
+          "end_book_page": 266,
+          "start_pdf_page": 271,
+          "end_pdf_page": 273,
+          "includes": "Median of ungrouped data and discrete series through end of Exercise 21B.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "21B"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 3,
+          "day_title": "Data handling: mode",
+          "start_book_page": 267,
+          "end_book_page": 269,
+          "start_pdf_page": 274,
+          "end_pdf_page": 276,
+          "includes": "Mode of ungrouped data and empirical formula through end of Exercise 21C.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "21C"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 22,
+      "chapter_number": 22,
+      "chapter_name": "Bar Graphs",
+      "book_page": 270,
+      "start_book_page": 270,
+      "end_book_page": 280,
+      "start_pdf_page": 277,
+      "end_pdf_page": 287,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Bar graphs",
+          "start_book_page": 270,
+          "end_book_page": 280,
+          "start_pdf_page": 277,
+          "end_pdf_page": 287,
+          "includes": "Entire chapter; includes bar graphs, drawing bar graphs, double bar graphs and Exercise 22.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "22"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 23,
+      "chapter_number": 23,
+      "chapter_name": "Probability",
+      "book_page": 281,
+      "start_book_page": 281,
+      "end_book_page": 283,
+      "start_pdf_page": 288,
+      "end_pdf_page": 290,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Probability",
+          "start_book_page": 281,
+          "end_book_page": 283,
+          "start_pdf_page": 288,
+          "end_pdf_page": 290,
+          "includes": "Entire chapter; includes probability terms, empirical probability and Exercise 23.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "teaching_with_exercise",
+          "exercises": [
+            "23"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    },
+    {
+      "sequence": 24,
+      "chapter_number": 24,
+      "chapter_name": "Activities",
+      "book_page": 284,
+      "start_book_page": 284,
+      "end_book_page": 300,
+      "start_pdf_page": 291,
+      "end_pdf_page": 307,
+      "days": [
+        {
+          "day": 1,
+          "day_title": "Activity 1: decimal multiplication on grid paper",
+          "start_book_page": 284,
+          "end_book_page": 285,
+          "start_pdf_page": 291,
+          "end_pdf_page": 292,
+          "includes": "Activity 1: represent products of decimal numbers on grid paper.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 1"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Activity 2: compare marks using a bar graph",
+          "start_book_page": 286,
+          "end_book_page": 287,
+          "start_pdf_page": 293,
+          "end_pdf_page": 294,
+          "includes": "Activity 2: compare marks from first and second term examinations using a bar graph.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 2"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 3,
+          "day_title": "Activity 3: vertically opposite angles",
+          "start_book_page": 288,
+          "end_book_page": 288,
+          "start_pdf_page": 295,
+          "end_pdf_page": 295,
+          "includes": "Activity 3: verify that vertically opposite angles are equal.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 3"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 4,
+          "day_title": "Activity 4: parallel lines and transversal",
+          "start_book_page": 289,
+          "end_book_page": 290,
+          "start_pdf_page": 296,
+          "end_pdf_page": 297,
+          "includes": "Activity 4: verify angle relationships when parallel lines are cut by a transversal.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 4"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 5,
+          "day_title": "Activity 5: medians and altitudes of a triangle",
+          "start_book_page": 291,
+          "end_book_page": 292,
+          "start_pdf_page": 298,
+          "end_pdf_page": 299,
+          "includes": "Activity 5: verify concurrence of medians and altitudes in triangles.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 5"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 6,
+          "day_title": "Activity 6: triangle angle properties",
+          "start_book_page": 293,
+          "end_book_page": 294,
+          "start_pdf_page": 300,
+          "end_pdf_page": 301,
+          "includes": "Activity 6: verify angle sum and exterior angle properties of a triangle.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 6"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 7,
+          "day_title": "Activity 7: triangle inequality",
+          "start_book_page": 295,
+          "end_book_page": 296,
+          "start_pdf_page": 302,
+          "end_pdf_page": 303,
+          "includes": "Activity 7: verify triangle inequality using sticks.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 7"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 8,
+          "day_title": "Activity 8: Pythagoras theorem",
+          "start_book_page": 297,
+          "end_book_page": 298,
+          "start_pdf_page": 304,
+          "end_pdf_page": 305,
+          "includes": "Activity 8: verify Pythagoras theorem.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 8"
+          ],
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 9,
+          "day_title": "Activity 9: cube and cuboid sketches",
+          "start_book_page": 299,
+          "end_book_page": 300,
+          "start_pdf_page": 306,
+          "end_pdf_page": 307,
+          "includes": "Activity 9: draw cube/cuboid on isometric dot paper and make oblique sketches.",
+          "range_source": "manual_review_from_pdf_toc_and_exercise_headings",
+          "day_type": "activity",
+          "exercises": [
+            "Activity 9"
+          ],
+          "boundary_overlap_with_previous_day": false
+        }
+      ]
+    }
+  ],
+  "_update_note": "Created from Maths_RSAgarwal.pdf using the same static day-range style as the provided Poorvi JSON. Ranges are aligned to chapter TOC pages and exercise headings; consecutive exercise-only sections are grouped into the previous teaching day."
+}
