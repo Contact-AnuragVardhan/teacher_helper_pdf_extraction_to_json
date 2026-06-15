@@ -10,7 +10,10 @@ Corrections file schema:
   "discard_review_ids": [
     "p015_l004"
   ],
-  "global_replacements": [{"bad":"...", "good":"..."}]
+  "global_replacements": [{"bad":"...", "good":"..."}],
+  "page_overrides": {
+    "197": "Exact visually reviewed full production text for this PDF page"
+  }
 }
 
 Use discard_review_ids only for visually reviewed non-content, duplicated crop fragments,
@@ -33,7 +36,25 @@ from physics_common import (
 
 def build_step3_json(input_json: Path, corrections_json: Path | None, review_queue_output: Path | None = None, placeholder_unreviewed: bool = False) -> tuple[dict[str, Any], str, dict[str, Any]]:
     data = read_json(input_json)
-    corrections = read_json(corrections_json) if corrections_json and corrections_json.exists() else {"reviewed_blocks": {}, "global_replacements": []}
+    corrections = read_json(corrections_json) if corrections_json and corrections_json.exists() else {"reviewed_blocks": {}, "global_replacements": [], "page_overrides": {}}
+    raw_page_overrides = (
+        corrections.get("page_overrides")
+        or corrections.get("production_page_overrides")
+        or corrections.get("page_text_overrides")
+        or {}
+    )
+    page_overrides: dict[str, str] = {}
+    if isinstance(raw_page_overrides, dict):
+        for k, v in raw_page_overrides.items():
+            key = str(k).strip().lower()
+            if key.startswith("p"):
+                key = key[1:]
+            if isinstance(v, dict):
+                override_text = v.get("text") or v.get("production_safe_text") or v.get("reviewed_text") or ""
+            else:
+                override_text = v
+            if key and str(override_text).strip():
+                page_overrides[key] = str(override_text).strip()
     raw_reviewed_blocks = corrections.get("reviewed_blocks") or {}
     reviewed_blocks: dict[str, str] = {}
     for k, v in raw_reviewed_blocks.items():
@@ -74,6 +95,16 @@ def build_step3_json(input_json: Path, corrections_json: Path | None, review_que
             discard_review_ids=discard_review_ids,
             placeholder_unreviewed=placeholder_unreviewed,
         )
+        page_override_key = str(page.get("page_number") or "").strip()
+        if page_override_key in page_overrides:
+            # Page overrides are for visually reviewed pages where the PDF layout/table/formula
+            # OCR produced many individually-safe but collectively corrupted lines. This keeps
+            # raw/selectable/layout audit fields intact while replacing only production-facing text.
+            text = apply_safe_global_replacements(page_overrides[page_override_key], global_replacements).strip()
+            unresolved = []
+            safe_used = len([ln for ln in text.splitlines() if ln.strip()])
+            reviewed_used += 1
+            stats["page_text_overrides_applied"] += 1
         resolved_ids = set(corrected_blocks.keys())
         for item in line_items:
             if item.get("type") == "review_required":
@@ -106,6 +137,8 @@ def build_step3_json(input_json: Path, corrections_json: Path | None, review_que
             stats["unresolved_review_items"] += len(unresolved)
         if reviewed_used:
             page["quality_flags"].append("curated_formula_or_diagram_text_applied")
+            if page_override_key in page_overrides:
+                page["quality_flags"].append("visually_reviewed_page_text_override_applied")
             stats["pages_with_reviewed_items"] += 1
             stats["reviewed_items_applied"] += reviewed_used
         if discarded_review_used:
@@ -124,6 +157,8 @@ def build_step3_json(input_json: Path, corrections_json: Path | None, review_que
             "page_extractions": len(page_extractions),
             "reviewed_blocks_in_corrections_json": len(reviewed_blocks),
             "discard_review_ids_in_corrections_json": len(discard_review_ids),
+            "page_text_overrides_in_corrections_json": len(page_overrides),
+            "page_text_overrides_applied": stats.get("page_text_overrides_applied", 0),
             "reviewed_items_applied": stats.get("reviewed_items_applied", 0),
             "discarded_review_items_applied": stats.get("discarded_review_items_applied", 0),
             "unresolved_review_items": stats.get("unresolved_review_items", 0),

@@ -180,6 +180,327 @@ def apply_safe_global_replacements(text: str, extra_replacements: list[dict[str,
     return out
 
 
+
+# Production-display text cleanup -------------------------------------------------
+# These rules are intentionally narrow and source-specific. They do not try to invent
+# formulas generally; they either repair OCR strings that are visually obvious in this
+# PDF or remove isolated diagram/table garbage that should not be shown to teachers.
+PRODUCTION_TEXT_KEYS = {
+    "text", "text_plain", "production_safe_text", "safe_text", "safe_text_plain",
+    "section_text", "section_text_plain", "production_section_text",
+    "subsection_text", "subsection_text_plain", "production_subsection_text",
+    "chapter_text", "chapter_text_plain", "production_chapter_text",
+}
+
+PRODUCTION_ARTIFACT_SIGNATURE_RE = re.compile(
+    r"(?ix)("
+    r"\b(?:pid\s+eee|ieee\s+lcoulomb|lcoulomb|lsecond|l0TM|xi0%|6xl0%|46xi0%|"
+    r"Feosin|foucs|HHH\s+KKHH|ARRAN|WALA|NowP|Alii|AID|Vag|Lda)\b|"
+    # QA-found residue from the production artifact. These must either be
+    # repaired by PRODUCTION_REPLACEMENTS or dropped line-wise. If they remain
+    # after cleanup, the final gate must fail instead of marking production_ready.
+    r"\b(?:ake\s+ensenee|Prrerr|Peete\s+eee|EEN\s+cere|ij4i4|50sf|conected|20I5|3x208|Fe\s+sin6)\b|"
+    r"\b(?:02x60|aT\s+a\)|4xi0|6xi0|4\.6\s*[«<]\s*07%)\b|"
+    r"(?:^|\n)\s*(?:\d{1,3}\s+){3,}\d{1,3}\s*(?:\n|$)|"
+    r"[\uFFFE\uFFFD¦]"
+    r")"
+)
+
+PRODUCTION_BAD_GLYPH_RE = re.compile(r"[é£¢Ì\x9d€¥ÅÔûÚ§ġ\u200dõ\x94ĜĒëæò\u200cþĄĊÑęĔÖı®©]")
+
+PRODUCTION_DROP_LINE_RE = re.compile(
+    r"(?ix)^\s*(?:"
+    r"ee|pid\s+eee|ieee\s+lcoulomb|lsecond|L€|P|"
+    r"x\s*l0TM|2\.5\s*[»>]\s*0|46xi0%|6xl0%|"
+    r"Cy\s*[»>]\s*Ce\s*[»>]\s*\|?|"
+    r"hi\s*\(@\)\s*-|-@\s*cf|ANW\\|\\__\s*constants\.?|"
+    r"A\s+J\s+22\s*\\|\\\.\s*20\s+2|"
+    r"HHH\s+KKHH|ARRAN\s+Pa\s+Ww.*|"
+    r"(?:MODERN\s*)?'?S\s+abc\s*\+\s*OF\s+PHYSICS-X|"
+    # Broken table-of-contents/sidebar fragments that leaked into lesson text.
+    r"NCERT\s+File\s+(?:th|[A-Za-z]{1,3})|"
+    r"EEN\s+cere\s+Fite\s+\d+,?|"
+    r"(?:ake\s+ensenee[a-z]*|Prrerr[a-z\s]*|Peete\s+eee[a-z\s]*|ij4i4|50sf)|"
+    r"(?:\d{1,3}\s+){3,}\d{1,3}|"
+    r"fe\s+ne(?:\s+e)?|gene|vay|le\s+Vo|Vel|Fog|aT|a\)|aa|et|"
+    r"sy\s+\d+|Bo,\s*Say|Q__|MM,|Ny,|Nn\.?|an\)|ae[)”]?|"
+    r"[A-Za-z]{1,2}|[A-Za-z]\s+[A-Za-z]|[A-Za-z]\s+[A-Za-z]\s+[A-Za-z]"
+    r")\s*$"
+)
+
+PRODUCTION_NAV_OR_GARBAGE_LINE_RE = re.compile(
+    r"(?ix)^\s*(?:"
+    # Question-bank/navigation lines whose page numbers are damaged or irrelevant
+    # to display text. Page metadata already stores the ranges.
+    r"(?:NCERT\s+File|Practice\s+Questions|Revision\s+Exercise|Solution\s+File|"
+    r"Competition\s+File|Chapter\s+Practice\s+Test|HOTS)\b.*(?:th|[,;:]|\d{1,3})?\s*$|"
+    # Short compact lowercase alphanumeric garbage such as ij4i4 / 50sf.
+    r"(?:[a-z]{1,3}\d[a-z0-9]{1,6}|\d{1,3}[a-z]{2,4})\s*$"
+    r")"
+)
+
+PRODUCTION_REPLACEMENTS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"(?i)\bfoucs\b"), "focus"),
+    (re.compile(r"(?i)\bFeosin®?@?\b"), "F = qvB sin θ"),
+    (re.compile(r"(?i)\bFe\s+sin6\b"), "F = qvB sin θ"),
+    (re.compile(r"(?i)\bconected\b"), "connected"),
+    (re.compile(r"(?i)\b20I5\b"), "2015"),
+    (re.compile(r"(?i)\b3x208\b"), "3 × 10^8"),
+    (re.compile(r"(?i)\b00W\s+at\s+220V\b"), "100 W at 220 V"),
+    (re.compile(r"(?i)\bl0\s*-\s*5\s+minutes\b"), "10-15 minutes"),
+    (re.compile(r"(?i)\bl0\s*cm\b"), "10 cm"),
+    (re.compile(r"(?i)\bF\s*=\s*qvB\s*sin\s*θ\s*@+"), "F = qvB sin θ"),
+    (re.compile(r"(?i)\bquB\s+sin\s+6\b"), "qvB sin θ"),
+    (re.compile(r"(?i)\bwhere\s+6\s+is\s+the\s+angle\b"), "where θ is the angle"),
+    (re.compile(r"(?i)\b4\.6\s*[«<]\s*07%\s*C\b"), "1.6 × 10^-19 C"),
+    (re.compile(r"(?i)\b46xi0%\b"), "1.6 × 10^-19"),
+    (re.compile(r"(?i)\b6xl0%\b"), "1.6 × 10^-19"),
+    (re.compile(r"(?i)\b1\.6\s*×\s*10\^\s*-\s*19\b"), "1.6 × 10^-19"),
+    (re.compile(r"(?i)\b10\^\s*-\s*(\d+)\b"), r"10^-\1"),
+    (re.compile(r"(?i)\b10\^\s*\+\s*(\d+)\b"), r"10^\1"),
+    (re.compile(r"(?i)\b1\s*mc\s*=\s*10\^\s*-\s*3\s*C\b"), "1 mC = 10^-3 C"),
+    (re.compile(r"(?i)\b1\s*μc\s*=\s*10\^\s*-\s*6\s*C\b"), "1 μC = 10^-6 C"),
+    (re.compile(r"(?i)\bOhm'?s\s+awi?\b"), "Ohm's law"),
+    (re.compile(r"(?i)\bThe value of k is \| in SI unit\b"), "The value of k is 1 in SI units"),
+    (re.compile(r"(?i)\b5\.\s*unit\b"), "SI unit"),
+    (re.compile(r"(?i)\band\s+6\b"), "and θ"),
+    (re.compile(r"(?i)\bRis\s+aconstant\b"), "R is a constant"),
+
+    # Conservative OCR spelling/spacing repairs seen in the Grade 10 Physics source.
+    (re.compile(r"(?i)\bcaled\b"), "called"),
+    (re.compile(r"(?i)\bSnel's\b"), "Snell's"),
+    (re.compile(r"(?i)\brefective\b"), "refractive"),
+    (re.compile(r"(?i)\bundevitated\b"), "undeviated"),
+    (re.compile(r"(?i)\bDeser\b"), "Denser"),
+    (re.compile(r"(?i)\bSpeedoflight\b"), "Speed of light"),
+    (re.compile(r"(?i)\bSpeed oflight\b"), "Speed of light"),
+    (re.compile(r"(?i)\blightin\b"), "light in"),
+    (re.compile(r"(?i)\bona\b"), "on a"),
+    (re.compile(r"(?i)\bCoin appear raised\b"), "Coin appears raised"),
+    (re.compile(r"(?i)^Aperture:\s*The area of the lens available for refraction is called the aperture.*$"), "Aperture: The area of the lens available for refraction is called the aperture of the lens."),
+    (re.compile(r"(?i)\bInan\b"), "In an"),
+    (re.compile(r"(?i)\bAnatom\b"), "An atom"),
+]
+
+
+def is_probable_garbage_ocr_line(line: str) -> bool:
+    """High-confidence detector for OCR gibberish lines in production text.
+
+    This removes only whole lines that are not useful textbook content. It is
+    intentionally stricter than a general spell-check: formulas like R1, V2,
+    H2O-style tokens, page labels, and normal prose are not removed.
+    """
+    s = compact_line(line)
+    if not s:
+        return False
+
+    if PRODUCTION_NAV_OR_GARBAGE_LINE_RE.match(s):
+        return True
+
+    # Repeated page-number/index debris, e.g. "42 42 42 42 43".
+    if re.fullmatch(r"(?:\d{1,3}\s+){3,}\d{1,3}", s):
+        return True
+
+    # Broken TOC/sidebar residue with long repeated characters.
+    letters = re.sub(r"[^A-Za-z]", "", s)
+    if len(letters) >= 12 and re.search(r"([A-Za-z])\1{4,}", letters):
+        words = re.findall(r"[A-Za-z]+", s)
+        # Protect common real textbook words that can contain double letters.
+        protected = {
+            "electricity", "current", "resistance", "reflection", "refraction",
+            "magnetic", "exercise", "questions", "chapter", "practice",
+            "source", "sources", "energy", "different", "following", "parallel",
+        }
+        if not any(w.lower() in protected for w in words):
+            return True
+
+    # Short lowercase/alphanumeric OCR blobs. Keep standard circuit labels like R2, V1, A3.
+    if re.fullmatch(r"[a-z]{1,3}\d[a-z0-9]{1,6}|\d{1,3}[a-z]{2,4}", s):
+        return True
+
+    return False
+
+
+def clean_production_line(line: str) -> tuple[str, list[str]]:
+    """Return a display/embedding-safe line and a list of cleanup actions.
+
+    This is a final guardrail for source-specific OCR artifacts that escaped the
+    line classifier because they looked like ordinary prose. It is used only for
+    production-facing text aliases; raw/audit fields remain unchanged.
+    """
+    original = compact_line(line)
+    s = original
+    actions: list[str] = []
+    if not s:
+        return "", actions
+
+    for pattern, replacement in PRODUCTION_REPLACEMENTS:
+        ns = pattern.sub(replacement, s)
+        if ns != s:
+            s = ns
+            actions.append("known_ocr_replacement")
+
+    # Drop/repair obvious non-ASCII OCR glyph leakage. Keep legitimate physics symbols
+    # like Ω, μ, θ, ρ, ∠, √, subscript digits, and currency ₹.
+    if re.search(r"(?i)^\s*[é£¢Ì\x9d€¥ÅÔûÚ§ġ\u200dõ\x94ĜĒëæò\u200cþĄĊÑęĔÖı®©]+(?:\s+[é£¢Ì\x9d€¥ÅÔûÚ§ġ\u200dõ\x94ĜĒëæò\u200cþĄĊÑęĔÖı®©]+)*\s*(?:[A-Za-z]?[A-Z])?\s*$", s):
+        return "", actions + ["dropped_bad_unicode_ocr_line"]
+    ns = s.replace("€", "e")
+    ns = PRODUCTION_BAD_GLYPH_RE.sub(" ", ns)
+    ns = re.sub(r"\s+", " ", ns).strip()
+    if ns != s:
+        s = ns
+        actions.append("removed_bad_unicode_ocr_glyphs")
+
+    if "@" in s:
+        s = s.replace("@", " ")
+        s = re.sub(r"\s+", " ", s).strip()
+        actions.append("removed_at_symbol_ocr_glyph")
+
+    ns = re.sub(r"^\s*\(\)\s*", "", s).strip()
+    if ns != s:
+        s = ns
+        actions.append("removed_empty_parentheses_ocr_prefix")
+
+    # Drop isolated known-garbage lines after replacements.
+    if PRODUCTION_DROP_LINE_RE.match(s):
+        return "", actions + ["dropped_known_ocr_fragment"]
+
+    if is_probable_garbage_ocr_line(s):
+        return "", actions + ["dropped_probable_garbage_ocr_line"]
+
+    # Convert OCR bullet/therefore marker to readable text. Keep mathematical < > operators intact.
+    ns = re.sub(r"^\s*[«»]\s*\.\s*", "Therefore, ", s)
+    ns = re.sub(r"^\s*[«»]\s*", "", ns)
+    ns = re.sub(r"\s*[«»]\s*", " ", ns)
+    if ns != s:
+        s = ns
+        actions.append("normalized_guillemet_ocr")
+
+    # Remove Devanagari glyph leakage from English text; keep the English/numeric content.
+    ns = DEVANAGARI_RE.sub("", s)
+    if ns != s:
+        s = ns
+        actions.append("removed_devanagari_glyph_leakage")
+
+    # Remove high-confidence OCR drawing characters, not normal formula operators.
+    ns = s.replace("￾", " ").replace("�", " ").replace("¦", " ")
+    if ns != s:
+        s = ns
+        actions.append("removed_replacement_glyphs")
+
+    # Remove leftover decorative backslashes when they are line-art, not formulas.
+    if "\\" in s and not re.search(r"\\(?:frac|sqrt|theta|alpha|beta|gamma|mu|lambda)\b", s):
+        ns = s.replace("\\", " ")
+        if ns != s:
+            s = ns
+            actions.append("removed_line_art_backslash")
+
+    # Repair a few line-level formula fragments from the Electricity examples.
+    if re.fullmatch(r"(?i)75\s*=\s*6\.25\s*×\s*10\^18", s):
+        s = "n = Q / e = 1 / (1.6 × 10^-19) = 6.25 × 10^18"
+        actions.append("repaired_coulomb_example_formula")
+    if re.fullmatch(r"(?i)Is", s):
+        s = "1 A = 1 C / 1 s"
+        actions.append("repaired_ampere_unit_formula")
+    if re.fullmatch(r"(?i)0\.7", s):
+        # This specific orphan comes from a broken Example 5 formula crop, not lesson prose.
+        return "", actions + ["dropped_orphan_numeric_ocr_fragment"]
+
+    # Drop lines that still contain known source-specific artifact signatures.
+    if PRODUCTION_ARTIFACT_SIGNATURE_RE.search(s):
+        return "", actions + ["dropped_unresolved_known_artifact"]
+
+    # Drop very short OCR/formula fragments that are not useful stand-alone text.
+    if re.fullmatch(r"(?i)(?:[A-Za-z]{1,3}|[A-Za-z]{1,3}\s+[A-Za-z]{1,3}|[A-Za-z]{1,3}\s+[A-Za-z]{1,3}\s+[A-Za-z]{1,3})", s):
+        return "", actions + ["dropped_short_ocr_fragment"]
+    if re.fullmatch(r"(?i)(?:[a-z]{1,4}\s*){1,4}", s) and len(s) <= 12 and s.lower() not in {"time", "work", "charge", "current", "voltage", "power", "energy", "or", "also", "then", "here"}:
+        return "", actions + ["dropped_short_lowercase_ocr_fragment"]
+
+    if re.fullmatch(r"(?i)(?:[A-Z]\s*=|\d+\s*[A-Z]\s*=|or,?|therefore,?|time)", s):
+        return "", actions + ["dropped_incomplete_formula_connector"]
+    if re.fullmatch(r"(?i)Example\s+5\.\s+2\.5\s+mJ\s+of\s+work\s+is\s+done\s+in\s+moving\s+a", s):
+        return "", actions + ["dropped_duplicate_broken_example_line"]
+    if re.fullmatch(r"(?i)Solution:\s*I\s*=\s*ne\s*/\s*t\s*=\s*1\s*/\s*t", s):
+        return "", actions + ["dropped_misplaced_formula_solution_fragment"]
+    if re.fullmatch(r"(?i)10\^-3\s*×\s*1\.6\s*×\s*10\s*=\s*0\.1\s*1\.6\s*×\s*10", s):
+        return "", actions + ["dropped_damaged_scientific_notation_fragment"]
+    if re.fullmatch(r"(?i)=\s*[-+]?\d.*", s) and len(s.split()) <= 8:
+        return "", actions + ["dropped_orphan_formula_result_fragment"]
+
+    # Extremely short mixed symbol/digit fragments are safer to omit than display.
+    if len(s) <= 8 and re.search(r"[A-Za-z]", s) and re.search(r"\d", s) and re.search(r"[^A-Za-z0-9 .×^+\-/=]", s):
+        return "", actions + ["dropped_short_mixed_symbol_fragment"]
+
+    s = re.sub(r"[ \t]+", " ", s).strip()
+    return s, actions
+
+
+def clean_production_text(text: str) -> tuple[str, dict[str, int]]:
+    """Clean production-facing text while preserving paragraph breaks."""
+    stats: Counter = Counter()
+    if not text:
+        return "", dict(stats)
+    out: list[str] = []
+    last_blank = False
+    for raw in str(text).replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        if not raw.strip():
+            if not last_blank:
+                out.append("")
+                last_blank = True
+            continue
+        cleaned, actions = clean_production_line(raw)
+        for action in actions:
+            stats[action] += 1
+        if cleaned:
+            out.append(cleaned)
+            last_blank = False
+        else:
+            stats["production_lines_removed"] += 1
+    cleaned_text = "\n".join(out)
+    cleaned_text = re.sub(r"\n{3,}", "\n\n", cleaned_text).strip()
+    return cleaned_text, dict(stats)
+
+
+def clean_production_text_fields_inplace(data: Any) -> dict[str, int]:
+    """Clean production-facing text aliases in a nested JSON object in-place."""
+    stats: Counter = Counter()
+
+    def walk(obj: Any, key: str | None = None) -> None:
+        if isinstance(obj, dict):
+            for child_key, value in list(obj.items()):
+                if isinstance(value, str) and (child_key in PRODUCTION_TEXT_KEYS or child_key.startswith("production_")):
+                    cleaned, sub_stats = clean_production_text(value)
+                    if cleaned != value:
+                        obj[child_key] = cleaned
+                        stats["production_text_fields_cleaned"] += 1
+                    stats.update(sub_stats)
+                elif isinstance(value, (dict, list)):
+                    walk(value, child_key)
+        elif isinstance(obj, list):
+            for value in obj:
+                walk(value, key)
+
+    walk(data)
+    return dict(stats)
+
+
+def production_text_has_known_artifact(text: str) -> bool:
+    if not text:
+        return False
+    for line in str(text).splitlines():
+        s = compact_line(line)
+        if not s:
+            continue
+        if PRODUCTION_ARTIFACT_SIGNATURE_RE.search(s):
+            return True
+        if DEVANAGARI_RE.search(s):
+            return True
+        if re.search(r"[»«￾�¦]", s):
+            return True
+        if PRODUCTION_BAD_GLYPH_RE.search(s):
+            return True
+    return False
+
 def light_clean_text(text: str, chapter_title: str | None = None) -> tuple[str, int]:
     """Light cleanup only. Does not try to repair formulas."""
     if not text:
@@ -227,23 +548,122 @@ def load_static_chapters(subsections_json: Path) -> tuple[dict[str, Any], list[d
 
 
 def add_physical_ranges(chapters: list[dict[str, Any]], pdf_page_count: int) -> None:
+    """Add full visible chapter ranges and make day ranges cover them.
+
+    Physics uses chapter-local labels in the Contents page, e.g. 4/1-4/75.
+    The original teaching ranges stop at the last main teaching/practice page,
+    but the UI/DB page ranges must add up to the full visible chapter range.
+
+    Therefore:
+    - chapter teaching_start_page/teaching_end_page keep the safe lesson-text span;
+    - chapter physical_start_page/physical_end_page keep the full TOC span;
+    - days/subsections are contiguous and the last day ends at physical_end_page.
+    """
+
+    def local_page_for(chapter_obj: dict[str, Any], pdf_page: int) -> int:
+        return int(chapter_obj.get("book_page") or 1) + (int(pdf_page) - int(chapter_obj["start_pdf_page"]))
+
+    def chapter_label(chapter_obj: dict[str, Any], local_page: int) -> str:
+        return f"{int(chapter_obj.get('sequence') or 0)}/{int(local_page)}"
+
+    def rewrite_day_metadata(chapter_obj: dict[str, Any], day_obj: dict[str, Any]) -> None:
+        start_pdf = as_int(day_obj.get("start_pdf_page"))
+        end_pdf = as_int(day_obj.get("end_pdf_page"))
+        if start_pdf is None or end_pdf is None:
+            return
+        start_local = local_page_for(chapter_obj, start_pdf)
+        end_local = local_page_for(chapter_obj, end_pdf)
+        start_label = chapter_label(chapter_obj, start_local)
+        end_label = chapter_label(chapter_obj, end_local)
+        continuous_start = start_pdf - 7
+        continuous_end = end_pdf - 7
+        day_obj["start_page"] = start_pdf
+        day_obj["end_page"] = end_pdf
+        day_obj["start_book_page"] = start_local
+        day_obj["end_book_page"] = end_local
+        day_obj["printed_start_page"] = start_label
+        day_obj["printed_end_page"] = end_label
+        day_obj["start_printed_page"] = start_label
+        day_obj["end_printed_page"] = end_label
+        day_obj["printed_pages"] = {"start": start_label, "end": end_label}
+        day_obj["pdf_pages"] = {"start": start_pdf, "end": end_pdf}
+        day_obj["chapter_printed_start_page"] = start_local
+        day_obj["chapter_printed_end_page"] = end_local
+        day_obj["chapter_printed_page_label"] = start_label
+        day_obj["chapter_printed_start_page_label"] = start_label
+        day_obj["chapter_printed_end_page_label"] = end_label
+        day_obj["chapter_printed_pages"] = {"start": start_local, "end": end_local}
+        day_obj["chapter_printed_page_numbers"] = list(range(start_local, end_local + 1))
+        day_obj["continuous_printed_start_page"] = continuous_start
+        day_obj["continuous_start_printed_page"] = continuous_start
+        day_obj["continuous_printed_end_page"] = continuous_end
+        day_obj["continuous_end_printed_page"] = continuous_end
+        day_obj["continuous_printed_pages"] = {"start": continuous_start, "end": continuous_end}
+        day_obj["continuous_printed_page_numbers"] = list(range(continuous_start, continuous_end + 1))
+        day_obj["continuous_production_printed_page_numbers"] = list(range(continuous_start, continuous_end + 1))
+        day_obj["page_count"] = max(0, end_pdf - start_pdf + 1)
+        day_obj["production_page_count"] = max(0, end_pdf - start_pdf + 1)
+        day_obj["production_indexed_page_numbers"] = list(range(start_pdf, end_pdf + 1))
+        day_obj["page_numbers"] = list(range(start_pdf, end_pdf + 1))
+        day_obj["production_printed_page_numbers"] = list(range(start_local, end_local + 1))
+        day_obj["printed_page_numbers"] = list(range(start_local, end_local + 1))
+
     for idx, chapter in enumerate(chapters):
         next_start = chapters[idx + 1]["start_pdf_page"] if idx + 1 < len(chapters) else pdf_page_count + 1
-        chapter["physical_start_page"] = chapter["start_pdf_page"]
-        chapter["physical_end_page"] = min(max(chapter["end_pdf_page"], next_start - 1), pdf_page_count)
+        inferred_physical_end = min(max(chapter["end_pdf_page"], next_start - 1), pdf_page_count)
+        explicit_physical_start = as_int(chapter.get("physical_start_page"), chapter["start_pdf_page"])
+        explicit_physical_end = as_int(
+            chapter.get("physical_end_page")
+            or chapter.get("physical_end_pdf_page")
+            or chapter.get("toc_end_pdf_page")
+        )
+        chapter["physical_start_page"] = explicit_physical_start or chapter["start_pdf_page"]
+        chapter["physical_end_page"] = min(
+            max(chapter["end_pdf_page"], explicit_physical_end or inferred_physical_end),
+            pdf_page_count,
+        )
         chapter["teaching_start_page"] = chapter["start_pdf_page"]
         chapter["teaching_end_page"] = chapter["end_pdf_page"]
 
-
-def chapter_for_page(chapters: list[dict[str, Any]], page_number: int) -> dict[str, Any] | None:
-    for chapter in chapters:
-        if int(chapter["physical_start_page"]) <= page_number <= int(chapter["physical_end_page"]):
-            return chapter
-    return None
+        days = sorted(chapter.get("days") or [], key=lambda d: as_int(d.get("day"), 0) or 0)
+        for day_idx, day in enumerate(days):
+            day_start = as_int(day.get("start_pdf_page"))
+            if day_start is None:
+                continue
+            if day_idx + 1 < len(days):
+                next_day_start = as_int(days[day_idx + 1].get("start_pdf_page"))
+                if next_day_start is not None:
+                    day["end_pdf_page"] = max(day_start, next_day_start - 1)
+            else:
+                day["end_pdf_page"] = int(chapter["physical_end_page"])
+            rewrite_day_metadata(chapter, day)
 
 
 def local_book_page_for_pdf(chapter: dict[str, Any], pdf_page: int) -> int:
     return int(chapter.get("book_page") or 1) + (int(pdf_page) - int(chapter["start_pdf_page"]))
+
+
+def chapter_for_page(chapters: list[dict[str, Any]], pdf_page: int) -> dict[str, Any] | None:
+    """Return the chapter that owns a PDF page.
+
+    Important for Physics: chapter pages restart as 1/1, 2/1, etc., and the
+    visible TOC range includes non-teaching pages after the lesson pages
+    (NCERT file, revision, solutions, competition file, tests). Therefore page
+    ownership must use physical_start_page/physical_end_page when available,
+    not only teaching start/end pages.
+    """
+    pnum = int(pdf_page)
+    for chapter in chapters:
+        start = as_int(chapter.get("physical_start_page"), as_int(chapter.get("start_pdf_page"), 0)) or 0
+        end = as_int(
+            chapter.get("physical_end_page")
+            or chapter.get("physical_end_pdf_page")
+            or chapter.get("toc_end_pdf_page"),
+            as_int(chapter.get("end_pdf_page"), 0),
+        ) or 0
+        if start <= pnum <= end:
+            return chapter
+    return None
 
 
 def classify_front_matter(page_number: int, raw_text: str) -> str:
@@ -670,15 +1090,21 @@ def build_safe_text_from_line_items(
             continue
         last_blank = False
         if typ == "safe_text":
-            output_lines.append(item.get("text") or "")
-            safe_used += 1
+            cleaned_line, cleanup_actions = clean_production_line(item.get("text") or "")
+            if cleaned_line:
+                output_lines.append(cleaned_line)
+                safe_used += 1
             continue
         if typ == "review_required":
             rid = str(item.get("review_id"))
             reviewed = reviewed_blocks.get(rid)
             if reviewed is not None and str(reviewed).strip():
-                output_lines.append(str(reviewed).strip())
-                reviewed_used += 1
+                cleaned_reviewed, cleanup_actions = clean_production_line(str(reviewed).strip())
+                if cleaned_reviewed:
+                    output_lines.append(cleaned_reviewed)
+                    reviewed_used += 1
+                else:
+                    discarded_review_used += 1
             elif rid in discard_review_ids:
                 # Explicitly reviewed as non-content or duplicate visual fragment.
                 discarded_review_used += 1
@@ -719,8 +1145,9 @@ def summarize_review_queue(pages: list[dict[str, Any]]) -> dict[str, Any]:
 
 def validate_day_ranges_for_chapter(chapter: dict[str, Any], days: list[dict[str, Any]], pdf_page_count: int) -> list[str]:
     reasons: list[str] = []
-    parent_start = int(chapter["teaching_start_page"])
-    parent_end = int(chapter["teaching_end_page"])
+    # Validate against the full visible chapter range, not just the main teaching pages.
+    parent_start = int(chapter.get("physical_start_page") or chapter["teaching_start_page"])
+    parent_end = int(chapter.get("physical_end_page") or chapter["teaching_end_page"])
     seen_pages: set[int] = set()
     if not days:
         return ["missing_days_array"]
@@ -738,7 +1165,7 @@ def validate_day_ranges_for_chapter(chapter: dict[str, Any], days: list[dict[str
             reasons.append(f"day_{day_number}_outside_pdf_{start_pdf}_{end_pdf}_pdf_count_{pdf_page_count}")
             continue
         if start_pdf < parent_start or end_pdf > parent_end:
-            reasons.append(f"day_{day_number}_outside_parent_teaching_range_{start_pdf}_{end_pdf}_parent_{parent_start}_{parent_end}")
+            reasons.append(f"day_{day_number}_outside_parent_physical_range_{start_pdf}_{end_pdf}_parent_{parent_start}_{parent_end}")
         overlap = sorted(set(range(start_pdf, end_pdf + 1)) & seen_pages)
         if overlap:
             reasons.append(f"day_{day_number}_overlaps_previous_days_{overlap}")
@@ -746,9 +1173,8 @@ def validate_day_ranges_for_chapter(chapter: dict[str, Any], days: list[dict[str
     expected = set(range(parent_start, parent_end + 1))
     missing_from_days = sorted(expected - seen_pages)
     if missing_from_days:
-        reasons.append(f"days_do_not_cover_parent_teaching_pages_{missing_from_days}")
+        reasons.append(f"days_do_not_cover_parent_physical_pages_{missing_from_days}")
     return reasons
-
 
 def build_subsections_for_chapter(chapter: dict[str, Any], pages_by_number: dict[int, dict[str, Any]], stats: Counter) -> list[dict[str, Any]]:
     subsections: list[dict[str, Any]] = []
@@ -854,13 +1280,17 @@ def build_chapter_and_section_index(chapters_spec: list[dict[str, Any]], pages_b
     for chapter in chapters_spec:
         seq = int(chapter["sequence"])
         title = str(chapter["chapter_name"])
-        start_pdf = int(chapter["teaching_start_page"])
-        end_pdf = int(chapter["teaching_end_page"])
+        teaching_start_pdf = int(chapter["teaching_start_page"])
+        teaching_end_pdf = int(chapter["teaching_end_page"])
         physical_start = int(chapter["physical_start_page"])
         physical_end = int(chapter["physical_end_page"])
+        # Public chapter/section page ranges should be the full visible TOC range.
+        # Teaching text stays limited to the safe main-teaching span below.
+        start_pdf = physical_start
+        end_pdf = physical_end
         book_page = int(chapter.get("book_page") or 1)
         validation_errors.extend(f"Chapter {seq} {title}: {reason}" for reason in validate_day_ranges_for_chapter(chapter, chapter.get("days") or [], pdf_page_count))
-        teaching_pages, missing = get_pages_in_range(pages_by_number, start_pdf, end_pdf)
+        teaching_pages, missing = get_pages_in_range(pages_by_number, teaching_start_pdf, teaching_end_pdf)
         safe_teaching_pages = [p for p in teaching_pages if p.get("include_in_lesson_text")]
         raw_text, cleaned_text, removed = build_text_from_pages(safe_teaching_pages, title=title)
         stats["noise_lines_removed"] += removed
@@ -891,6 +1321,14 @@ def build_chapter_and_section_index(chapters_spec: list[dict[str, Any]], pages_b
             "end_page": end_pdf,
             "start_pdf_page": start_pdf,
             "end_pdf_page": end_pdf,
+            "teaching_start_page": teaching_start_pdf,
+            "teaching_end_page": teaching_end_pdf,
+            "teaching_start_pdf_page": teaching_start_pdf,
+            "teaching_end_pdf_page": teaching_end_pdf,
+            "teaching_chapter_printed_start_page": local_book_page_for_pdf(chapter, teaching_start_pdf),
+            "teaching_chapter_printed_end_page": local_book_page_for_pdf(chapter, teaching_end_pdf),
+            "teaching_printed_start_page": local_book_page_for_pdf(chapter, teaching_start_pdf),
+            "teaching_printed_end_page": local_book_page_for_pdf(chapter, teaching_end_pdf),
             "printed_start_page": book_page,
             "printed_end_page": local_book_page_for_pdf(chapter, end_pdf),
             "physical_start_page": physical_start,

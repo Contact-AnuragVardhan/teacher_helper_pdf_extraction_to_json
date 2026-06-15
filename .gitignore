@@ -1,2 +1,25 @@
 input/
 output/
+
+# Local environment
+.env
+.venv/
+venv/
+
+# Editor settings
+.idea/
+.vscode/
+
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/

@@ -38,6 +38,7 @@ from physics_common import (
     DEFAULT_GRADE,
     DEFAULT_SUBJECT,
     build_report,
+    clean_production_text_fields_inplace,
     read_json,
     setup_logging,
     utc_now,
@@ -369,9 +370,20 @@ def count_unresolved(data: dict[str, Any]) -> int:
 
 
 def _as_int(value: Any, default: int | None = None) -> int | None:
+    """Parse integers and Physics visible labels such as "4/75".
+
+    For chapter-local labels, the value after the slash is the printed page
+    inside that chapter.
+    """
     try:
         if value is None or value == "":
             return default
+        if isinstance(value, str):
+            text = value.strip()
+            label_match = re.match(r"^\d+\s*/\s*(\d+)$", text)
+            if label_match:
+                return int(label_match.group(1))
+            return int(text)
         return int(value)
     except (TypeError, ValueError):
         return default
@@ -479,102 +491,294 @@ def _production_text(raw: dict[str, Any], *keys: str) -> str:
     return ""
 
 
-def _chapter_label_for_item(raw: dict[str, Any], local_page: Any = None) -> str | None:
-    label = raw.get("printed_page_label") or raw.get("book_page_label")
-    if label:
-        return str(label)
-    number = raw.get("section_number") or raw.get("chapter_number")
-    if number is None or local_page is None:
+def _chapter_number_for_item(raw: dict[str, Any]) -> str | None:
+    """Return the source chapter number used in visible Physics labels such as 4/29."""
+    number = raw.get("section_number") or raw.get("chapter_number") or raw.get("sequence")
+    if number is None:
         return None
     num = str(number).replace("Chapter", "").strip()
-    return f"{num}/{local_page}"
+    return num or None
+
+
+def _is_subsection_or_day_item(raw: dict[str, Any]) -> bool:
+    """True for day/subsection records, false for parent chapter/section records."""
+    return any(
+        key in raw
+        for key in (
+            "subsection_number",
+            "subsection_code",
+            "source_days_json_day",
+            "anchor_marker",
+        )
+    ) or ("day" in raw and ("start_book_page" in raw or "end_book_page" in raw))
+
+
+def _chapter_page_label_for_item(raw: dict[str, Any], local_page: Any, *, prefer_existing: bool = False) -> str | None:
+    """Build a chapter-local printed label like 4/29.
+
+    Physics pages restart printed numbering inside every chapter. The visible
+    printed label on the PDF is therefore chapter_number/local_page rather than
+    the continuous PDF/content offset number.
+    """
+    if prefer_existing:
+        label = raw.get("printed_page_label") or raw.get("book_page_label") or raw.get("chapter_printed_page_label")
+        if label:
+            return str(label)
+    local = _as_int(local_page)
+    chapter_num = _chapter_number_for_item(raw)
+    if chapter_num is None or local is None:
+        return None
+    return f"{chapter_num}/{local}"
 
 
 def _normalize_printed_fields_on_item(raw: dict[str, Any], content_start_page: int) -> None:
-    """Use continuous printed_* fields while preserving chapter-local page labels.
+    """Expose visible Physics page labels in printed_* fields.
 
-    Physics chapters restart local printed page numbering at 1. Poorvi/Maths use
-    continuous printed page numbers, and the DB/UI code tends to treat
-    printed_start_page as a continuous comparable number. Therefore the final
-    DB JSON exposes continuous printed_* values and keeps the original local
-    chapter page numbers under chapter_printed_*.
+    Parent chapter/section records use the full visible TOC range, for example
+    4/1-4/75. Day/subsection records use their own visible local range, for
+    example 4/29-4/42. The old continuous PDF-offset values are preserved in
+    continuous_printed_* fields.
     """
     if not isinstance(raw, dict):
         return
 
-    # Page-level record.
+    # Page-level record: keep the local printed number, preserve the visible
+    # label, and store the old continuous offset number separately.
     if raw.get("page_number") is not None:
-        local_page = _as_int(raw.get("printed_page_number"))
-        if local_page is not None and raw.get("chapter_printed_page_number") is None:
+        local_page = _as_int(raw.get("chapter_printed_page_number"))
+        if local_page is None:
+            local_page = _as_int(raw.get("printed_page_number"))
+        if local_page is not None:
             raw["chapter_printed_page_number"] = local_page
-        if raw.get("chapter_printed_page_label") is None:
-            label = _chapter_label_for_item(raw, local_page)
-            if label:
-                raw["chapter_printed_page_label"] = label
+            raw["printed_page_number"] = local_page
+        label = raw.get("chapter_printed_page_label") or raw.get("printed_page_label")
+        if label is None:
+            label = _chapter_page_label_for_item(raw, local_page)
+        if label:
+            raw["chapter_printed_page_label"] = str(label)
+            raw["printed_page_label"] = str(label)
         global_page = _global_printed_page_for_pdf(raw.get("page_number"), content_start_page)
         if global_page is not None:
-            raw["printed_page_number"] = global_page
+            raw["continuous_printed_page_number"] = global_page
         return
 
-    start_pdf = raw.get("start_pdf_page") or raw.get("start_page") or raw.get("physical_start_page")
-    end_pdf = raw.get("end_pdf_page") or raw.get("end_page") or raw.get("physical_end_page")
-    local_start = _as_int(raw.get("printed_start_page") or raw.get("start_printed_page"))
-    local_end = _as_int(raw.get("printed_end_page") or raw.get("end_printed_page"))
-    if local_start is not None and raw.get("chapter_printed_start_page") is None:
+    range_like = any(
+        key in raw
+        for key in (
+            "start_pdf_page", "end_pdf_page", "start_page", "end_page",
+            "physical_start_page", "physical_end_page",
+            "printed_start_page", "printed_end_page", "start_printed_page", "end_printed_page",
+            "start_book_page", "end_book_page", "chapter_printed_start_page", "chapter_printed_end_page",
+        )
+    )
+    if not range_like:
+        return
+
+    is_subsection_or_day = _is_subsection_or_day_item(raw)
+    use_physical_range = (
+        not is_subsection_or_day
+        and (raw.get("physical_printed_start_page") is not None or raw.get("physical_printed_end_page") is not None)
+    )
+
+    # Parent chapter/section records have two useful ranges:
+    # - teaching range = pages used for lesson/subsection text
+    # - physical/TOC range = full chapter range printed in the book contents
+    # The public printed_start_page/printed_end_page should match the visible TOC.
+    if use_physical_range:
+        # Teaching range may be shorter than the visible TOC/physical range.
+        # Preserve explicit teaching_* values when the previous step provided them.
+        old_local_start = _as_int(raw.get("teaching_chapter_printed_start_page"))
+        if old_local_start is None:
+            old_local_start = _as_int(raw.get("chapter_printed_start_page"))
+        if old_local_start is None:
+            old_local_start = _as_int(raw.get("printed_start_page"))
+        old_local_end = _as_int(raw.get("teaching_chapter_printed_end_page"))
+        if old_local_end is None:
+            old_local_end = _as_int(raw.get("chapter_printed_end_page"))
+        if old_local_end is None:
+            old_local_end = _as_int(raw.get("printed_end_page"))
+
+        old_start_label = _chapter_page_label_for_item(raw, old_local_start, prefer_existing=False)
+        old_end_label = _chapter_page_label_for_item(raw, old_local_end, prefer_existing=False)
+        if old_local_start is not None:
+            raw["teaching_chapter_printed_start_page"] = old_local_start
+        if old_local_end is not None:
+            raw["teaching_chapter_printed_end_page"] = old_local_end
+        if old_start_label:
+            raw["teaching_printed_start_page"] = old_start_label
+        if old_end_label:
+            raw["teaching_printed_end_page"] = old_end_label
+        if raw.get("teaching_start_pdf_page") is not None:
+            raw["teaching_start_pdf_page"] = raw.get("teaching_start_pdf_page")
+        elif raw.get("start_pdf_page") is not None:
+            raw["teaching_start_pdf_page"] = raw.get("start_pdf_page")
+        if raw.get("teaching_end_pdf_page") is not None:
+            raw["teaching_end_pdf_page"] = raw.get("teaching_end_pdf_page")
+        elif raw.get("end_pdf_page") is not None:
+            raw["teaching_end_pdf_page"] = raw.get("end_pdf_page")
+
+        local_start = _as_int(raw.get("physical_printed_start_page"))
+        if local_start is None:
+            local_start = old_local_start
+        local_end = _as_int(raw.get("physical_printed_end_page"))
+        if local_end is None:
+            local_end = old_local_end
+        start_pdf = raw.get("physical_start_page") or raw.get("start_pdf_page") or raw.get("start_page")
+        end_pdf = raw.get("physical_end_page") or raw.get("end_pdf_page") or raw.get("end_page")
+    else:
+        start_pdf = raw.get("start_pdf_page") or raw.get("start_page") or raw.get("physical_start_page")
+        end_pdf = raw.get("end_pdf_page") or raw.get("end_page") or raw.get("physical_end_page")
+
+        # Prefer already-preserved local chapter numbers so repeated normalization is safe.
+        local_start = _as_int(raw.get("chapter_printed_start_page"))
+        if local_start is None:
+            local_start = _as_int(raw.get("printed_start_page"))
+        if local_start is None:
+            local_start = _as_int(raw.get("start_printed_page"))
+        if local_start is None:
+            local_start = _as_int(raw.get("start_book_page"))
+
+        local_end = _as_int(raw.get("chapter_printed_end_page"))
+        if local_end is None:
+            local_end = _as_int(raw.get("printed_end_page"))
+        if local_end is None:
+            local_end = _as_int(raw.get("end_printed_page"))
+        if local_end is None:
+            local_end = _as_int(raw.get("end_book_page"))
+
+    if local_start is not None:
         raw["chapter_printed_start_page"] = local_start
-    if local_end is not None and raw.get("chapter_printed_end_page") is None:
+    if local_end is not None:
         raw["chapter_printed_end_page"] = local_end
-    if raw.get("chapter_printed_page_label") is None:
-        label = _chapter_label_for_item(raw, local_start)
-        if label:
-            raw["chapter_printed_page_label"] = label
+
+    start_label = _chapter_page_label_for_item(raw, local_start, prefer_existing=not use_physical_range)
+    end_label = _chapter_page_label_for_item(raw, local_end, prefer_existing=False)
+    if start_label:
+        raw["chapter_printed_page_label"] = start_label
+        raw["chapter_printed_start_page_label"] = start_label
+        raw["printed_start_page"] = start_label
+        raw["start_printed_page"] = start_label
+        if use_physical_range:
+            raw["physical_printed_start_page"] = start_label
+            raw["physical_chapter_printed_start_page"] = local_start
+    if end_label:
+        raw["chapter_printed_end_page_label"] = end_label
+        raw["printed_end_page"] = end_label
+        raw["end_printed_page"] = end_label
+        if use_physical_range:
+            raw["physical_printed_end_page"] = end_label
+            raw["physical_chapter_printed_end_page"] = local_end
 
     global_start, global_end = _global_printed_range(start_pdf, end_pdf, content_start_page)
     if global_start is not None:
-        raw["printed_start_page"] = global_start
-        raw["start_printed_page"] = global_start
+        raw["continuous_printed_start_page"] = global_start
+        raw["continuous_start_printed_page"] = global_start
     if global_end is not None:
-        raw["printed_end_page"] = global_end
-        raw["end_printed_page"] = global_end
-    if isinstance(raw.get("printed_pages"), dict):
-        raw["chapter_printed_pages"] = {
-            "start": local_start,
-            "end": local_end,
-        }
-        raw["printed_pages"] = {
-            "start": global_start,
-            "end": global_end,
-        }
+        raw["continuous_printed_end_page"] = global_end
+        raw["continuous_end_printed_page"] = global_end
+
+    raw["chapter_printed_pages"] = {
+        "start": local_start,
+        "end": local_end,
+    }
+    raw["printed_pages"] = {
+        "start": start_label if start_label is not None else local_start,
+        "end": end_label if end_label is not None else local_end,
+    }
+    raw["continuous_printed_pages"] = {
+        "start": global_start,
+        "end": global_end,
+    }
 
     page_numbers = raw.get("page_numbers") or raw.get("indexed_page_numbers") or raw.get("production_indexed_page_numbers")
-    local_printed_numbers = raw.get("printed_page_numbers") or raw.get("indexed_printed_page_numbers") or raw.get("production_printed_page_numbers")
-    if isinstance(local_printed_numbers, list) and raw.get("chapter_printed_page_numbers") is None:
+    local_printed_numbers = raw.get("chapter_printed_page_numbers")
+    if not isinstance(local_printed_numbers, list):
+        local_printed_numbers = raw.get("printed_page_numbers") or raw.get("indexed_printed_page_numbers") or raw.get("production_printed_page_numbers")
+    if isinstance(local_printed_numbers, list):
         raw["chapter_printed_page_numbers"] = copy.deepcopy(local_printed_numbers)
     global_numbers = _global_printed_numbers(page_numbers, content_start_page)
     if global_numbers:
-        if "printed_page_numbers" in raw:
-            raw["printed_page_numbers"] = global_numbers
+        raw["continuous_printed_page_numbers"] = global_numbers
         if "indexed_printed_page_numbers" in raw:
-            raw["indexed_printed_page_numbers"] = global_numbers
+            raw["continuous_indexed_printed_page_numbers"] = global_numbers
         if "production_printed_page_numbers" in raw:
-            raw["production_printed_page_numbers"] = global_numbers
+            raw["continuous_production_printed_page_numbers"] = global_numbers
 
 
-def _normalize_printed_fields_recursive(value: Any, content_start_page: int) -> None:
+def _normalize_printed_fields_recursive(value: Any, content_start_page: int, parent_chapter_number: str | None = None) -> None:
     if isinstance(value, list):
         for item in value:
-            _normalize_printed_fields_recursive(item, content_start_page)
+            _normalize_printed_fields_recursive(item, content_start_page, parent_chapter_number)
         return
     if not isinstance(value, dict):
         return
+
+    # Static day records inherit the chapter number from their parent static chapter.
+    if parent_chapter_number and _is_subsection_or_day_item(value):
+        value.setdefault("section_number", parent_chapter_number)
+        value.setdefault("chapter_number", f"Chapter {parent_chapter_number}")
+        if "start_book_page" in value and "chapter_printed_start_page" not in value:
+            value["chapter_printed_start_page"] = value.get("start_book_page")
+        if "end_book_page" in value and "chapter_printed_end_page" not in value:
+            value["chapter_printed_end_page"] = value.get("end_book_page")
+
     _normalize_printed_fields_on_item(value, content_start_page)
-    for child in value.values():
+    child_parent = _chapter_number_for_item(value) or parent_chapter_number
+    for key, child in value.items():
+        if key in {"printed_pages", "chapter_printed_pages", "continuous_printed_pages"}:
+            continue
         if isinstance(child, (dict, list)):
-            _normalize_printed_fields_recursive(child, content_start_page)
+            _normalize_printed_fields_recursive(child, content_start_page, child_parent)
 
 
 def _copy_selected(raw: dict[str, Any], keys: tuple[str, ...]) -> dict[str, Any]:
     return {k: copy.deepcopy(raw[k]) for k in keys if k in raw and raw[k] is not None}
+
+
+def _clear_page_chapter_metadata(page: dict[str, Any], content_type: str) -> None:
+    """Remove chapter-local labels from blank/back-cover pages outside TOC ranges."""
+    for key in (
+        "chapter_number", "chapter_title", "section_number", "section_title",
+        "printed_page_number", "printed_page_label",
+        "chapter_printed_page_number", "chapter_printed_page_label",
+    ):
+        page[key] = None
+    page["content_type"] = content_type
+    page["assignment_status"] = "back_matter"
+    page["include_in_chapter_text"] = False
+    page["include_in_lesson_text"] = False
+    page["include_in_embeddings"] = False
+
+
+def _scrub_pages_outside_physical_ranges(page_extractions: list[dict[str, Any]], section_index: list[dict[str, Any]]) -> None:
+    """Final safety pass so blank separator/back-cover pages do not become 4/76 or 5/31.
+
+    The Physics contents page ends at 4/75 and 5/29. Blank separator pages and
+    back-cover pages can be assigned to the previous chapter by simple range
+    inference; this pass removes those labels from final page_extractions.
+    """
+    ranges: dict[str, tuple[int, int]] = {}
+    for item in section_index:
+        chapter_num = _chapter_number_for_item(item)
+        start = _as_int(item.get("physical_start_page"))
+        end = _as_int(item.get("physical_end_page"))
+        if chapter_num and start is not None and end is not None:
+            ranges[chapter_num] = (start, end)
+    if not ranges:
+        return
+    for page in page_extractions:
+        page_num = _as_int(page.get("page_number"))
+        chapter_num = _chapter_number_for_item(page)
+        if page_num is None or not chapter_num or chapter_num not in ranges:
+            continue
+        start, end = ranges[chapter_num]
+        if start <= page_num <= end:
+            continue
+        raw_text = (page.get("text") or page.get("text_plain") or page.get("production_safe_text") or "").strip()
+        if not raw_text:
+            _clear_page_chapter_metadata(page, "blank_page")
+        else:
+            _clear_page_chapter_metadata(page, "back_cover")
 
 
 PAGE_SLIM_KEYS = (
@@ -589,7 +793,7 @@ SECTION_SLIM_KEYS = (
     "book_page", "book_page_label", "chapter_printed_page_label", "start_page", "end_page", "start_pdf_page", "end_pdf_page",
     "printed_start_page", "printed_end_page", "start_printed_page", "end_printed_page",
     "chapter_printed_start_page", "chapter_printed_end_page", "printed_pages", "chapter_printed_pages",
-    "physical_start_page", "physical_end_page", "physical_printed_start_page", "physical_printed_end_page",
+    "physical_start_page", "physical_end_page", "physical_printed_start_page", "physical_printed_end_page", "physical_chapter_printed_start_page", "physical_chapter_printed_end_page", "teaching_start_pdf_page", "teaching_end_pdf_page", "teaching_printed_start_page", "teaching_printed_end_page", "teaching_chapter_printed_start_page", "teaching_chapter_printed_end_page",
     "page_count", "physical_page_count", "indexed_page_count", "indexed_page_numbers", "indexed_printed_page_numbers",
     "production_indexed_page_numbers", "production_printed_page_numbers", "chapter_printed_page_numbers",
     "text_sources", "quality_flags", "include_in_embeddings", "embedding_readiness", "text_length_chars",
@@ -614,7 +818,7 @@ CHAPTER_SLIM_KEYS = (
     "book_page", "book_page_label", "chapter_printed_page_label", "start_page", "end_page", "start_pdf_page", "end_pdf_page",
     "printed_start_page", "printed_end_page", "start_printed_page", "end_printed_page",
     "chapter_printed_start_page", "chapter_printed_end_page", "printed_pages", "chapter_printed_pages",
-    "physical_start_page", "physical_end_page", "physical_printed_start_page", "physical_printed_end_page",
+    "physical_start_page", "physical_end_page", "physical_printed_start_page", "physical_printed_end_page", "physical_chapter_printed_start_page", "physical_chapter_printed_end_page", "teaching_start_pdf_page", "teaching_end_pdf_page", "teaching_printed_start_page", "teaching_printed_end_page", "teaching_chapter_printed_start_page", "teaching_chapter_printed_end_page",
     "page_count", "physical_page_count", "production_indexed_page_numbers", "production_printed_page_numbers",
     "chapter_printed_page_numbers", "include_in_embeddings", "embedding_readiness", "text_length_chars",
     "unresolved_review_items", "reviewed_items_applied", "quality_flags",
@@ -670,7 +874,8 @@ def _slim_chapter(raw: dict[str, Any], content_start_page: int) -> dict[str, Any
 def _slim_static_chapter(raw: dict[str, Any], content_start_page: int) -> dict[str, Any]:
     item = _copy_selected(raw, (
         "sequence", "chapter_name", "book_page", "book_page_label", "start_pdf_page", "end_pdf_page",
-        "teaching_start_page", "teaching_end_page", "physical_start_page", "physical_end_page", "days",
+        "teaching_start_page", "teaching_end_page", "physical_start_page", "physical_end_page",
+        "physical_printed_start_page", "physical_printed_end_page", "toc_printed_start_page", "toc_printed_end_page", "days",
     ))
     _normalize_printed_fields_recursive(item, content_start_page)
     return item
@@ -698,8 +903,9 @@ def _build_common_extraction_payload(
         "Final JSON has the same DB-ingestion shape as English Poorvi and Maths RS Aggarwal.",
         "OCR, line safety filtering, formula review corrections, and final artifact gate are unchanged; this step only normalizes JSON layout.",
         "A final decorative OCR cleanup gate removes all-caps divider noise from DB/embedding-safe text fields.",
-        "printed_start_page/printed_end_page are continuous book-level page numbers for DB/UI consistency.",
-        "chapter_printed_start_page/chapter_printed_end_page preserve Physics chapter-local printed pages such as 2/1, 3/1, etc.",
+        "Chapter-level printed_start_page/printed_end_page match the PDF Contents page visible ranges such as 4/1-4/75.",
+        "continuous_printed_start_page/continuous_printed_end_page preserve the old continuous comparable numbers for DB/UI use.",
+        "Day/subsection printed_start_page/printed_end_page use visible chapter-local labels such as 4/29, with numeric local pages preserved in chapter_printed_* fields.",
         "Use page_extractions.text, section_index.production_section_text, and subsection production_subsection_text for production-safe embeddings.",
         "Exact formulas are included only after review through the corrections JSON; risky unreviewed formula/table/diagram OCR is excluded from production text.",
     ]
@@ -722,8 +928,11 @@ def _build_common_extraction_payload(
         "chapter_local_page_numbering": True,
         "subsection_policy": data.get("subsection_policy") or "practice_exercise_based_static_day_ranges",
         "page_numbering_note": (
-            "Physics source pages are chapter-local (1/1, 2/1, ...). "
-            "Final printed_* fields are continuous book-level pages; chapter_printed_* fields preserve local chapter page numbers."
+            "Physics source pages are chapter-local and restart in every chapter. "
+            "Chapter-level printed_start_page/printed_end_page match the visible TOC ranges "
+            "(1/1-1/68, 2/1-2/50, 3/1-3/50, 4/1-4/75, 5/1-5/29). "
+            "Day/subsection printed_start_page/printed_end_page use the same visible chapter-local label format; "
+            "continuous_printed_* fields preserve comparable PDF-offset numbers."
         ),
         "notes": notes,
         "section_index": section_index,
@@ -765,6 +974,7 @@ def build_full_audit_json(
     content_start_page = _content_start_page(data, section_index)
     for root in (page_extractions, chapters, section_index, static_chapters):
         _normalize_printed_fields_recursive(root, content_start_page)
+    _scrub_pages_outside_physical_ranges(page_extractions, section_index)
     return {
         "metadata": _metadata_block(data, document_key),
         "extraction": _build_common_extraction_payload(
@@ -811,6 +1021,7 @@ def build_db_consumable_json(
     section_index = [_slim_section(section, content_start_page) for section in raw_section_index]
     chapters = [_slim_chapter(chapter, content_start_page) for chapter in raw_chapters]
     static_chapters = [_slim_static_chapter(chapter, content_start_page) for chapter in raw_static_chapters]
+    _scrub_pages_outside_physical_ranges(page_extractions, section_index)
 
     return {
         "metadata": _metadata_block(data, document_key),
@@ -835,7 +1046,9 @@ def build_db_consumable_json(
 def publish_json(input_json: Path, document_id: str, document_key: str, allow_review_required: bool = False) -> tuple[dict[str, Any], dict[str, Any], str]:
     src = read_json(input_json)
     working = copy.deepcopy(src)
+    residual_cleanup_summary = clean_production_text_fields_inplace(working)
     cleanup_summary = _cleanup_decorative_ocr_artifacts(working)
+    prior_residual_cleanup_summary = (working.get("final_artifact_gate") or {}).get("residual_ocr_cleanup") or {}
     prior_cleanup_summary = (working.get("final_artifact_gate") or {}).get("decorative_ocr_cleanup") or {}
     cumulative_cleanup_summary = dict(cleanup_summary)
     cumulative_cleanup_summary["decorative_ocr_lines_removed"] = (
@@ -853,8 +1066,16 @@ def publish_json(input_json: Path, document_id: str, document_key: str, allow_re
     cumulative_cleanup_summary["decorative_ocr_cleanup_examples"] = []
     working["decorative_ocr_cleanup"] = cumulative_cleanup_summary
 
+    cumulative_residual_cleanup_summary = dict(residual_cleanup_summary)
+    for key, value in prior_residual_cleanup_summary.items():
+        if isinstance(value, int):
+            cumulative_residual_cleanup_summary[key] = int(cumulative_residual_cleanup_summary.get(key) or 0) + int(value)
+    working["residual_ocr_cleanup"] = cumulative_residual_cleanup_summary
+
     remaining_decorative_blockers = _scan_remaining_decorative_ocr_artifacts(working)
     stats = Counter(working.get("extraction", {}).get("statistics") or {})
+    for key, value in cumulative_residual_cleanup_summary.items():
+        stats[f"residual_ocr_cleanup_{key}"] = int(value or 0) if isinstance(value, int) else 0
     stats["decorative_ocr_lines_removed"] = int(cumulative_cleanup_summary.get("decorative_ocr_lines_removed") or 0)
     stats["decorative_ocr_text_fields_cleaned"] = int(cumulative_cleanup_summary.get("decorative_ocr_text_fields_cleaned") or 0)
     stats["final_decorative_ocr_blockers"] = len(remaining_decorative_blockers)
@@ -910,6 +1131,7 @@ def publish_json(input_json: Path, document_id: str, document_key: str, allow_re
         "final_artifact_blockers": int(stats.get("final_artifact_blockers") or 0),
         "final_decorative_ocr_blockers": int(stats.get("final_decorative_ocr_blockers") or 0),
         "decorative_ocr_lines_removed": int(stats.get("decorative_ocr_lines_removed") or 0),
+        "residual_ocr_cleanup": cumulative_residual_cleanup_summary,
         "decorative_ocr_cleanup_examples": [],
         "decorative_ocr_cleanup_example_count": int(cumulative_cleanup_summary.get("decorative_ocr_cleanup_example_count") or 0),
     }

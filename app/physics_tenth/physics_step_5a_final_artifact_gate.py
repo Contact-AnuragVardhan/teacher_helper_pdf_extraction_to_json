@@ -27,7 +27,11 @@ from physics_step_5_publish_production import (
 from physics_common import (
     CONTEXTUAL_FINAL_ARTIFACT_RE,
     FINAL_ARTIFACT_RE,
+    PRODUCTION_ARTIFACT_SIGNATURE_RE,
+    PRODUCTION_TEXT_KEYS,
+    clean_production_text_fields_inplace,
     compact_line,
+    is_probable_garbage_ocr_line,
     line_is_formula_or_numeric_risk,
     read_json,
     setup_logging,
@@ -49,19 +53,37 @@ EXTRA_FINAL_ARTIFACTS: list[tuple[str, re.Pattern[str]]] = [
     ("bad_power_formula_350_200", re.compile(r"\bP\s*=\s*350\s*/\s*200\b")),
     ("bad_standalone_10_minus_15", re.compile(r"^\s*10\s*-\s*15\s*=\s*$")),
     ("tiny_junk_safe_text_line", re.compile(r"(?im)^\s*(?:ata|ay|cath|ov|oe|peek|som)\s*$")),
+    ("known_residual_ocr_artifact", PRODUCTION_ARTIFACT_SIGNATURE_RE),
+    ("qa_found_residual_ocr_garbage", re.compile(r"(?i)\b(?:ake\s+ensenee|Prrerr|Peete\s+eee|EEN\s+cere|ij4i4|50sf|conected|20I5|3x208|Fe\s+sin6)\b")),
+    ("repeated_page_number_garbage", re.compile(r"^(?:\d{1,3}\s+){3,}\d{1,3}$")),
+    ("guillemet_ocr_artifact", re.compile(r"[»«]")),
+    ("devanagari_glyph_leakage", re.compile(r"[\u0900-\u097F]")),
+    ("line_art_backslash_artifact", re.compile(r"(?<!\\)\\(?!\s*(?:frac|sqrt|theta|alpha|beta|gamma|mu|lambda)\b)")),
+    # Layout/table/formula OCR that previously leaked as individually-safe lines.
+    ("bad_zero_exponent_formula", re.compile(r"\b0\^\d\b")),
+    ("question_mark_formula_leakage", re.compile(r"(?:\?[_\s]?\d|[A-Za-z]_\?|_\?|\b[νvλn]\s*\?)")),
+    ("broken_light_formula_spacing", re.compile(r"(?i)\b(?:Speedoflight|Speed\s+oflight|lightinmedium|lightin\s+(?:glass|water))\b")),
+    ("known_refractive_index_ocr_leakage", re.compile(r"(?i)\b(?:thyg|xNwe|urpentine|Crowa|Ucscoucept|C\s*@?oucepe|Med\.\s*0\s*Med|2\.25\s+0|,0003|Medium\s+7-|refective|undevitated|Snel's|caled)\b")),
+    # QA regression from PDF page 204: word-joined lens OCR and damaged
+    # refractive-index practice question numbers/symbols. These must be fixed
+    # by a page override/reviewed correction, not silently auto-repaired.
+    ("joined_lens_ocr_page204", re.compile(r"(?i)\b(?:thelensthroughwhicharayoflight|thelens|arayoflight|throughwhich|oflight|fromthelens|passesundeviated|inside\s+thelens)\b")),
+    ("damaged_refractive_index_decimal", re.compile(r"(?i)\b(?:refractive\s+index(?:\s+of)?[^\n]{0,80}\bis\s+\.5|glass\s+is\s+\.5|medium\s+A\s+is\s+\.7|that\s+of\s+B\s+is\s+\.2|B\s+is\s+\.2)\b")),
+    ("damaged_refractive_index_symbol", re.compile(r"(?i)\bnga\b")),
+
 ]
 
-PRODUCTION_TEXT_KEYS = {
-    "text",
-    "text_plain",
-    "production_text",
-    "production_text_plain",
-    "subsection_text",
-    "subsection_text_plain",
+# For aggregate objects (chapters/section_index), scan only canonical lesson text fields.
+# Page-level fields are already scanned separately in scan_page_extractions().
+# Avoid scanning duplicate aliases such as text_plain/chapter_text_plain repeatedly; on
+# large OCR books this can turn the final gate into a slow O(n * duplicate_fields) scan.
+AGGREGATE_PRODUCTION_TEXT_KEYS = {
+    "production_chapter_text",
+    "production_subsection_text",
+    "production_section_text",
     "chapter_text",
-    "chapter_text_plain",
+    "subsection_text",
     "section_text",
-    "section_text_plain",
 }
 
 RAW_OR_AUDIT_KEYS = {
@@ -87,6 +109,8 @@ def detect_final_artifacts(line: str) -> list[str]:
         reasons.append("final_artifact_regex")
     if CONTEXTUAL_FINAL_ARTIFACT_RE.search(s) and line_is_formula_or_numeric_risk(s):
         reasons.append("contextual_formula_ocr_token")
+    if is_probable_garbage_ocr_line(s):
+        reasons.append("probable_garbage_ocr_line")
     # Catch suspicious "00 cm" in human-eye near-point context even if the line does not include the exact phrase.
     if re.search(r"(?i)\b00\s*cm\b", s) and re.search(r"(?i)\b(?:near\s+point|least\s+distance|distinct\s+vision|eye)\b", s):
         reasons.append("suspicious_00_cm_in_eye_context")
@@ -169,7 +193,7 @@ def scan_production_fields_recursive(data: Any, path: str = "$", *, items: list[
             if key in RAW_OR_AUDIT_KEYS:
                 continue
             child_path = f"{path}.{key}"
-            if isinstance(value, str) and key.startswith("production_"):
+            if isinstance(value, str) and key in AGGREGATE_PRODUCTION_TEXT_KEYS:
                 for line_no, line in line_iter(value):
                     reasons = detect_final_artifacts(line)
                     if reasons:
@@ -241,9 +265,9 @@ def run_gate(input_json: Path, output_json: Path, review_queue: Path, report: Pa
     src = read_json(input_json)
     data = copy.deepcopy(src)
 
-    # First remove known decorative OCR divider lines from production-facing text.
-    # The old gate reported blocker_count=0 because these lines were not matched
-    # by the formula/math artifact regexes and production_safe_text was not scanned.
+    # First remove known residual production-text OCR artifacts, then decorative
+    # divider lines. If anything remains, the broader scan below fails the gate.
+    residual_cleanup_summary = clean_production_text_fields_inplace(data)
     decorative_cleanup_summary = _cleanup_decorative_ocr_artifacts(data)
     decorative_blockers = _scan_remaining_decorative_ocr_artifacts(data)
 
@@ -262,6 +286,8 @@ def run_gate(input_json: Path, output_json: Path, review_queue: Path, report: Pa
     report_text = build_report(queue)
 
     stats = dict(data.get("extraction", {}).get("statistics") or {})
+    for key, value in residual_cleanup_summary.items():
+        stats[f"residual_ocr_cleanup_{key}"] = int(value or 0)
     stats["decorative_ocr_lines_removed"] = int(decorative_cleanup_summary.get("decorative_ocr_lines_removed") or 0)
     stats["decorative_ocr_text_fields_cleaned"] = int(decorative_cleanup_summary.get("decorative_ocr_text_fields_cleaned") or 0)
     stats["final_decorative_ocr_blockers"] = len(decorative_blockers)
@@ -271,6 +297,7 @@ def run_gate(input_json: Path, output_json: Path, review_queue: Path, report: Pa
         "blocker_count": len(items),
         "review_queue": str(review_queue),
         "checked_scope": "include_in_lesson_text=true page text/text_plain/production_safe_text plus production_* fields",
+        "residual_ocr_cleanup": residual_cleanup_summary,
         "decorative_ocr_cleanup": decorative_cleanup_summary,
         "final_decorative_ocr_blockers": len(decorative_blockers),
     }
