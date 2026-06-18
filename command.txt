@@ -14,3 +14,29 @@ python app/make_physics_grade10.py `
 
 
 python app/make_physics_grade10.py --force
+
+Grade 10 maths book:
+1. Generate JSON from scratch:
+python app/make_grade10_maths.py `
+  --pdf input/Grade10_Maths.pdf `
+  --output-dir output/maths_rdsharma_grade10 `
+  --force `
+  --repair-with-vision `
+  --llm-repair-failed-pages `
+  --llm-repair-max-rounds 2 `
+  --strict-complete
+
+2. Verify existing output only:
+python app/maths_rdsharma_grade10/make_grade10_maths_step_6_residual_production_audit.py `
+  --input output/maths_rdsharma_grade10/Grade10_Maths_production_ready.json `
+  --output output/maths_rdsharma_grade10/Grade10_Maths_production_ready.json `
+  --report output/maths_rdsharma_grade10/Grade10_Maths_residual_production_audit_report.txt `
+  --remaining-csv output/maths_rdsharma_grade10/Grade10_Maths_residual_production_remaining_pages.csv `
+  --strict-complete
+
+Expected good result:
+Residual production audit remaining pages: 0
+Residual production audit remaining subsections: 0
+Hard production blocker count: 0
+Production status: production_complete_ready
+

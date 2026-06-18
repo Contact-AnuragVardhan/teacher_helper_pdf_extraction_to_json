@@ -12,8 +12,8 @@
   "content_end_pdf_page": 751,
   "printed_start_page": 1,
   "printed_end_page": 744,
-  "subsection_policy": "maintained_static_toc_section_ranges_read_from_json_file",
-  "day_split_policy": "Each TOC section/sub-section becomes one Day entry. Same-start sections intentionally share the same printed/PDF page because the book starts them on the same page.",
+  "subsection_policy": "exercise_boundary_day_ranges_read_from_pdf_exercise_headings",
+  "day_split_policy": "Exercise-boundary split. Day 1 runs from chapter start to the first exercise heading. Then each day runs from the current exercise heading to the next exercise heading. The final day runs from the last exercise heading to chapter end. If an exercise heading is immediately followed by another exercise heading, the followed-up exercise is merged into the same day. Because only page ranges are stored, exercise boundary pages intentionally overlap between adjacent days.",
   "chapters": [
     {
       "sequence": 1,
@@ -27,107 +27,181 @@
       "days": [
         {
           "day": 1,
-          "day_title": "1.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "1.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "1.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 1.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.pre_exercise",
+          "section_title": "Start of chapter to Exercise 1.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 1.1",
           "start_book_page": 1,
-          "end_book_page": 1,
+          "end_book_page": 8,
           "start_pdf_page": 8,
-          "end_pdf_page": 8,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 15,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "1.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "1.2 Divisibility",
-          "day_type": "toc_section",
-          "section_number": "1.2",
-          "section_title": "Divisibility",
+          "day_title": "Exercise 1.1 to Exercise 1.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.1",
+          "section_title": "Exercise 1.1",
           "exercises": [
-            "1.2"
+            "1.1"
           ],
-          "includes": "Divisibility",
-          "start_book_page": 1,
-          "end_book_page": 2,
-          "start_pdf_page": 8,
-          "end_pdf_page": 9,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 1.1 to Exercise 1.2",
+          "start_book_page": 8,
+          "end_book_page": 21,
+          "start_pdf_page": 15,
+          "end_pdf_page": 28,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.1",
+          "end_boundary_exercise": "1.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "1.3 Euclid's division lemma",
-          "day_type": "toc_section",
-          "section_number": "1.3",
-          "section_title": "Euclid's division lemma",
+          "day_title": "Exercise 1.2 to Exercise 1.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.2",
+          "section_title": "Exercise 1.2",
           "exercises": [
-            "1.3"
+            "1.2"
           ],
-          "includes": "Euclid's division lemma",
-          "start_book_page": 3,
-          "end_book_page": 10,
-          "start_pdf_page": 10,
-          "end_pdf_page": 17,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 1.2 to Exercise 1.3",
+          "start_book_page": 21,
+          "end_book_page": 25,
+          "start_pdf_page": 28,
+          "end_pdf_page": 32,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.2",
+          "end_boundary_exercise": "1.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "1.4 Euclid's division algorithm",
-          "day_type": "toc_section",
-          "section_number": "1.4",
-          "section_title": "Euclid's division algorithm",
+          "day_title": "Exercise 1.3 to Exercise 1.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.3",
+          "section_title": "Exercise 1.3",
           "exercises": [
-            "1.4"
+            "1.3"
           ],
-          "includes": "Euclid's division algorithm",
-          "start_book_page": 11,
-          "end_book_page": 21,
-          "start_pdf_page": 18,
-          "end_pdf_page": 28,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 1.3 to Exercise 1.4",
+          "start_book_page": 25,
+          "end_book_page": 28,
+          "start_pdf_page": 32,
+          "end_pdf_page": 35,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.3",
+          "end_boundary_exercise": "1.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "1.5 The fundamental theorem of arithmetic",
-          "day_type": "toc_section",
-          "section_number": "1.5",
-          "section_title": "The fundamental theorem of arithmetic",
+          "day_title": "Exercise 1.4 to Exercise 1.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.4",
+          "section_title": "Exercise 1.4",
           "exercises": [
-            "1.5"
+            "1.4"
           ],
-          "includes": "The fundamental theorem of arithmetic",
-          "start_book_page": 22,
-          "end_book_page": 24,
-          "start_pdf_page": 29,
-          "end_pdf_page": 31,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 1.4 to Exercise 1.5",
+          "start_book_page": 28,
+          "end_book_page": 32,
+          "start_pdf_page": 35,
+          "end_pdf_page": 39,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.4",
+          "end_boundary_exercise": "1.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "1.6 Some applications of the fundamental theorem of arithmetic",
-          "day_type": "toc_section",
+          "day_title": "Exercise 1.5 to Exercise 1.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "1.5",
+          "section_title": "Exercise 1.5",
+          "exercises": [
+            "1.5"
+          ],
+          "includes": "Exercise 1.5 to Exercise 1.6",
+          "start_book_page": 32,
+          "end_book_page": 37,
+          "start_pdf_page": 39,
+          "end_pdf_page": 44,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.5",
+          "end_boundary_exercise": "1.6",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 7,
+          "day_title": "Exercise 1.6 to end of chapter",
+          "day_type": "exercise_boundary_range",
           "section_number": "1.6",
-          "section_title": "Some applications of the fundamental theorem of arithmetic",
+          "section_title": "Exercise 1.6",
           "exercises": [
             "1.6"
           ],
-          "includes": "Some applications of the fundamental theorem of arithmetic",
-          "start_book_page": 25,
+          "includes": "Exercise 1.6 to end of chapter",
+          "start_book_page": 37,
           "end_book_page": 41,
-          "start_pdf_page": 32,
+          "start_pdf_page": 44,
           "end_pdf_page": 48,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "1.6",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "1.1",
+          "exercise_title": "Exercise 1.1",
+          "raw_heading_from_pdf_text": "EXERCISE .",
+          "start_book_page": 8,
+          "start_pdf_page": 15
+        },
+        {
+          "exercise_number": "1.2",
+          "exercise_title": "Exercise 1.2",
+          "raw_heading_from_pdf_text": "EXERCISE 7.2",
+          "start_book_page": 21,
+          "start_pdf_page": 28
+        },
+        {
+          "exercise_number": "1.3",
+          "exercise_title": "Exercise 1.3",
+          "raw_heading_from_pdf_text": "EXERCISE 7.3",
+          "start_book_page": 25,
+          "start_pdf_page": 32
+        },
+        {
+          "exercise_number": "1.4",
+          "exercise_title": "Exercise 1.4",
+          "raw_heading_from_pdf_text": "EXERCISE 7.4",
+          "start_book_page": 28,
+          "start_pdf_page": 35
+        },
+        {
+          "exercise_number": "1.5",
+          "exercise_title": "Exercise 1.5",
+          "raw_heading_from_pdf_text": "EXERCISE 7.5",
+          "start_book_page": 32,
+          "start_pdf_page": 39
+        },
+        {
+          "exercise_number": "1.6",
+          "exercise_title": "Exercise 1.6",
+          "raw_heading_from_pdf_text": "EXERCISE 7.6",
+          "start_book_page": 37,
+          "start_pdf_page": 44
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 2,
@@ -141,107 +215,103 @@
       "days": [
         {
           "day": 1,
-          "day_title": "2.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "2.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "2.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 2.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "2.pre_exercise",
+          "section_title": "Start of chapter to Exercise 2.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 2.1",
           "start_book_page": 42,
-          "end_book_page": 42,
+          "end_book_page": 64,
           "start_pdf_page": 49,
-          "end_pdf_page": 49,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 71,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "2.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "2.2 Recapitulation",
-          "day_type": "toc_section",
-          "section_number": "2.2",
-          "section_title": "Recapitulation",
+          "day_title": "Exercise 2.1 to Exercise 2.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "2.1",
+          "section_title": "Exercise 2.1",
           "exercises": [
-            "2.2"
+            "2.1"
           ],
-          "includes": "Recapitulation",
-          "start_book_page": 42,
-          "end_book_page": 43,
-          "start_pdf_page": 49,
-          "end_pdf_page": 50,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 2.1 to Exercise 2.2",
+          "start_book_page": 64,
+          "end_book_page": 71,
+          "start_pdf_page": 71,
+          "end_pdf_page": 78,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "2.1",
+          "end_boundary_exercise": "2.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "2.3 Graph of polynomials",
-          "day_type": "toc_section",
-          "section_number": "2.3",
-          "section_title": "Graph of polynomials",
+          "day_title": "Exercise 2.2 to Exercise 2.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "2.2",
+          "section_title": "Exercise 2.2",
           "exercises": [
-            "2.3"
+            "2.2"
           ],
-          "includes": "Graph of polynomials",
-          "start_book_page": 44,
-          "end_book_page": 51,
-          "start_pdf_page": 51,
-          "end_pdf_page": 58,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 2.2 to Exercise 2.3",
+          "start_book_page": 71,
+          "end_book_page": 86,
+          "start_pdf_page": 78,
+          "end_pdf_page": 93,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "2.2",
+          "end_boundary_exercise": "2.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "2.4 Geometrical meaning of the zeros of a polynomial",
-          "day_type": "toc_section",
-          "section_number": "2.4",
-          "section_title": "Geometrical meaning of the zeros of a polynomial",
+          "day_title": "Exercise 2.3 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "2.3",
+          "section_title": "Exercise 2.3",
           "exercises": [
-            "2.4"
+            "2.3"
           ],
-          "includes": "Geometrical meaning of the zeros of a polynomial",
-          "start_book_page": 52,
-          "end_book_page": 52,
-          "start_pdf_page": 59,
-          "end_pdf_page": 59,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 5,
-          "day_title": "2.5 Relationship between the zeros and coefficients of a polynomial",
-          "day_type": "toc_section",
-          "section_number": "2.5",
-          "section_title": "Relationship between the zeros and coefficients of a polynomial",
-          "exercises": [
-            "2.5"
-          ],
-          "includes": "Relationship between the zeros and coefficients of a polynomial",
-          "start_book_page": 53,
-          "end_book_page": 71,
-          "start_pdf_page": 60,
-          "end_pdf_page": 78,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 6,
-          "day_title": "2.6 Division algorithm for polynomials",
-          "day_type": "toc_section",
-          "section_number": "2.6",
-          "section_title": "Division algorithm for polynomials",
-          "exercises": [
-            "2.6"
-          ],
-          "includes": "Division algorithm for polynomials",
-          "start_book_page": 72,
+          "includes": "Exercise 2.3 to end of chapter",
+          "start_book_page": 86,
           "end_book_page": 91,
-          "start_pdf_page": 79,
+          "start_pdf_page": 93,
           "end_pdf_page": 98,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "2.3",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "2.1",
+          "exercise_title": "Exercise 2.1",
+          "raw_heading_from_pdf_text": "EXERCISE 2.7",
+          "start_book_page": 64,
+          "start_pdf_page": 71
+        },
+        {
+          "exercise_number": "2.2",
+          "exercise_title": "Exercise 2.2",
+          "raw_heading_from_pdf_text": "EXERCISE 2.2",
+          "start_book_page": 71,
+          "start_pdf_page": 78
+        },
+        {
+          "exercise_number": "2.3",
+          "exercise_title": "Exercise 2.3",
+          "raw_heading_from_pdf_text": "EXERCISE 2.3",
+          "start_book_page": 86,
+          "start_pdf_page": 93
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 3,
@@ -255,124 +325,311 @@
       "days": [
         {
           "day": 1,
-          "day_title": "3.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "3.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "3.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 3.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.pre_exercise",
+          "section_title": "Start of chapter to Exercise 3.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 3.1",
           "start_book_page": 92,
-          "end_book_page": 92,
+          "end_book_page": 99,
           "start_pdf_page": 99,
-          "end_pdf_page": 99,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 106,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "3.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "3.2 Simultaneous linear equations in two variables",
-          "day_type": "toc_section",
-          "section_number": "3.2",
-          "section_title": "Simultaneous linear equations in two variables",
+          "day_title": "Exercise 3.1 to Exercise 3.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.1",
+          "section_title": "Exercise 3.1",
           "exercises": [
-            "3.2"
+            "3.1"
           ],
-          "includes": "Simultaneous linear equations in two variables",
-          "start_book_page": 92,
-          "end_book_page": 93,
-          "start_pdf_page": 99,
-          "end_pdf_page": 100,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 3.1 to Exercise 3.2",
+          "start_book_page": 99,
+          "end_book_page": 108,
+          "start_pdf_page": 106,
+          "end_pdf_page": 115,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.1",
+          "end_boundary_exercise": "3.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "3.3 Graphical representation of linear equations",
-          "day_type": "toc_section",
-          "section_number": "3.3",
-          "section_title": "Graphical representation of linear equations",
+          "day_title": "Exercise 3.2 to Exercise 3.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.2",
+          "section_title": "Exercise 3.2",
           "exercises": [
-            "3.3"
+            "3.2"
           ],
-          "includes": "Graphical representation of linear equations",
-          "start_book_page": 94,
-          "end_book_page": 99,
-          "start_pdf_page": 101,
-          "end_pdf_page": 106,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 3.2 to Exercise 3.3",
+          "start_book_page": 108,
+          "end_book_page": 118,
+          "start_pdf_page": 115,
+          "end_pdf_page": 125,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.2",
+          "end_boundary_exercise": "3.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "3.4 Graphical method of solving simultaneous linear equations",
-          "day_type": "toc_section",
-          "section_number": "3.4",
-          "section_title": "Graphical method of solving simultaneous linear equations",
+          "day_title": "Exercise 3.3 to Exercise 3.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.3",
+          "section_title": "Exercise 3.3",
           "exercises": [
-            "3.4"
+            "3.3"
           ],
-          "includes": "Graphical method of solving simultaneous linear equations",
-          "start_book_page": 100,
-          "end_book_page": 109,
-          "start_pdf_page": 107,
-          "end_pdf_page": 116,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 3.3 to Exercise 3.4",
+          "start_book_page": 118,
+          "end_book_page": 127,
+          "start_pdf_page": 125,
+          "end_pdf_page": 134,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.3",
+          "end_boundary_exercise": "3.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "3.5 Algebraic methods of solving simultaneous linear equations in two variables",
-          "day_type": "toc_section",
-          "section_number": "3.5",
-          "section_title": "Algebraic methods of solving simultaneous linear equations in two variables",
+          "day_title": "Exercise 3.4 to Exercise 3.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.4",
+          "section_title": "Exercise 3.4",
           "exercises": [
-            "3.5"
+            "3.4"
           ],
-          "includes": "Algebraic methods of solving simultaneous linear equations in two variables",
-          "start_book_page": 110,
-          "end_book_page": 127,
-          "start_pdf_page": 117,
-          "end_pdf_page": 134,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 3.4 to Exercise 3.5",
+          "start_book_page": 127,
+          "end_book_page": 137,
+          "start_pdf_page": 134,
+          "end_pdf_page": 144,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.4",
+          "end_boundary_exercise": "3.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "3.6 Conditions for solvability (or consistency)",
-          "day_type": "toc_section",
-          "section_number": "3.6",
-          "section_title": "Conditions for solvability (or consistency)",
+          "day_title": "Exercise 3.5 to Exercise 3.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.5",
+          "section_title": "Exercise 3.5",
           "exercises": [
-            "3.6"
+            "3.5"
           ],
-          "includes": "Conditions for solvability (or consistency)",
-          "start_book_page": 128,
-          "end_book_page": 138,
-          "start_pdf_page": 135,
-          "end_pdf_page": 145,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 3.5 to Exercise 3.6",
+          "start_book_page": 137,
+          "end_book_page": 140,
+          "start_pdf_page": 144,
+          "end_pdf_page": 147,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.5",
+          "end_boundary_exercise": "3.6",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 7,
-          "day_title": "3.7 Applications to word problems",
-          "day_type": "toc_section",
+          "day_title": "Exercise 3.6 to Exercise 3.7",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.6",
+          "section_title": "Exercise 3.6",
+          "exercises": [
+            "3.6"
+          ],
+          "includes": "Exercise 3.6 to Exercise 3.7",
+          "start_book_page": 140,
+          "end_book_page": 145,
+          "start_pdf_page": 147,
+          "end_pdf_page": 152,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.6",
+          "end_boundary_exercise": "3.7",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 8,
+          "day_title": "Exercise 3.7 to Exercise 3.8",
+          "day_type": "exercise_boundary_range",
           "section_number": "3.7",
-          "section_title": "Applications to word problems",
+          "section_title": "Exercise 3.7",
           "exercises": [
             "3.7"
           ],
-          "includes": "Applications to word problems",
-          "start_book_page": 139,
+          "includes": "Exercise 3.7 to Exercise 3.8",
+          "start_book_page": 145,
+          "end_book_page": 147,
+          "start_pdf_page": 152,
+          "end_pdf_page": 154,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.7",
+          "end_boundary_exercise": "3.8",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 9,
+          "day_title": "Exercise 3.8 to Exercise 3.9",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.8",
+          "section_title": "Exercise 3.8",
+          "exercises": [
+            "3.8"
+          ],
+          "includes": "Exercise 3.8 to Exercise 3.9",
+          "start_book_page": 147,
+          "end_book_page": 149,
+          "start_pdf_page": 154,
+          "end_pdf_page": 156,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.8",
+          "end_boundary_exercise": "3.9",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 10,
+          "day_title": "Exercise 3.9 to Exercise 3.10",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.9",
+          "section_title": "Exercise 3.9",
+          "exercises": [
+            "3.9"
+          ],
+          "includes": "Exercise 3.9 to Exercise 3.10",
+          "start_book_page": 149,
+          "end_book_page": 156,
+          "start_pdf_page": 156,
+          "end_pdf_page": 163,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.9",
+          "end_boundary_exercise": "3.10",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 11,
+          "day_title": "Exercise 3.10 to Exercise 3.11",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.10",
+          "section_title": "Exercise 3.10",
+          "exercises": [
+            "3.10"
+          ],
+          "includes": "Exercise 3.10 to Exercise 3.11",
+          "start_book_page": 156,
+          "end_book_page": 163,
+          "start_pdf_page": 163,
+          "end_pdf_page": 170,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.10",
+          "end_boundary_exercise": "3.11",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 12,
+          "day_title": "Exercise 3.11 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "3.11",
+          "section_title": "Exercise 3.11",
+          "exercises": [
+            "3.11"
+          ],
+          "includes": "Exercise 3.11 to end of chapter",
+          "start_book_page": 163,
           "end_book_page": 165,
-          "start_pdf_page": 146,
+          "start_pdf_page": 170,
           "end_pdf_page": 172,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "3.11",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "3.1",
+          "exercise_title": "Exercise 3.1",
+          "raw_heading_from_pdf_text": "EXERCISE 3.7",
+          "start_book_page": 99,
+          "start_pdf_page": 106
+        },
+        {
+          "exercise_number": "3.2",
+          "exercise_title": "Exercise 3.2",
+          "raw_heading_from_pdf_text": "EXERCISE 3.2",
+          "start_book_page": 108,
+          "start_pdf_page": 115
+        },
+        {
+          "exercise_number": "3.3",
+          "exercise_title": "Exercise 3.3",
+          "raw_heading_from_pdf_text": "EXERCISE 3.3",
+          "start_book_page": 118,
+          "start_pdf_page": 125
+        },
+        {
+          "exercise_number": "3.4",
+          "exercise_title": "Exercise 3.4",
+          "raw_heading_from_pdf_text": "EXERCISE 3.4",
+          "start_book_page": 127,
+          "start_pdf_page": 134
+        },
+        {
+          "exercise_number": "3.5",
+          "exercise_title": "Exercise 3.5",
+          "raw_heading_from_pdf_text": "EXERCISE 3.5",
+          "start_book_page": 137,
+          "start_pdf_page": 144
+        },
+        {
+          "exercise_number": "3.6",
+          "exercise_title": "Exercise 3.6",
+          "raw_heading_from_pdf_text": "EXERCISE 3.6",
+          "start_book_page": 140,
+          "start_pdf_page": 147
+        },
+        {
+          "exercise_number": "3.7",
+          "exercise_title": "Exercise 3.7",
+          "raw_heading_from_pdf_text": "EXERCISE 3.7",
+          "start_book_page": 145,
+          "start_pdf_page": 152
+        },
+        {
+          "exercise_number": "3.8",
+          "exercise_title": "Exercise 3.8",
+          "raw_heading_from_pdf_text": "EXERCISE 3.8",
+          "start_book_page": 147,
+          "start_pdf_page": 154
+        },
+        {
+          "exercise_number": "3.9",
+          "exercise_title": "Exercise 3.9",
+          "raw_heading_from_pdf_text": "EXERCISE 3.9",
+          "start_book_page": 149,
+          "start_pdf_page": 156
+        },
+        {
+          "exercise_number": "3.10",
+          "exercise_title": "Exercise 3.10",
+          "raw_heading_from_pdf_text": "EXERCISE 3.0",
+          "start_book_page": 156,
+          "start_pdf_page": 163
+        },
+        {
+          "exercise_number": "3.11",
+          "exercise_title": "Exercise 3.11",
+          "raw_heading_from_pdf_text": "EXERCISE 3.7",
+          "start_book_page": 163,
+          "start_pdf_page": 170
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 4,
@@ -386,124 +643,321 @@
       "days": [
         {
           "day": 1,
-          "day_title": "4.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "4.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "4.1"
-          ],
-          "includes": "Introduction",
-          "start_book_page": 166,
-          "end_book_page": 166,
-          "start_pdf_page": 173,
-          "end_pdf_page": 173,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 2,
-          "day_title": "4.2 Quadratic equation",
-          "day_type": "toc_section",
-          "section_number": "4.2",
-          "section_title": "Quadratic equation",
-          "exercises": [
-            "4.2"
-          ],
-          "includes": "Quadratic equation",
+          "day_title": "Start of chapter to Exercise 4.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.pre_exercise",
+          "section_title": "Start of chapter to Exercise 4.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 4.1",
           "start_book_page": 166,
           "end_book_page": 168,
           "start_pdf_page": 173,
           "end_pdf_page": 175,
-          "range_source": "book_contents_in_detail_static_json",
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "4.1",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Exercise 4.1 to Exercise 4.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.1",
+          "section_title": "Exercise 4.1",
+          "exercises": [
+            "4.1"
+          ],
+          "includes": "Exercise 4.1 to Exercise 4.2",
+          "start_book_page": 168,
+          "end_book_page": 171,
+          "start_pdf_page": 175,
+          "end_pdf_page": 178,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.1",
+          "end_boundary_exercise": "4.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "4.3 Formulation of quadratic equations",
-          "day_type": "toc_section",
-          "section_number": "4.3",
-          "section_title": "Formulation of quadratic equations",
+          "day_title": "Exercise 4.2 to Exercise 4.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.2",
+          "section_title": "Exercise 4.2",
           "exercises": [
-            "4.3"
+            "4.2"
           ],
-          "includes": "Formulation of quadratic equations",
-          "start_book_page": 169,
-          "end_book_page": 171,
-          "start_pdf_page": 176,
-          "end_pdf_page": 178,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 4.2 to Exercise 4.3",
+          "start_book_page": 171,
+          "end_book_page": 180,
+          "start_pdf_page": 178,
+          "end_pdf_page": 187,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.2",
+          "end_boundary_exercise": "4.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "4.4 Solution of a quadratic equation by factorization method",
-          "day_type": "toc_section",
-          "section_number": "4.4",
-          "section_title": "Solution of a quadratic equation by factorization method",
+          "day_title": "Exercise 4.3 to Exercise 4.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.3",
+          "section_title": "Exercise 4.3",
           "exercises": [
-            "4.4"
+            "4.3"
           ],
-          "includes": "Solution of a quadratic equation by factorization method",
-          "start_book_page": 172,
-          "end_book_page": 180,
-          "start_pdf_page": 179,
-          "end_pdf_page": 187,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 4.3 to Exercise 4.4",
+          "start_book_page": 180,
+          "end_book_page": 185,
+          "start_pdf_page": 187,
+          "end_pdf_page": 192,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.3",
+          "end_boundary_exercise": "4.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "4.5 Solution of a quadratic equation by using the quadratic formula (Shreedharacharya's rule)",
-          "day_type": "toc_section",
-          "section_number": "4.5",
-          "section_title": "Solution of a quadratic equation by using the quadratic formula (Shreedharacharya's rule)",
+          "day_title": "Exercise 4.4 to Exercise 4.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.4",
+          "section_title": "Exercise 4.4",
           "exercises": [
-            "4.5"
+            "4.4"
           ],
-          "includes": "Solution of a quadratic equation by using the quadratic formula (Shreedharacharya's rule)",
-          "start_book_page": 181,
-          "end_book_page": 184,
-          "start_pdf_page": 188,
-          "end_pdf_page": 191,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 4.4 to Exercise 4.5",
+          "start_book_page": 185,
+          "end_book_page": 191,
+          "start_pdf_page": 192,
+          "end_pdf_page": 198,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.4",
+          "end_boundary_exercise": "4.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "4.6 Nature of roots",
-          "day_type": "toc_section",
-          "section_number": "4.6",
-          "section_title": "Nature of roots",
+          "day_title": "Exercise 4.5 to Exercise 4.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.5",
+          "section_title": "Exercise 4.5",
           "exercises": [
-            "4.6"
+            "4.5"
           ],
-          "includes": "Nature of roots",
-          "start_book_page": 185,
-          "end_book_page": 192,
-          "start_pdf_page": 192,
-          "end_pdf_page": 199,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 4.5 to Exercise 4.6",
+          "start_book_page": 191,
+          "end_book_page": 199,
+          "start_pdf_page": 198,
+          "end_pdf_page": 206,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.5",
+          "end_boundary_exercise": "4.6",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 7,
-          "day_title": "4.7 Solutions of problems involving quadratic equations",
-          "day_type": "toc_section",
+          "day_title": "Exercise 4.6 to Exercise 4.7",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.6",
+          "section_title": "Exercise 4.6",
+          "exercises": [
+            "4.6"
+          ],
+          "includes": "Exercise 4.6 to Exercise 4.7",
+          "start_book_page": 199,
+          "end_book_page": 203,
+          "start_pdf_page": 206,
+          "end_pdf_page": 210,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.6",
+          "end_boundary_exercise": "4.7",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 8,
+          "day_title": "Exercise 4.7 to Exercise 4.8",
+          "day_type": "exercise_boundary_range",
           "section_number": "4.7",
-          "section_title": "Solutions of problems involving quadratic equations",
+          "section_title": "Exercise 4.7",
           "exercises": [
             "4.7"
           ],
-          "includes": "Solutions of problems involving quadratic equations",
-          "start_book_page": 193,
+          "includes": "Exercise 4.7 to Exercise 4.8",
+          "start_book_page": 203,
+          "end_book_page": 205,
+          "start_pdf_page": 210,
+          "end_pdf_page": 212,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.7",
+          "end_boundary_exercise": "4.8",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 9,
+          "day_title": "Exercise 4.8 to Exercise 4.9",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.8",
+          "section_title": "Exercise 4.8",
+          "exercises": [
+            "4.8"
+          ],
+          "includes": "Exercise 4.8 to Exercise 4.9",
+          "start_book_page": 205,
+          "end_book_page": 207,
+          "start_pdf_page": 212,
+          "end_pdf_page": 214,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.8",
+          "end_boundary_exercise": "4.9",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 10,
+          "day_title": "Exercise 4.9 to Exercises 4.10-4.11",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.9",
+          "section_title": "Exercise 4.9",
+          "exercises": [
+            "4.9"
+          ],
+          "includes": "Exercise 4.9 to Exercises 4.10-4.11",
+          "start_book_page": 207,
+          "end_book_page": 212,
+          "start_pdf_page": 214,
+          "end_pdf_page": 219,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.9",
+          "end_boundary_exercise": "4.10-4.11",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 11,
+          "day_title": "Exercises 4.10-4.11 to Exercise 4.12",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.10-4.11",
+          "section_title": "Exercises 4.10-4.11",
+          "exercises": [
+            "4.10",
+            "4.11"
+          ],
+          "includes": "Exercises 4.10-4.11 to Exercise 4.12",
+          "start_book_page": 212,
+          "end_book_page": 217,
+          "start_pdf_page": 219,
+          "end_pdf_page": 224,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.10-4.11",
+          "end_boundary_exercise": "4.12",
+          "boundary_overlap_with_previous_day": true,
+          "merged_immediate_exercises": true,
+          "merge_reason": "Consecutive exercise headings start within 1 printed page, so the followed-up exercise is kept in the same day."
+        },
+        {
+          "day": 12,
+          "day_title": "Exercise 4.12 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "4.12",
+          "section_title": "Exercise 4.12",
+          "exercises": [
+            "4.12"
+          ],
+          "includes": "Exercise 4.12 to end of chapter",
+          "start_book_page": 217,
           "end_book_page": 220,
-          "start_pdf_page": 200,
+          "start_pdf_page": 224,
           "end_pdf_page": 227,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "4.12",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "4.1",
+          "exercise_title": "Exercise 4.1",
+          "raw_heading_from_pdf_text": "EXERCISE 4.7",
+          "start_book_page": 168,
+          "start_pdf_page": 175
+        },
+        {
+          "exercise_number": "4.2",
+          "exercise_title": "Exercise 4.2",
+          "raw_heading_from_pdf_text": "EXERCISE 4.2",
+          "start_book_page": 171,
+          "start_pdf_page": 178
+        },
+        {
+          "exercise_number": "4.3",
+          "exercise_title": "Exercise 4.3",
+          "raw_heading_from_pdf_text": "EXERCISE 4.3",
+          "start_book_page": 180,
+          "start_pdf_page": 187
+        },
+        {
+          "exercise_number": "4.4",
+          "exercise_title": "Exercise 4.4",
+          "raw_heading_from_pdf_text": "EXERCISE 4.4",
+          "start_book_page": 185,
+          "start_pdf_page": 192
+        },
+        {
+          "exercise_number": "4.5",
+          "exercise_title": "Exercise 4.5",
+          "raw_heading_from_pdf_text": "EXERCISE 4.5",
+          "start_book_page": 191,
+          "start_pdf_page": 198
+        },
+        {
+          "exercise_number": "4.6",
+          "exercise_title": "Exercise 4.6",
+          "raw_heading_from_pdf_text": "EXERCISE 4.6",
+          "start_book_page": 199,
+          "start_pdf_page": 206
+        },
+        {
+          "exercise_number": "4.7",
+          "exercise_title": "Exercise 4.7",
+          "raw_heading_from_pdf_text": "EXERCISE 4.7",
+          "start_book_page": 203,
+          "start_pdf_page": 210
+        },
+        {
+          "exercise_number": "4.8",
+          "exercise_title": "Exercise 4.8",
+          "raw_heading_from_pdf_text": "EXERCISE 4.8",
+          "start_book_page": 205,
+          "start_pdf_page": 212
+        },
+        {
+          "exercise_number": "4.9",
+          "exercise_title": "Exercise 4.9",
+          "raw_heading_from_pdf_text": "EXERCISE 4.9",
+          "start_book_page": 207,
+          "start_pdf_page": 214
+        },
+        {
+          "exercise_number": "4.10",
+          "exercise_title": "Exercise 4.10",
+          "raw_heading_from_pdf_text": "EXERCISE 4.0",
+          "start_book_page": 212,
+          "start_pdf_page": 219
+        },
+        {
+          "exercise_number": "4.11",
+          "exercise_title": "Exercise 4.11",
+          "raw_heading_from_pdf_text": "EXERCISE 4.77",
+          "start_book_page": 213,
+          "start_pdf_page": 220
+        },
+        {
+          "exercise_number": "4.12",
+          "exercise_title": "Exercise 4.12",
+          "raw_heading_from_pdf_text": "EXERCISE 4.72",
+          "start_book_page": 217,
+          "start_pdf_page": 224
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 5,
@@ -517,107 +971,181 @@
       "days": [
         {
           "day": 1,
-          "day_title": "5.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "5.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "5.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 5.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.pre_exercise",
+          "section_title": "Start of chapter to Exercise 5.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 5.1",
           "start_book_page": 221,
-          "end_book_page": 221,
+          "end_book_page": 224,
           "start_pdf_page": 228,
-          "end_pdf_page": 228,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 231,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "5.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "5.2 Sequences",
-          "day_type": "toc_section",
-          "section_number": "5.2",
-          "section_title": "Sequences",
+          "day_title": "Exercise 5.1 to Exercise 5.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.1",
+          "section_title": "Exercise 5.1",
           "exercises": [
-            "5.2"
+            "5.1"
           ],
-          "includes": "Sequences",
-          "start_book_page": 221,
-          "end_book_page": 223,
-          "start_pdf_page": 228,
-          "end_pdf_page": 230,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 5.1 to Exercise 5.2",
+          "start_book_page": 224,
+          "end_book_page": 226,
+          "start_pdf_page": 231,
+          "end_pdf_page": 233,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.1",
+          "end_boundary_exercise": "5.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "5.3 Arithmetic progression (A.P.)",
-          "day_type": "toc_section",
-          "section_number": "5.3",
-          "section_title": "Arithmetic progression (A.P.)",
+          "day_title": "Exercise 5.2 to Exercise 5.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.2",
+          "section_title": "Exercise 5.2",
           "exercises": [
-            "5.3"
+            "5.2"
           ],
-          "includes": "Arithmetic progression (A.P.)",
-          "start_book_page": 224,
+          "includes": "Exercise 5.2 to Exercise 5.3",
+          "start_book_page": 226,
           "end_book_page": 228,
-          "start_pdf_page": 231,
+          "start_pdf_page": 233,
           "end_pdf_page": 235,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.2",
+          "end_boundary_exercise": "5.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "5.4 General term of an A.P.",
-          "day_type": "toc_section",
-          "section_number": "5.4",
-          "section_title": "General term of an A.P.",
+          "day_title": "Exercise 5.3 to Exercise 5.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.3",
+          "section_title": "Exercise 5.3",
           "exercises": [
-            "5.4"
+            "5.3"
           ],
-          "includes": "General term of an A.P.",
-          "start_book_page": 229,
-          "end_book_page": 239,
-          "start_pdf_page": 236,
-          "end_pdf_page": 246,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 5.3 to Exercise 5.4",
+          "start_book_page": 228,
+          "end_book_page": 238,
+          "start_pdf_page": 235,
+          "end_pdf_page": 245,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.3",
+          "end_boundary_exercise": "5.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "5.5 Selection of terms in an A.P.",
-          "day_type": "toc_section",
-          "section_number": "5.5",
-          "section_title": "Selection of terms in an A.P.",
+          "day_title": "Exercise 5.4 to Exercise 5.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.4",
+          "section_title": "Exercise 5.4",
           "exercises": [
-            "5.5"
+            "5.4"
           ],
-          "includes": "Selection of terms in an A.P.",
-          "start_book_page": 240,
+          "includes": "Exercise 5.4 to Exercise 5.5",
+          "start_book_page": 238,
           "end_book_page": 242,
-          "start_pdf_page": 247,
+          "start_pdf_page": 245,
           "end_pdf_page": 249,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.4",
+          "end_boundary_exercise": "5.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "5.6 Sum to n terms of an A.P.",
-          "day_type": "toc_section",
+          "day_title": "Exercise 5.5 to Exercise 5.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "5.5",
+          "section_title": "Exercise 5.5",
+          "exercises": [
+            "5.5"
+          ],
+          "includes": "Exercise 5.5 to Exercise 5.6",
+          "start_book_page": 242,
+          "end_book_page": 258,
+          "start_pdf_page": 249,
+          "end_pdf_page": 265,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.5",
+          "end_boundary_exercise": "5.6",
+          "boundary_overlap_with_previous_day": true
+        },
+        {
+          "day": 7,
+          "day_title": "Exercise 5.6 to end of chapter",
+          "day_type": "exercise_boundary_range",
           "section_number": "5.6",
-          "section_title": "Sum to n terms of an A.P.",
+          "section_title": "Exercise 5.6",
           "exercises": [
             "5.6"
           ],
-          "includes": "Sum to n terms of an A.P.",
-          "start_book_page": 243,
+          "includes": "Exercise 5.6 to end of chapter",
+          "start_book_page": 258,
           "end_book_page": 263,
-          "start_pdf_page": 250,
+          "start_pdf_page": 265,
           "end_pdf_page": 270,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "5.6",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "5.1",
+          "exercise_title": "Exercise 5.1",
+          "raw_heading_from_pdf_text": "EXERCISE 5.7",
+          "start_book_page": 224,
+          "start_pdf_page": 231
+        },
+        {
+          "exercise_number": "5.2",
+          "exercise_title": "Exercise 5.2",
+          "raw_heading_from_pdf_text": "EXERCISE 5.2",
+          "start_book_page": 226,
+          "start_pdf_page": 233
+        },
+        {
+          "exercise_number": "5.3",
+          "exercise_title": "Exercise 5.3",
+          "raw_heading_from_pdf_text": "EXERCISE 5.3",
+          "start_book_page": 228,
+          "start_pdf_page": 235
+        },
+        {
+          "exercise_number": "5.4",
+          "exercise_title": "Exercise 5.4",
+          "raw_heading_from_pdf_text": "EXERCISE 5.4",
+          "start_book_page": 238,
+          "start_pdf_page": 245
+        },
+        {
+          "exercise_number": "5.5",
+          "exercise_title": "Exercise 5.5",
+          "raw_heading_from_pdf_text": "EXERCISE 5.5",
+          "start_book_page": 242,
+          "start_pdf_page": 249
+        },
+        {
+          "exercise_number": "5.6",
+          "exercise_title": "Exercise 5.6",
+          "raw_heading_from_pdf_text": "EXERCISE 5.6",
+          "start_book_page": 258,
+          "start_pdf_page": 265
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 6,
@@ -631,107 +1159,155 @@
       "days": [
         {
           "day": 1,
-          "day_title": "6.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "6.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "6.1"
-          ],
-          "includes": "Introduction",
-          "start_book_page": 264,
-          "end_book_page": 264,
-          "start_pdf_page": 271,
-          "end_pdf_page": 271,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 2,
-          "day_title": "6.2 Recapitulation",
-          "day_type": "toc_section",
-          "section_number": "6.2",
-          "section_title": "Recapitulation",
-          "exercises": [
-            "6.2"
-          ],
-          "includes": "Recapitulation",
+          "day_title": "Start of chapter to Exercise 6.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.pre_exercise",
+          "section_title": "Start of chapter to Exercise 6.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 6.1",
           "start_book_page": 264,
           "end_book_page": 266,
           "start_pdf_page": 271,
           "end_pdf_page": 273,
-          "range_source": "book_contents_in_detail_static_json",
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "6.1",
+          "boundary_overlap_with_previous_day": false
+        },
+        {
+          "day": 2,
+          "day_title": "Exercise 6.1 to Exercise 6.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.1",
+          "section_title": "Exercise 6.1",
+          "exercises": [
+            "6.1"
+          ],
+          "includes": "Exercise 6.1 to Exercise 6.2",
+          "start_book_page": 266,
+          "end_book_page": 277,
+          "start_pdf_page": 273,
+          "end_pdf_page": 284,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "6.1",
+          "end_boundary_exercise": "6.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "6.3 Distance between two points",
-          "day_type": "toc_section",
-          "section_number": "6.3",
-          "section_title": "Distance between two points",
+          "day_title": "Exercise 6.2 to Exercise 6.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.2",
+          "section_title": "Exercise 6.2",
           "exercises": [
-            "6.3"
+            "6.2"
           ],
-          "includes": "Distance between two points",
-          "start_book_page": 267,
-          "end_book_page": 277,
-          "start_pdf_page": 274,
-          "end_pdf_page": 284,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 6.2 to Exercise 6.3",
+          "start_book_page": 277,
+          "end_book_page": 286,
+          "start_pdf_page": 284,
+          "end_pdf_page": 293,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "6.2",
+          "end_boundary_exercise": "6.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "6.4 Section formulae",
-          "day_type": "toc_section",
-          "section_number": "6.4",
-          "section_title": "Section formulae",
+          "day_title": "Exercise 6.3 to Exercise 6.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.3",
+          "section_title": "Exercise 6.3",
           "exercises": [
-            "6.4"
+            "6.3"
           ],
-          "includes": "Section formulae",
-          "start_book_page": 278,
-          "end_book_page": 288,
-          "start_pdf_page": 285,
-          "end_pdf_page": 295,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 6.3 to Exercise 6.4",
+          "start_book_page": 286,
+          "end_book_page": 290,
+          "start_pdf_page": 293,
+          "end_pdf_page": 297,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "6.3",
+          "end_boundary_exercise": "6.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "6.5 Some applications of section formula",
-          "day_type": "toc_section",
-          "section_number": "6.5",
-          "section_title": "Some applications of section formula",
+          "day_title": "Exercise 6.4 to Exercise 6.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.4",
+          "section_title": "Exercise 6.4",
           "exercises": [
-            "6.5"
+            "6.4"
           ],
-          "includes": "Some applications of section formula",
-          "start_book_page": 289,
-          "end_book_page": 290,
-          "start_pdf_page": 296,
-          "end_pdf_page": 297,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 6.4 to Exercise 6.5",
+          "start_book_page": 290,
+          "end_book_page": 302,
+          "start_pdf_page": 297,
+          "end_pdf_page": 309,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "6.4",
+          "end_boundary_exercise": "6.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "6.6 Area of triangle",
-          "day_type": "toc_section",
-          "section_number": "6.6",
-          "section_title": "Area of triangle",
+          "day_title": "Exercise 6.5 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "6.5",
+          "section_title": "Exercise 6.5",
           "exercises": [
-            "6.6"
+            "6.5"
           ],
-          "includes": "Area of triangle",
-          "start_book_page": 291,
+          "includes": "Exercise 6.5 to end of chapter",
+          "start_book_page": 302,
           "end_book_page": 309,
-          "start_pdf_page": 298,
+          "start_pdf_page": 309,
           "end_pdf_page": 316,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "6.5",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "6.1",
+          "exercise_title": "Exercise 6.1",
+          "raw_heading_from_pdf_text": "EXERCISE 6.7",
+          "start_book_page": 266,
+          "start_pdf_page": 273
+        },
+        {
+          "exercise_number": "6.2",
+          "exercise_title": "Exercise 6.2",
+          "raw_heading_from_pdf_text": "EXERCISE 6.2",
+          "start_book_page": 277,
+          "start_pdf_page": 284
+        },
+        {
+          "exercise_number": "6.3",
+          "exercise_title": "Exercise 6.3",
+          "raw_heading_from_pdf_text": "EXERCISE 6.3",
+          "start_book_page": 286,
+          "start_pdf_page": 293
+        },
+        {
+          "exercise_number": "6.4",
+          "exercise_title": "Exercise 6.4",
+          "raw_heading_from_pdf_text": "EXERCISE 6.4",
+          "start_book_page": 290,
+          "start_pdf_page": 297
+        },
+        {
+          "exercise_number": "6.5",
+          "exercise_title": "Exercise 6.5",
+          "raw_heading_from_pdf_text": "EXERCISE 6.5",
+          "start_book_page": 302,
+          "start_pdf_page": 309
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 7,
@@ -745,158 +1321,181 @@
       "days": [
         {
           "day": 1,
-          "day_title": "7.1 Concept of similarity",
-          "day_type": "toc_section",
-          "section_number": "7.1",
-          "section_title": "Concept of similarity",
-          "exercises": [
-            "7.1"
-          ],
-          "includes": "Concept of similarity",
+          "day_title": "Start of chapter to Exercise 7.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.pre_exercise",
+          "section_title": "Start of chapter to Exercise 7.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 7.1",
           "start_book_page": 310,
-          "end_book_page": 310,
+          "end_book_page": 312,
           "start_pdf_page": 317,
-          "end_pdf_page": 317,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 319,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "7.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "7.2 Similar polygons",
-          "day_type": "toc_section",
-          "section_number": "7.2",
-          "section_title": "Similar polygons",
+          "day_title": "Exercise 7.1 to Exercise 7.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.1",
+          "section_title": "Exercise 7.1",
           "exercises": [
-            "7.2"
+            "7.1"
           ],
-          "includes": "Similar polygons",
-          "start_book_page": 310,
-          "end_book_page": 311,
-          "start_pdf_page": 317,
-          "end_pdf_page": 318,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 7.1 to Exercise 7.2",
+          "start_book_page": 312,
+          "end_book_page": 328,
+          "start_pdf_page": 319,
+          "end_pdf_page": 335,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.1",
+          "end_boundary_exercise": "7.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "7.3 Similar triangles and their properties",
-          "day_type": "toc_section",
-          "section_number": "7.3",
-          "section_title": "Similar triangles and their properties",
+          "day_title": "Exercise 7.2 to Exercise 7.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.2",
+          "section_title": "Exercise 7.2",
           "exercises": [
-            "7.3"
+            "7.2"
           ],
-          "includes": "Similar triangles and their properties",
-          "start_book_page": 312,
-          "end_book_page": 312,
-          "start_pdf_page": 319,
-          "end_pdf_page": 319,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 7.2 to Exercise 7.3",
+          "start_book_page": 328,
+          "end_book_page": 337,
+          "start_pdf_page": 335,
+          "end_pdf_page": 344,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.2",
+          "end_boundary_exercise": "7.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "7.4 Some basic results on proportionality",
-          "day_type": "toc_section",
-          "section_number": "7.4",
-          "section_title": "Some basic results on proportionality",
+          "day_title": "Exercise 7.3 to Exercise 7.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.3",
+          "section_title": "Exercise 7.3",
           "exercises": [
-            "7.4"
+            "7.3"
           ],
-          "includes": "Some basic results on proportionality",
-          "start_book_page": 313,
-          "end_book_page": 328,
-          "start_pdf_page": 320,
-          "end_pdf_page": 335,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 7.3 to Exercise 7.4",
+          "start_book_page": 337,
+          "end_book_page": 369,
+          "start_pdf_page": 344,
+          "end_pdf_page": 376,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.3",
+          "end_boundary_exercise": "7.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "7.5 Internal and external bisectors of an angle of a triangle",
-          "day_type": "toc_section",
-          "section_number": "7.5",
-          "section_title": "Internal and external bisectors of an angle of a triangle",
+          "day_title": "Exercise 7.4 to Exercise 7.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.4",
+          "section_title": "Exercise 7.4",
           "exercises": [
-            "7.5"
+            "7.4"
           ],
-          "includes": "Internal and external bisectors of an angle of a triangle",
-          "start_book_page": 329,
-          "end_book_page": 337,
-          "start_pdf_page": 336,
-          "end_pdf_page": 344,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 7.4 to Exercise 7.5",
+          "start_book_page": 369,
+          "end_book_page": 384,
+          "start_pdf_page": 376,
+          "end_pdf_page": 391,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.4",
+          "end_boundary_exercise": "7.5",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "7.6 Criteria for similarity of triangles",
-          "day_type": "toc_section",
-          "section_number": "7.6",
-          "section_title": "Criteria for similarity of triangles",
+          "day_title": "Exercise 7.5 to Exercise 7.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.5",
+          "section_title": "Exercise 7.5",
           "exercises": [
-            "7.6"
+            "7.5"
           ],
-          "includes": "Criteria for similarity of triangles",
-          "start_book_page": 338,
-          "end_book_page": 371,
-          "start_pdf_page": 345,
-          "end_pdf_page": 378,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 7.5 to Exercise 7.6",
+          "start_book_page": 384,
+          "end_book_page": 403,
+          "start_pdf_page": 391,
+          "end_pdf_page": 410,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.5",
+          "end_boundary_exercise": "7.6",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 7,
-          "day_title": "7.7 More on characteristic properties",
-          "day_type": "toc_section",
-          "section_number": "7.7",
-          "section_title": "More on characteristic properties",
+          "day_title": "Exercise 7.6 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "7.6",
+          "section_title": "Exercise 7.6",
           "exercises": [
-            "7.7"
+            "7.6"
           ],
-          "includes": "More on characteristic properties",
-          "start_book_page": 372,
-          "end_book_page": 375,
-          "start_pdf_page": 379,
-          "end_pdf_page": 382,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 8,
-          "day_title": "7.8 Areas of two similar triangles",
-          "day_type": "toc_section",
-          "section_number": "7.8",
-          "section_title": "Areas of two similar triangles",
-          "exercises": [
-            "7.8"
-          ],
-          "includes": "Areas of two similar triangles",
-          "start_book_page": 376,
-          "end_book_page": 384,
-          "start_pdf_page": 383,
-          "end_pdf_page": 391,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 9,
-          "day_title": "7.9 Pythagoras theorem",
-          "day_type": "toc_section",
-          "section_number": "7.9",
-          "section_title": "Pythagoras theorem",
-          "exercises": [
-            "7.9"
-          ],
-          "includes": "Pythagoras theorem",
-          "start_book_page": 385,
+          "includes": "Exercise 7.6 to end of chapter",
+          "start_book_page": 403,
           "end_book_page": 410,
-          "start_pdf_page": 392,
+          "start_pdf_page": 410,
           "end_pdf_page": 417,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "7.6",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "7.1",
+          "exercise_title": "Exercise 7.1",
+          "raw_heading_from_pdf_text": "EXERCISE 7.7",
+          "start_book_page": 312,
+          "start_pdf_page": 319
+        },
+        {
+          "exercise_number": "7.2",
+          "exercise_title": "Exercise 7.2",
+          "raw_heading_from_pdf_text": "EXERCISE 7.2",
+          "start_book_page": 328,
+          "start_pdf_page": 335
+        },
+        {
+          "exercise_number": "7.3",
+          "exercise_title": "Exercise 7.3",
+          "raw_heading_from_pdf_text": "EXERCISE 7.3",
+          "start_book_page": 337,
+          "start_pdf_page": 344
+        },
+        {
+          "exercise_number": "7.4",
+          "exercise_title": "Exercise 7.4",
+          "raw_heading_from_pdf_text": "EXERCISE 7.4",
+          "start_book_page": 369,
+          "start_pdf_page": 376
+        },
+        {
+          "exercise_number": "7.5",
+          "exercise_title": "Exercise 7.5",
+          "raw_heading_from_pdf_text": "EXERCISE 7.5",
+          "start_book_page": 384,
+          "start_pdf_page": 391
+        },
+        {
+          "exercise_number": "7.6",
+          "exercise_title": "Exercise 7.6",
+          "raw_heading_from_pdf_text": "EXERCISE 7.6",
+          "start_book_page": 403,
+          "start_pdf_page": 410
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 8,
@@ -910,56 +1509,77 @@
       "days": [
         {
           "day": 1,
-          "day_title": "8.1 Secant and tangent",
-          "day_type": "toc_section",
-          "section_number": "8.1",
-          "section_title": "Secant and tangent",
-          "exercises": [
-            "8.1"
-          ],
-          "includes": "Secant and tangent",
+          "day_title": "Start of chapter to Exercise 8.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "8.pre_exercise",
+          "section_title": "Start of chapter to Exercise 8.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 8.1",
           "start_book_page": 411,
-          "end_book_page": 411,
+          "end_book_page": 418,
           "start_pdf_page": 418,
-          "end_pdf_page": 418,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 425,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "8.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "8.2 Some properties of tangent to a circle",
-          "day_type": "toc_section",
-          "section_number": "8.2",
-          "section_title": "Some properties of tangent to a circle",
+          "day_title": "Exercise 8.1 to Exercise 8.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "8.1",
+          "section_title": "Exercise 8.1",
           "exercises": [
-            "8.2"
+            "8.1"
           ],
-          "includes": "Some properties of tangent to a circle",
-          "start_book_page": 412,
-          "end_book_page": 417,
-          "start_pdf_page": 419,
-          "end_pdf_page": 424,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 8.1 to Exercise 8.2",
+          "start_book_page": 418,
+          "end_book_page": 439,
+          "start_pdf_page": 425,
+          "end_pdf_page": 446,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "8.1",
+          "end_boundary_exercise": "8.2",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "8.3 Tangent from a point on a circle",
-          "day_type": "toc_section",
-          "section_number": "8.3",
-          "section_title": "Tangent from a point on a circle",
+          "day_title": "Exercise 8.2 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "8.2",
+          "section_title": "Exercise 8.2",
           "exercises": [
-            "8.3"
+            "8.2"
           ],
-          "includes": "Tangent from a point on a circle",
-          "start_book_page": 418,
+          "includes": "Exercise 8.2 to end of chapter",
+          "start_book_page": 439,
           "end_book_page": 447,
-          "start_pdf_page": 425,
+          "start_pdf_page": 446,
           "end_pdf_page": 454,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "8.2",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "8.1",
+          "exercise_title": "Exercise 8.1",
+          "raw_heading_from_pdf_text": "EXERCISE &.7",
+          "start_book_page": 418,
+          "start_pdf_page": 425
+        },
+        {
+          "exercise_number": "8.2",
+          "exercise_title": "Exercise 8.2",
+          "raw_heading_from_pdf_text": "EXERCISE 8.2",
+          "start_book_page": 439,
+          "start_pdf_page": 446
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 9,
@@ -973,73 +1593,103 @@
       "days": [
         {
           "day": 1,
-          "day_title": "9.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "9.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "9.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 9.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "9.pre_exercise",
+          "section_title": "Start of chapter to Exercise 9.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 9.1",
           "start_book_page": 448,
-          "end_book_page": 448,
+          "end_book_page": 450,
           "start_pdf_page": 455,
-          "end_pdf_page": 455,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 457,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "9.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "9.2 Division of a line segment",
-          "day_type": "toc_section",
-          "section_number": "9.2",
-          "section_title": "Division of a line segment",
+          "day_title": "Exercise 9.1 to Exercise 9.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "9.1",
+          "section_title": "Exercise 9.1",
           "exercises": [
-            "9.2"
+            "9.1"
           ],
-          "includes": "Division of a line segment",
-          "start_book_page": 448,
-          "end_book_page": 449,
-          "start_pdf_page": 455,
-          "end_pdf_page": 456,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 9.1 to Exercise 9.2",
+          "start_book_page": 450,
+          "end_book_page": 453,
+          "start_pdf_page": 457,
+          "end_pdf_page": 460,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "9.1",
+          "end_boundary_exercise": "9.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "9.3 Construction of a triangle similar to a given triangle",
-          "day_type": "toc_section",
-          "section_number": "9.3",
-          "section_title": "Construction of a triangle similar to a given triangle",
+          "day_title": "Exercise 9.2 to Exercise 9.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "9.2",
+          "section_title": "Exercise 9.2",
           "exercises": [
-            "9.3"
+            "9.2"
           ],
-          "includes": "Construction of a triangle similar to a given triangle",
-          "start_book_page": 450,
-          "end_book_page": 454,
-          "start_pdf_page": 457,
-          "end_pdf_page": 461,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 9.2 to Exercise 9.3",
+          "start_book_page": 453,
+          "end_book_page": 459,
+          "start_pdf_page": 460,
+          "end_pdf_page": 466,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "9.2",
+          "end_boundary_exercise": "9.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "9.4 Construction of tangents to a circle",
-          "day_type": "toc_section",
-          "section_number": "9.4",
-          "section_title": "Construction of tangents to a circle",
+          "day_title": "Exercise 9.3 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "9.3",
+          "section_title": "Exercise 9.3",
           "exercises": [
-            "9.4"
+            "9.3"
           ],
-          "includes": "Construction of tangents to a circle",
-          "start_book_page": 455,
+          "includes": "Exercise 9.3 to end of chapter",
+          "start_book_page": 459,
           "end_book_page": 459,
-          "start_pdf_page": 462,
+          "start_pdf_page": 466,
           "end_pdf_page": 466,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "9.3",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "9.1",
+          "exercise_title": "Exercise 9.1",
+          "raw_heading_from_pdf_text": "EXERCISE 9.7",
+          "start_book_page": 450,
+          "start_pdf_page": 457
+        },
+        {
+          "exercise_number": "9.2",
+          "exercise_title": "Exercise 9.2",
+          "raw_heading_from_pdf_text": "EXERCISE 9.2",
+          "start_book_page": 453,
+          "start_pdf_page": 460
+        },
+        {
+          "exercise_number": "9.3",
+          "exercise_title": "Exercise 9.3",
+          "raw_heading_from_pdf_text": "EXERCISE 9.3",
+          "start_book_page": 459,
+          "start_pdf_page": 466
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 10,
@@ -1053,107 +1703,103 @@
       "days": [
         {
           "day": 1,
-          "day_title": "10.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "10.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "10.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 10.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "10.pre_exercise",
+          "section_title": "Start of chapter to Exercise 10.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 10.1",
           "start_book_page": 460,
-          "end_book_page": 460,
+          "end_book_page": 474,
           "start_pdf_page": 467,
-          "end_pdf_page": 467,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 481,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "10.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "10.2 Angle",
-          "day_type": "toc_section",
-          "section_number": "10.2",
-          "section_title": "Angle",
+          "day_title": "Exercise 10.1 to Exercise 10.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "10.1",
+          "section_title": "Exercise 10.1",
           "exercises": [
-            "10.2"
+            "10.1"
           ],
-          "includes": "Angle",
-          "start_book_page": 460,
-          "end_book_page": 460,
-          "start_pdf_page": 467,
-          "end_pdf_page": 467,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 10.1 to Exercise 10.2",
+          "start_book_page": 474,
+          "end_book_page": 485,
+          "start_pdf_page": 481,
+          "end_pdf_page": 492,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "10.1",
+          "end_boundary_exercise": "10.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "10.3 Trigonometric ratios",
-          "day_type": "toc_section",
-          "section_number": "10.3",
-          "section_title": "Trigonometric ratios",
+          "day_title": "Exercise 10.2 to Exercise 10.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "10.2",
+          "section_title": "Exercise 10.2",
           "exercises": [
-            "10.3"
+            "10.2"
           ],
-          "includes": "Trigonometric ratios",
-          "start_book_page": 460,
-          "end_book_page": 460,
-          "start_pdf_page": 467,
-          "end_pdf_page": 467,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 10.2 to Exercise 10.3",
+          "start_book_page": 485,
+          "end_book_page": 492,
+          "start_pdf_page": 492,
+          "end_pdf_page": 499,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "10.2",
+          "end_boundary_exercise": "10.3",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "10.4 Relations between trigonometric ratios",
-          "day_type": "toc_section",
-          "section_number": "10.4",
-          "section_title": "Relations between trigonometric ratios",
+          "day_title": "Exercise 10.3 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "10.3",
+          "section_title": "Exercise 10.3",
           "exercises": [
-            "10.4"
+            "10.3"
           ],
-          "includes": "Relations between trigonometric ratios",
-          "start_book_page": 461,
-          "end_book_page": 475,
-          "start_pdf_page": 468,
-          "end_pdf_page": 482,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 5,
-          "day_title": "10.5 Trigonometric ratios of some specific angles",
-          "day_type": "toc_section",
-          "section_number": "10.5",
-          "section_title": "Trigonometric ratios of some specific angles",
-          "exercises": [
-            "10.5"
-          ],
-          "includes": "Trigonometric ratios of some specific angles",
-          "start_book_page": 476,
-          "end_book_page": 486,
-          "start_pdf_page": 483,
-          "end_pdf_page": 493,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 6,
-          "day_title": "10.6 Trigonometric ratios of complementary angles",
-          "day_type": "toc_section",
-          "section_number": "10.6",
-          "section_title": "Trigonometric ratios of complementary angles",
-          "exercises": [
-            "10.6"
-          ],
-          "includes": "Trigonometric ratios of complementary angles",
-          "start_book_page": 487,
+          "includes": "Exercise 10.3 to end of chapter",
+          "start_book_page": 492,
           "end_book_page": 495,
-          "start_pdf_page": 494,
+          "start_pdf_page": 499,
           "end_pdf_page": 502,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "10.3",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "10.1",
+          "exercise_title": "Exercise 10.1",
+          "raw_heading_from_pdf_text": "EXERCISE 0.7",
+          "start_book_page": 474,
+          "start_pdf_page": 481
+        },
+        {
+          "exercise_number": "10.2",
+          "exercise_title": "Exercise 10.2",
+          "raw_heading_from_pdf_text": "EXERCISE",
+          "start_book_page": 485,
+          "start_pdf_page": 492
+        },
+        {
+          "exercise_number": "10.3",
+          "exercise_title": "Exercise 10.3",
+          "raw_heading_from_pdf_text": "EXERCISE",
+          "start_book_page": 492,
+          "start_pdf_page": 499
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 11,
@@ -1167,56 +1813,77 @@
       "days": [
         {
           "day": 1,
-          "day_title": "11.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "11.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "11.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 11.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "11.pre_exercise",
+          "section_title": "Start of chapter to Exercise 11.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 11.1",
           "start_book_page": 496,
-          "end_book_page": 496,
+          "end_book_page": 529,
           "start_pdf_page": 503,
-          "end_pdf_page": 503,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 536,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "11.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "11.2 Trigonometric identities",
-          "day_type": "toc_section",
-          "section_number": "11.2",
-          "section_title": "Trigonometric identities",
+          "day_title": "Exercise 11.1 to Exercise 11.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "11.1",
+          "section_title": "Exercise 11.1",
           "exercises": [
-            "11.2"
+            "11.1"
           ],
-          "includes": "Trigonometric identities",
-          "start_book_page": 496,
-          "end_book_page": 530,
-          "start_pdf_page": 503,
-          "end_pdf_page": 537,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 11.1 to Exercise 11.2",
+          "start_book_page": 529,
+          "end_book_page": 536,
+          "start_pdf_page": 536,
+          "end_pdf_page": 543,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "11.1",
+          "end_boundary_exercise": "11.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "11.3 Values of trigonometric ratios in terms of the value of one of them",
-          "day_type": "toc_section",
-          "section_number": "11.3",
-          "section_title": "Values of trigonometric ratios in terms of the value of one of them",
+          "day_title": "Exercise 11.2 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "11.2",
+          "section_title": "Exercise 11.2",
           "exercises": [
-            "11.3"
+            "11.2"
           ],
-          "includes": "Values of trigonometric ratios in terms of the value of one of them",
-          "start_book_page": 531,
+          "includes": "Exercise 11.2 to end of chapter",
+          "start_book_page": 536,
           "end_book_page": 539,
-          "start_pdf_page": 538,
+          "start_pdf_page": 543,
           "end_pdf_page": 546,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "11.2",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "11.1",
+          "exercise_title": "Exercise 11.1",
+          "raw_heading_from_pdf_text": "EXERCISE 77.7",
+          "start_book_page": 529,
+          "start_pdf_page": 536
+        },
+        {
+          "exercise_number": "11.2",
+          "exercise_title": "Exercise 11.2",
+          "raw_heading_from_pdf_text": "EXERCISE 77.2",
+          "start_book_page": 536,
+          "start_pdf_page": 543
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 12,
@@ -1230,39 +1897,51 @@
       "days": [
         {
           "day": 1,
-          "day_title": "12.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "12.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "12.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 12.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "12.pre_exercise",
+          "section_title": "Start of chapter to Exercise 12.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 12.1",
           "start_book_page": 540,
-          "end_book_page": 540,
+          "end_book_page": 558,
           "start_pdf_page": 547,
-          "end_pdf_page": 547,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 565,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "12.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "12.2 Angles of elevation and depression",
-          "day_type": "toc_section",
-          "section_number": "12.2",
-          "section_title": "Angles of elevation and depression",
+          "day_title": "Exercise 12.1 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "12.1",
+          "section_title": "Exercise 12.1",
           "exercises": [
-            "12.2"
+            "12.1"
           ],
-          "includes": "Angles of elevation and depression",
-          "start_book_page": 540,
+          "includes": "Exercise 12.1 to end of chapter",
+          "start_book_page": 558,
           "end_book_page": 564,
-          "start_pdf_page": 547,
+          "start_pdf_page": 565,
           "end_pdf_page": 571,
-          "range_source": "book_contents_in_detail_static_json",
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "12.1",
+          "end_boundary_exercise": "chapter_end",
           "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "12.1",
+          "exercise_title": "Exercise 12.1",
+          "raw_heading_from_pdf_text": "EXERCISE (2.7",
+          "start_book_page": 558,
+          "start_pdf_page": 565
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 13,
@@ -1276,90 +1955,129 @@
       "days": [
         {
           "day": 1,
-          "day_title": "13.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "13.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "13.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 13.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "13.pre_exercise",
+          "section_title": "Start of chapter to Exercise 13.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 13.1",
           "start_book_page": 565,
-          "end_book_page": 565,
+          "end_book_page": 575,
           "start_pdf_page": 572,
-          "end_pdf_page": 572,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 582,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "13.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "13.2 Review of perimeter and area of a circle",
-          "day_type": "toc_section",
-          "section_number": "13.2",
-          "section_title": "Review of perimeter and area of a circle",
+          "day_title": "Exercise 13.1 to Exercise 13.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "13.1",
+          "section_title": "Exercise 13.1",
           "exercises": [
-            "13.2"
+            "13.1"
           ],
-          "includes": "Review of perimeter and area of a circle",
-          "start_book_page": 565,
-          "end_book_page": 576,
-          "start_pdf_page": 572,
-          "end_pdf_page": 583,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 13.1 to Exercise 13.2",
+          "start_book_page": 575,
+          "end_book_page": 585,
+          "start_pdf_page": 582,
+          "end_pdf_page": 592,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "13.1",
+          "end_boundary_exercise": "13.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "13.3 Sector of a circle and its area",
-          "day_type": "toc_section",
-          "section_number": "13.3",
-          "section_title": "Sector of a circle and its area",
+          "day_title": "Exercise 13.2 to Exercise 13.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "13.2",
+          "section_title": "Exercise 13.2",
           "exercises": [
-            "13.3"
+            "13.2"
           ],
-          "includes": "Sector of a circle and its area",
-          "start_book_page": 577,
-          "end_book_page": 585,
-          "start_pdf_page": 584,
-          "end_pdf_page": 592,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 13.2 to Exercise 13.3",
+          "start_book_page": 585,
+          "end_book_page": 590,
+          "start_pdf_page": 592,
+          "end_pdf_page": 597,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "13.2",
+          "end_boundary_exercise": "13.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "13.4 Segment of a circle and its area",
-          "day_type": "toc_section",
-          "section_number": "13.4",
-          "section_title": "Segment of a circle and its area",
+          "day_title": "Exercise 13.3 to Exercise 13.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "13.3",
+          "section_title": "Exercise 13.3",
           "exercises": [
-            "13.4"
+            "13.3"
           ],
-          "includes": "Segment of a circle and its area",
-          "start_book_page": 586,
-          "end_book_page": 590,
-          "start_pdf_page": 593,
-          "end_pdf_page": 597,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 13.3 to Exercise 13.4",
+          "start_book_page": 590,
+          "end_book_page": 604,
+          "start_pdf_page": 597,
+          "end_pdf_page": 611,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "13.3",
+          "end_boundary_exercise": "13.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "13.5 Areas of combinations of plane figures",
-          "day_type": "toc_section",
-          "section_number": "13.5",
-          "section_title": "Areas of combinations of plane figures",
+          "day_title": "Exercise 13.4 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "13.4",
+          "section_title": "Exercise 13.4",
           "exercises": [
-            "13.5"
+            "13.4"
           ],
-          "includes": "Areas of combinations of plane figures",
-          "start_book_page": 591,
+          "includes": "Exercise 13.4 to end of chapter",
+          "start_book_page": 604,
           "end_book_page": 612,
-          "start_pdf_page": 598,
+          "start_pdf_page": 611,
           "end_pdf_page": 619,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "13.4",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "13.1",
+          "exercise_title": "Exercise 13.1",
+          "raw_heading_from_pdf_text": "EXERCISE ।3.7",
+          "start_book_page": 575,
+          "start_pdf_page": 582
+        },
+        {
+          "exercise_number": "13.2",
+          "exercise_title": "Exercise 13.2",
+          "raw_heading_from_pdf_text": "EXERCISE 73.2",
+          "start_book_page": 585,
+          "start_pdf_page": 592
+        },
+        {
+          "exercise_number": "13.3",
+          "exercise_title": "Exercise 13.3",
+          "raw_heading_from_pdf_text": "EXERCISE 73.3",
+          "start_book_page": 590,
+          "start_pdf_page": 597
+        },
+        {
+          "exercise_number": "13.4",
+          "exercise_title": "Exercise 13.4",
+          "raw_heading_from_pdf_text": "EXERCISE 73.4",
+          "start_book_page": 604,
+          "start_pdf_page": 611
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 14,
@@ -1373,90 +2091,103 @@
       "days": [
         {
           "day": 1,
-          "day_title": "14.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "14.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "14.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 14.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "14.pre_exercise",
+          "section_title": "Start of chapter to Exercise 14.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 14.1",
           "start_book_page": 613,
-          "end_book_page": 613,
+          "end_book_page": 632,
           "start_pdf_page": 620,
-          "end_pdf_page": 620,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 639,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "14.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "14.2 Some useful formulae",
-          "day_type": "toc_section",
-          "section_number": "14.2",
-          "section_title": "Some useful formulae",
+          "day_title": "Exercise 14.1 to Exercise 14.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "14.1",
+          "section_title": "Exercise 14.1",
           "exercises": [
-            "14.2"
+            "14.1"
           ],
-          "includes": "Some useful formulae",
-          "start_book_page": 613,
-          "end_book_page": 614,
-          "start_pdf_page": 620,
-          "end_pdf_page": 621,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 14.1 to Exercise 14.2",
+          "start_book_page": 632,
+          "end_book_page": 652,
+          "start_pdf_page": 639,
+          "end_pdf_page": 659,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "14.1",
+          "end_boundary_exercise": "14.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "14.3 Conversion of solids",
-          "day_type": "toc_section",
-          "section_number": "14.3",
-          "section_title": "Conversion of solids",
+          "day_title": "Exercise 14.2 to Exercise 14.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "14.2",
+          "section_title": "Exercise 14.2",
           "exercises": [
-            "14.3"
+            "14.2"
           ],
-          "includes": "Conversion of solids",
-          "start_book_page": 615,
-          "end_book_page": 633,
-          "start_pdf_page": 622,
-          "end_pdf_page": 640,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 14.2 to Exercise 14.3",
+          "start_book_page": 652,
+          "end_book_page": 665,
+          "start_pdf_page": 659,
+          "end_pdf_page": 672,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "14.2",
+          "end_boundary_exercise": "14.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "14.4 Surface areas and volumes of combinations of solids",
-          "day_type": "toc_section",
-          "section_number": "14.4",
-          "section_title": "Surface areas and volumes of combinations of solids",
+          "day_title": "Exercise 14.3 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "14.3",
+          "section_title": "Exercise 14.3",
           "exercises": [
-            "14.4"
+            "14.3"
           ],
-          "includes": "Surface areas and volumes of combinations of solids",
-          "start_book_page": 634,
-          "end_book_page": 653,
-          "start_pdf_page": 641,
-          "end_pdf_page": 660,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 14.3 to end of chapter",
+          "start_book_page": 665,
+          "end_book_page": 669,
+          "start_pdf_page": 672,
+          "end_pdf_page": 676,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "14.3",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
+        }
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "14.1",
+          "exercise_title": "Exercise 14.1",
+          "raw_heading_from_pdf_text": "EXERCISE",
+          "start_book_page": 632,
+          "start_pdf_page": 639
         },
         {
-          "day": 5,
-          "day_title": "14.5 Frustum of a right circular cone",
-          "day_type": "toc_section",
-          "section_number": "14.5",
-          "section_title": "Frustum of a right circular cone",
-          "exercises": [
-            "14.5"
-          ],
-          "includes": "Frustum of a right circular cone",
-          "start_book_page": 654,
-          "end_book_page": 669,
-          "start_pdf_page": 661,
-          "end_pdf_page": 676,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "exercise_number": "14.2",
+          "exercise_title": "Exercise 14.2",
+          "raw_heading_from_pdf_text": "EXERCISE",
+          "start_book_page": 652,
+          "start_pdf_page": 659
+        },
+        {
+          "exercise_number": "14.3",
+          "exercise_title": "Exercise 14.3",
+          "raw_heading_from_pdf_text": "EXERCISE 4.3",
+          "start_book_page": 665,
+          "start_pdf_page": 672
         }
-      ]
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 15,
@@ -1470,141 +2201,181 @@
       "days": [
         {
           "day": 1,
-          "day_title": "15.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "15.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "15.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 15.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.pre_exercise",
+          "section_title": "Start of chapter to Exercise 15.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 15.1",
           "start_book_page": 670,
-          "end_book_page": 670,
+          "end_book_page": 673,
           "start_pdf_page": 677,
-          "end_pdf_page": 677,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 680,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "15.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "15.2 Mean of grouped data",
-          "day_type": "toc_section",
-          "section_number": "15.2",
-          "section_title": "Mean of grouped data",
+          "day_title": "Exercise 15.1 to Exercise 15.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.1",
+          "section_title": "Exercise 15.1",
           "exercises": [
-            "15.2"
+            "15.1"
           ],
-          "includes": "Mean of grouped data",
-          "start_book_page": 670,
-          "end_book_page": 686,
-          "start_pdf_page": 677,
-          "end_pdf_page": 693,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 15.1 to Exercise 15.2",
+          "start_book_page": 673,
+          "end_book_page": 679,
+          "start_pdf_page": 680,
+          "end_pdf_page": 686,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.1",
+          "end_boundary_exercise": "15.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "15.3 Median",
-          "day_type": "toc_section",
-          "section_number": "15.3",
-          "section_title": "Median",
+          "day_title": "Exercise 15.2 to Exercise 15.3",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.2",
+          "section_title": "Exercise 15.2",
           "exercises": [
-            "15.3"
+            "15.2"
           ],
-          "includes": "Median",
-          "start_book_page": 687,
-          "end_book_page": 695,
-          "start_pdf_page": 694,
-          "end_pdf_page": 702,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 15.2 to Exercise 15.3",
+          "start_book_page": 679,
+          "end_book_page": 686,
+          "start_pdf_page": 686,
+          "end_pdf_page": 693,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.2",
+          "end_boundary_exercise": "15.3",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 4,
-          "day_title": "15.4 Merits and demerits of median",
-          "day_type": "toc_section",
-          "section_number": "15.4",
-          "section_title": "Merits and demerits of median",
+          "day_title": "Exercise 15.3 to Exercise 15.4",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.3",
+          "section_title": "Exercise 15.3",
           "exercises": [
-            "15.4"
+            "15.3"
           ],
-          "includes": "Merits and demerits of median",
-          "start_book_page": 696,
-          "end_book_page": 696,
-          "start_pdf_page": 703,
-          "end_pdf_page": 703,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 15.3 to Exercise 15.4",
+          "start_book_page": 686,
+          "end_book_page": 694,
+          "start_pdf_page": 693,
+          "end_pdf_page": 701,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.3",
+          "end_boundary_exercise": "15.4",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 5,
-          "day_title": "15.5 Mode",
-          "day_type": "toc_section",
-          "section_number": "15.5",
-          "section_title": "Mode",
+          "day_title": "Exercise 15.4 to Exercise 15.5",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.4",
+          "section_title": "Exercise 15.4",
           "exercises": [
-            "15.5"
+            "15.4"
           ],
-          "includes": "Mode",
-          "start_book_page": 696,
+          "includes": "Exercise 15.4 to Exercise 15.5",
+          "start_book_page": 694,
           "end_book_page": 703,
-          "start_pdf_page": 703,
+          "start_pdf_page": 701,
           "end_pdf_page": 710,
-          "range_source": "book_contents_in_detail_static_json",
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.4",
+          "end_boundary_exercise": "15.5",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 6,
-          "day_title": "15.6 Merits, demerits and uses of mode",
-          "day_type": "toc_section",
-          "section_number": "15.6",
-          "section_title": "Merits, demerits and uses of mode",
+          "day_title": "Exercise 15.5 to Exercise 15.6",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.5",
+          "section_title": "Exercise 15.5",
           "exercises": [
-            "15.6"
+            "15.5"
           ],
-          "includes": "Merits, demerits and uses of mode",
-          "start_book_page": 704,
-          "end_book_page": 704,
-          "start_pdf_page": 711,
-          "end_pdf_page": 711,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 15.5 to Exercise 15.6",
+          "start_book_page": 703,
+          "end_book_page": 715,
+          "start_pdf_page": 710,
+          "end_pdf_page": 722,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.5",
+          "end_boundary_exercise": "15.6",
+          "boundary_overlap_with_previous_day": true
         },
         {
           "day": 7,
-          "day_title": "15.7 Relationship among mean, median and mode",
-          "day_type": "toc_section",
-          "section_number": "15.7",
-          "section_title": "Relationship among mean, median and mode",
+          "day_title": "Exercise 15.6 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "15.6",
+          "section_title": "Exercise 15.6",
           "exercises": [
-            "15.7"
+            "15.6"
           ],
-          "includes": "Relationship among mean, median and mode",
-          "start_book_page": 705,
-          "end_book_page": 705,
-          "start_pdf_page": 712,
-          "end_pdf_page": 712,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
-        },
-        {
-          "day": 8,
-          "day_title": "15.8 Cumulative frequency polygon curve (an ogive)",
-          "day_type": "toc_section",
-          "section_number": "15.8",
-          "section_title": "Cumulative frequency polygon curve (an ogive)",
-          "exercises": [
-            "15.8"
-          ],
-          "includes": "Cumulative frequency polygon curve (an ogive)",
-          "start_book_page": 705,
+          "includes": "Exercise 15.6 to end of chapter",
+          "start_book_page": 715,
           "end_book_page": 717,
-          "start_pdf_page": 712,
+          "start_pdf_page": 722,
           "end_pdf_page": 724,
-          "range_source": "book_contents_in_detail_static_json",
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "15.6",
+          "end_boundary_exercise": "chapter_end",
           "boundary_overlap_with_previous_day": true
         }
-      ]
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "15.1",
+          "exercise_title": "Exercise 15.1",
+          "raw_heading_from_pdf_text": "EXERCISE 75.7",
+          "start_book_page": 673,
+          "start_pdf_page": 680
+        },
+        {
+          "exercise_number": "15.2",
+          "exercise_title": "Exercise 15.2",
+          "raw_heading_from_pdf_text": "EXERCISE 75.2",
+          "start_book_page": 679,
+          "start_pdf_page": 686
+        },
+        {
+          "exercise_number": "15.3",
+          "exercise_title": "Exercise 15.3",
+          "raw_heading_from_pdf_text": "EXERCISE 5.3",
+          "start_book_page": 686,
+          "start_pdf_page": 693
+        },
+        {
+          "exercise_number": "15.4",
+          "exercise_title": "Exercise 15.4",
+          "raw_heading_from_pdf_text": "EXERCISE 75.4",
+          "start_book_page": 694,
+          "start_pdf_page": 701
+        },
+        {
+          "exercise_number": "15.5",
+          "exercise_title": "Exercise 15.5",
+          "raw_heading_from_pdf_text": "EXERCISE 75.5",
+          "start_book_page": 703,
+          "start_pdf_page": 710
+        },
+        {
+          "exercise_number": "15.6",
+          "exercise_title": "Exercise 15.6",
+          "raw_heading_from_pdf_text": "EXERCISE 75.6",
+          "start_book_page": 715,
+          "start_pdf_page": 722
+        }
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     },
     {
       "sequence": 16,
@@ -1618,73 +2389,91 @@
       "days": [
         {
           "day": 1,
-          "day_title": "16.1 Introduction",
-          "day_type": "toc_section",
-          "section_number": "16.1",
-          "section_title": "Introduction",
-          "exercises": [
-            "16.1"
-          ],
-          "includes": "Introduction",
+          "day_title": "Start of chapter to Exercise 16.1",
+          "day_type": "exercise_boundary_range",
+          "section_number": "16.pre_exercise",
+          "section_title": "Start of chapter to Exercise 16.1",
+          "exercises": [],
+          "includes": "Chapter opening content up to Exercise 16.1",
           "start_book_page": 718,
-          "end_book_page": 718,
+          "end_book_page": 734,
           "start_pdf_page": 725,
-          "end_pdf_page": 725,
-          "range_source": "book_contents_in_detail_static_json",
+          "end_pdf_page": 741,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary": "chapter_start",
+          "end_boundary_exercise": "16.1",
           "boundary_overlap_with_previous_day": false
         },
         {
           "day": 2,
-          "day_title": "16.2 Theoretical approach to probability",
-          "day_type": "toc_section",
-          "section_number": "16.2",
-          "section_title": "Theoretical approach to probability",
+          "day_title": "Exercise 16.1 to Exercise 16.2",
+          "day_type": "exercise_boundary_range",
+          "section_number": "16.1",
+          "section_title": "Exercise 16.1",
           "exercises": [
-            "16.2"
+            "16.1"
           ],
-          "includes": "Theoretical approach to probability",
-          "start_book_page": 718,
-          "end_book_page": 720,
-          "start_pdf_page": 725,
-          "end_pdf_page": 727,
-          "range_source": "book_contents_in_detail_static_json",
+          "includes": "Exercise 16.1 to Exercise 16.2",
+          "start_book_page": 734,
+          "end_book_page": 741,
+          "start_pdf_page": 741,
+          "end_pdf_page": 748,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "16.1",
+          "end_boundary_exercise": "16.2",
           "boundary_overlap_with_previous_day": true
         },
         {
           "day": 3,
-          "day_title": "16.3 Theoretical probability of an event",
-          "day_type": "toc_section",
-          "section_number": "16.3",
-          "section_title": "Theoretical probability of an event",
+          "day_title": "Exercise 16.2 to end of chapter",
+          "day_type": "exercise_boundary_range",
+          "section_number": "16.2",
+          "section_title": "Exercise 16.2",
           "exercises": [
-            "16.3"
+            "16.2"
           ],
-          "includes": "Theoretical probability of an event",
-          "start_book_page": 721,
-          "end_book_page": 738,
-          "start_pdf_page": 728,
-          "end_pdf_page": 745,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "includes": "Exercise 16.2 to end of chapter",
+          "start_book_page": 741,
+          "end_book_page": 744,
+          "start_pdf_page": 748,
+          "end_pdf_page": 751,
+          "range_source": "exercise_headings_detected_from_pdf_text",
+          "start_boundary_exercise": "16.2",
+          "end_boundary_exercise": "chapter_end",
+          "boundary_overlap_with_previous_day": true
+        }
+      ],
+      "exercise_boundaries": [
+        {
+          "exercise_number": "16.1",
+          "exercise_title": "Exercise 16.1",
+          "raw_heading_from_pdf_text": "EXERCISE 76.7",
+          "start_book_page": 734,
+          "start_pdf_page": 741
         },
         {
-          "day": 4,
-          "day_title": "16.4 Geometric probability",
-          "day_type": "toc_section",
-          "section_number": "16.4",
-          "section_title": "Geometric probability",
-          "exercises": [
-            "16.4"
-          ],
-          "includes": "Geometric probability",
-          "start_book_page": 739,
-          "end_book_page": 744,
-          "start_pdf_page": 746,
-          "end_pdf_page": 751,
-          "range_source": "book_contents_in_detail_static_json",
-          "boundary_overlap_with_previous_day": false
+          "exercise_number": "16.2",
+          "exercise_title": "Exercise 16.2",
+          "raw_heading_from_pdf_text": "EXERCISE ।6.2",
+          "start_book_page": 741,
+          "start_pdf_page": 748
         }
-      ]
+      ],
+      "day_grouping_policy": "Day 1 covers chapter start through the first exercise heading. Each following day starts at an exercise heading and ends at the next exercise heading, or at chapter end for the final day. Boundary pages intentionally overlap because ranges are page-based. Exercise headings that start within 1 printed page are merged into one day."
     }
-  ]
+  ],
+  "exercise_detection_policy": {
+    "source": "PDF text layer search for lines containing EXERCISE",
+    "normalization": "Exercise numbers are assigned by chapter order because OCR often misreads digits such as 1 as 7 or 10 as 0.",
+    "merge_immediate_exercise_page_gap": 1,
+    "pdf_offset_rule": "pdf_page = printed_book_page + pdf_offset"
+  },
+  "validation_summary": {
+    "chapter_count": 16,
+    "detected_exercise_heading_count": 75,
+    "generated_day_count": 90,
+    "merged_immediate_exercise_day_count": 1,
+    "pdf_offset": 7,
+    "coverage": "All chapter ranges preserved; day ranges are page-based and use overlapping exercise boundary pages."
+  }
 }

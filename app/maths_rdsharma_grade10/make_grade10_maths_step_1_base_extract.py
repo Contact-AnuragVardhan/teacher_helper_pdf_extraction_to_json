@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import re
 import subprocess
 import tempfile
@@ -24,11 +23,11 @@ from typing import Any, Optional
 
 import fitz  # PyMuPDF
 
-DEFAULT_ROOT = Path(os.environ.get("GRADE10_MATHS_ROOT", Path(__file__).resolve().parents[2]))
-DEFAULT_OUTPUT_DIR = Path(os.environ.get("GRADE10_MATHS_OUTPUT_DIR", DEFAULT_ROOT / "output" / "maths_rdsharma_grade10"))
-DEFAULT_PDF = Path(os.environ.get("GRADE10_MATHS_PDF", DEFAULT_ROOT / "input" / "Grade10_Maths.pdf"))
-DEFAULT_CHAPTERS_JSON = Path(os.environ.get("GRADE10_MATHS_CHAPTERS_JSON", DEFAULT_OUTPUT_DIR / "Grade10_Maths_chapters.json"))
-DEFAULT_SUBSECTIONS_JSON = Path(os.environ.get("GRADE10_MATHS_SUBSECTIONS_JSON", Path(__file__).resolve().parent / "Grade10_Maths_static_subsection_ranges.json"))
+DEFAULT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OUTPUT_DIR = DEFAULT_ROOT / "output" / "maths_rdsharma_grade10"
+DEFAULT_PDF = DEFAULT_ROOT / "input" / "Grade10_Maths.pdf"
+DEFAULT_CHAPTERS_JSON = DEFAULT_OUTPUT_DIR / "Grade10_Maths_chapters.json"
+DEFAULT_SUBSECTIONS_JSON = Path(__file__).resolve().parent / "Grade10_Maths_static_subsection_ranges.json"
 
 SAFE_NON_ASCII = set("₹°²³√×÷≤≥≠−–—’‘“”πθαβγ∆Δ∠⊥∥∴±∞∑")
 SUSPICIOUS_UNICODE_RE = re.compile(r"[\u0900-\u097F\uFFFD\u0080-\u009F]")
@@ -137,14 +136,11 @@ def ocr_page_worker(args: tuple[str, int, str, float, str, str, bool]) -> dict[s
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
             tmp_path = Path(tmp.name)
         pix.save(str(tmp_path))
-        env = os.environ.copy()
-        env["OMP_THREAD_LIMIT"] = "1"
         proc = subprocess.run(
             ["tesseract", str(tmp_path), "stdout", "-l", lang, "--psm", psm, "-c", "preserve_interword_spaces=1"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=False,
-            env=env,
             timeout=90,
         )
         stdout_text = (proc.stdout or b"").decode("utf-8", errors="replace")
@@ -405,10 +401,10 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--output-json", type=Path, default=None)
     parser.add_argument("--report", type=Path, default=None)
-    parser.add_argument("--scale", type=float, default=float(os.environ.get("GRADE10_MATHS_OCR_SCALE", "3.0")))
-    parser.add_argument("--psm", default=os.environ.get("GRADE10_MATHS_TESSERACT_PSM", "4"))
-    parser.add_argument("--lang", default=os.environ.get("GRADE10_MATHS_TESSERACT_LANG", "eng"))
-    parser.add_argument("--workers", type=int, default=int(os.environ.get("GRADE10_MATHS_OCR_WORKERS", "4")))
+    parser.add_argument("--scale", type=float, default=3.0)
+    parser.add_argument("--psm", default="4")
+    parser.add_argument("--lang", default="eng")
+    parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--pages", default=None, help="Optional page subset for smoke tests, e.g. 1-20,500")
     parser.add_argument("--force-ocr", action="store_true", help="Ignore OCR cache and OCR pages again")
     args = parser.parse_args()
@@ -632,7 +628,7 @@ def main() -> None:
     run_scope["requested_pages_arg"] = args.pages
     data = {
         "metadata": {
-            "school_name": os.environ.get("GRADE10_MATHS_SCHOOL_NAME", "Mother Miracle School"),
+            "school_name": "Mother Miracle School",
             "class_name": "Class-10",
             "grade": "Class-10",
             "board": "CBSE",

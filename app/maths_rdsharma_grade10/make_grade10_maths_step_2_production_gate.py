@@ -14,15 +14,14 @@ import argparse
 import copy
 import csv
 import json
-import os
 import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-DEFAULT_ROOT = Path(os.environ.get("GRADE10_MATHS_ROOT", Path(__file__).resolve().parents[2]))
-DEFAULT_OUTPUT_DIR = Path(os.environ.get("GRADE10_MATHS_OUTPUT_DIR", DEFAULT_ROOT / "output" / "maths_rdsharma_grade10"))
+DEFAULT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OUTPUT_DIR = DEFAULT_ROOT / "output" / "maths_rdsharma_grade10"
 DEFAULT_INPUT = DEFAULT_OUTPUT_DIR / "Grade10_Maths_step1_base_extraction.json"
 DEFAULT_OUTPUT = DEFAULT_OUTPUT_DIR / "Grade10_Maths_production_ready.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "Grade10_Maths_production_validation_report.txt"
@@ -70,10 +69,7 @@ def build_document_identity(data: dict[str, Any]) -> tuple[str, str]:
     identity_slug = author_slug or book_slug
     default_document_id = "-".join(part for part in [subject_slug, identity_slug, grade_slug, publisher_slug] if part)
     default_document_key = "-".join(part for part in [school_slug, grade_slug, subject_slug, identity_slug] if part)
-    return (
-        os.environ.get("GRADE10_MATHS_DOCUMENT_ID", default_document_id),
-        os.environ.get("GRADE10_MATHS_DOCUMENT_KEY", default_document_key),
-    )
+    return default_document_id, default_document_key
 
 
 def clean_math_context_line(line: str) -> str:
