@@ -40,3 +40,10 @@ Residual production audit remaining subsections: 0
 Hard production blocker count: 0
 Production status: production_complete_ready
 
+
+python app/make_grade4_english.py `
+  --pdf input/Grade4_English_NCERT_Santoor.pdf `
+  --subsections-json app/english_santoor_grade4/Santoor_Grade4_English_static_subsection_ranges.json `
+  --output-dir output/english_santoor_grade4 `
+  --force
+
