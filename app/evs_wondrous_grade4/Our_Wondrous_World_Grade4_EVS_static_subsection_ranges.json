@@ -1,0 +1,511 @@
+{
+  "book_name": "our_wondrous_world_grade4_evs",
+  "book_title": "Our Wondrous World",
+  "grade": 4,
+  "subject": "Environmental Studies",
+  "subject_alias": "EVS / The World Around Us",
+  "pdf_offset": 16,
+  "pdf_page_count": 180,
+  "content_start_pdf_page": 17,
+  "content_end_pdf_page": 179,
+  "subsection_policy": "maintained_static_day_ranges_read_from_json_file",
+  "chapters": [
+    {
+      "sequence": 1,
+      "unit_name": "Unit 1: Our Community",
+      "chapter_name": "Living Together",
+      "book_page": 1,
+      "chapter_title_book_page": 3,
+      "start_pdf_page": 17,
+      "end_pdf_page": 32,
+      "end_book_page": 16,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 1,
+          "end_book_page": 5,
+          "start_pdf_page": 17,
+          "end_pdf_page": 21,
+          "range_source": "unit_intro_and_chapter_opening"
+        },
+        {
+          "day": 2,
+          "start_book_page": 6,
+          "end_book_page": 8,
+          "start_pdf_page": 22,
+          "end_pdf_page": 24,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 9,
+          "end_book_page": 11,
+          "start_pdf_page": 25,
+          "end_pdf_page": 27,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 12,
+          "end_book_page": 14,
+          "start_pdf_page": 28,
+          "end_pdf_page": 30,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 15,
+          "end_book_page": 16,
+          "start_pdf_page": 31,
+          "end_pdf_page": 32,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "unit_name": "Unit 1: Our Community",
+      "chapter_name": "Exploring Our Neighbourhood",
+      "book_page": 17,
+      "chapter_title_book_page": 17,
+      "start_pdf_page": 33,
+      "end_pdf_page": 48,
+      "end_book_page": 32,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 17,
+          "end_book_page": 19,
+          "start_pdf_page": 33,
+          "end_pdf_page": 35,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 20,
+          "end_book_page": 22,
+          "start_pdf_page": 36,
+          "end_pdf_page": 38,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 23,
+          "end_book_page": 25,
+          "start_pdf_page": 39,
+          "end_pdf_page": 41,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 26,
+          "end_book_page": 28,
+          "start_pdf_page": 42,
+          "end_pdf_page": 44,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 29,
+          "end_book_page": 32,
+          "start_pdf_page": 45,
+          "end_pdf_page": 48,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "unit_name": "Unit 2: Life Around Us",
+      "chapter_name": "Nature Trail",
+      "book_page": 33,
+      "chapter_title_book_page": 35,
+      "start_pdf_page": 49,
+      "end_pdf_page": 72,
+      "end_book_page": 56,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 33,
+          "end_book_page": 37,
+          "start_pdf_page": 49,
+          "end_pdf_page": 53,
+          "range_source": "unit_intro_and_chapter_opening"
+        },
+        {
+          "day": 2,
+          "start_book_page": 38,
+          "end_book_page": 41,
+          "start_pdf_page": 54,
+          "end_pdf_page": 57,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 42,
+          "end_book_page": 45,
+          "start_pdf_page": 58,
+          "end_pdf_page": 61,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 46,
+          "end_book_page": 49,
+          "start_pdf_page": 62,
+          "end_pdf_page": 65,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 50,
+          "end_book_page": 56,
+          "start_pdf_page": 66,
+          "end_pdf_page": 72,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "unit_name": "Unit 2: Life Around Us",
+      "chapter_name": "Growing up with Nature",
+      "book_page": 57,
+      "chapter_title_book_page": 57,
+      "start_pdf_page": 73,
+      "end_pdf_page": 84,
+      "end_book_page": 68,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 57,
+          "end_book_page": 59,
+          "start_pdf_page": 73,
+          "end_pdf_page": 75,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 60,
+          "end_book_page": 62,
+          "start_pdf_page": 76,
+          "end_pdf_page": 78,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 63,
+          "end_book_page": 65,
+          "start_pdf_page": 79,
+          "end_pdf_page": 81,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 66,
+          "end_book_page": 68,
+          "start_pdf_page": 82,
+          "end_pdf_page": 84,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "unit_name": "Unit 3: Health and Well-being",
+      "chapter_name": "Food for Health",
+      "book_page": 69,
+      "chapter_title_book_page": 71,
+      "start_pdf_page": 85,
+      "end_pdf_page": 100,
+      "end_book_page": 84,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 69,
+          "end_book_page": 72,
+          "start_pdf_page": 85,
+          "end_pdf_page": 88,
+          "range_source": "unit_intro_and_chapter_opening"
+        },
+        {
+          "day": 2,
+          "start_book_page": 73,
+          "end_book_page": 75,
+          "start_pdf_page": 89,
+          "end_pdf_page": 91,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 76,
+          "end_book_page": 78,
+          "start_pdf_page": 92,
+          "end_pdf_page": 94,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 79,
+          "end_book_page": 81,
+          "start_pdf_page": 95,
+          "end_pdf_page": 97,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 82,
+          "end_book_page": 84,
+          "start_pdf_page": 98,
+          "end_pdf_page": 100,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "unit_name": "Unit 3: Health and Well-being",
+      "chapter_name": "Happy and Healthy Living",
+      "book_page": 85,
+      "chapter_title_book_page": 85,
+      "start_pdf_page": 101,
+      "end_pdf_page": 117,
+      "end_book_page": 101,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 85,
+          "end_book_page": 88,
+          "start_pdf_page": 101,
+          "end_pdf_page": 104,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 89,
+          "end_book_page": 91,
+          "start_pdf_page": 105,
+          "end_pdf_page": 107,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 92,
+          "end_book_page": 94,
+          "start_pdf_page": 108,
+          "end_pdf_page": 110,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 95,
+          "end_book_page": 97,
+          "start_pdf_page": 111,
+          "end_pdf_page": 113,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 98,
+          "end_book_page": 101,
+          "start_pdf_page": 114,
+          "end_pdf_page": 117,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "unit_name": "Unit 4: Things Around Us",
+      "chapter_name": "How Things Work",
+      "book_page": 102,
+      "chapter_title_book_page": 104,
+      "start_pdf_page": 118,
+      "end_pdf_page": 132,
+      "end_book_page": 116,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 102,
+          "end_book_page": 105,
+          "start_pdf_page": 118,
+          "end_pdf_page": 121,
+          "range_source": "unit_intro_and_chapter_opening"
+        },
+        {
+          "day": 2,
+          "start_book_page": 106,
+          "end_book_page": 108,
+          "start_pdf_page": 122,
+          "end_pdf_page": 124,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 109,
+          "end_book_page": 111,
+          "start_pdf_page": 125,
+          "end_pdf_page": 127,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 112,
+          "end_book_page": 114,
+          "start_pdf_page": 128,
+          "end_pdf_page": 130,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 115,
+          "end_book_page": 116,
+          "start_pdf_page": 131,
+          "end_pdf_page": 132,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "unit_name": "Unit 4: Things Around Us",
+      "chapter_name": "How Things are Made",
+      "book_page": 117,
+      "chapter_title_book_page": 117,
+      "start_pdf_page": 133,
+      "end_pdf_page": 143,
+      "end_book_page": 127,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 117,
+          "end_book_page": 119,
+          "start_pdf_page": 133,
+          "end_pdf_page": 135,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 120,
+          "end_book_page": 122,
+          "start_pdf_page": 136,
+          "end_pdf_page": 138,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 123,
+          "end_book_page": 125,
+          "start_pdf_page": 139,
+          "end_pdf_page": 141,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 126,
+          "end_book_page": 127,
+          "start_pdf_page": 142,
+          "end_pdf_page": 143,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "unit_name": "Unit 5: Our Environment",
+      "chapter_name": "Different Lands, Different Lives",
+      "book_page": 128,
+      "chapter_title_book_page": 130,
+      "start_pdf_page": 144,
+      "end_pdf_page": 167,
+      "end_book_page": 151,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 128,
+          "end_book_page": 132,
+          "start_pdf_page": 144,
+          "end_pdf_page": 148,
+          "range_source": "unit_intro_and_chapter_opening"
+        },
+        {
+          "day": 2,
+          "start_book_page": 133,
+          "end_book_page": 137,
+          "start_pdf_page": 149,
+          "end_pdf_page": 153,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 138,
+          "end_book_page": 142,
+          "start_pdf_page": 154,
+          "end_pdf_page": 158,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 143,
+          "end_book_page": 147,
+          "start_pdf_page": 159,
+          "end_pdf_page": 163,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 5,
+          "start_book_page": 148,
+          "end_book_page": 151,
+          "start_pdf_page": 164,
+          "end_pdf_page": 167,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "unit_name": "Unit 5: Our Environment",
+      "chapter_name": "Our Sky",
+      "book_page": 152,
+      "chapter_title_book_page": 152,
+      "start_pdf_page": 168,
+      "end_pdf_page": 179,
+      "end_book_page": 163,
+      "days": [
+        {
+          "day": 1,
+          "start_book_page": 152,
+          "end_book_page": 154,
+          "start_pdf_page": 168,
+          "end_pdf_page": 170,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 2,
+          "start_book_page": 155,
+          "end_book_page": 158,
+          "start_pdf_page": 171,
+          "end_pdf_page": 174,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 3,
+          "start_book_page": 159,
+          "end_book_page": 161,
+          "start_pdf_page": 175,
+          "end_pdf_page": 177,
+          "range_source": "maintained_static_json"
+        },
+        {
+          "day": 4,
+          "start_book_page": 162,
+          "end_book_page": 163,
+          "start_pdf_page": 178,
+          "end_pdf_page": 179,
+          "range_source": "maintained_static_json"
+        }
+      ]
+    }
+  ],
+  "_update_note": "Unit intro / Note to Teacher pages are included in Day 1 of the first chapter of each unit so the teaching content is not dropped. The final blank Notes page at PDF page 180 is excluded from chapter/day ranges."
+}

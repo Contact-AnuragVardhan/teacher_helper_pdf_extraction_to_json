@@ -47,3 +47,9 @@ python app/make_grade4_english.py `
   --output-dir output/english_santoor_grade4 `
   --force
 
+python app/make_grade4_evs.py `
+  --pdf input/Grade4_EnvironmentalStudies_NCERT_OurWonderousWorld.pdf `
+  --subsections-json app/evs_wondrous_grade4/Our_Wondrous_World_Grade4_EVS_static_subsection_ranges.json `
+  --output-dir output/evs_wondrous_grade4 `
+  --force
+

@@ -6,7 +6,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 try:
     import fitz  # PyMuPDF
@@ -15,38 +15,30 @@ except ImportError as exc:  # pragma: no cover
 
 
 REPRINT_RE = re.compile(r"^Reprint\s+\d{4}\s*-\s*\d{2}$", re.I)
-SANTOOR_HEADER_RE = re.compile(r"^(?:\d+\s*)?(?:\d+\s*)?Santoor\s+Grade\s+4$", re.I)
+HEADER_RE = re.compile(r"^(?:\d+\s*)?Our\s+Wondrous\s+World$", re.I)
 INDD_RE = re.compile(r"\b(?:Prelims|Unit\s*\d+|Chapter)\b.*\.indd\b", re.I)
 ROMAN_RE = re.compile(r"^(?=[ivxlcdm]+$)[ivxlcdm]+$", re.I)
-NUMERIC_RE = re.compile(r"^\d+$")
 CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
 PRIVATE_USE_RE = re.compile(r"[\uE000-\uF8FF]")
 MULTI_SPACE_RE = re.compile(r"[ \t]{2,}")
-
-UNIT_SPECS = [
-    {"unit_number": "1", "unit_title": "My Land", "start_sequence": 1, "end_sequence": 3},
-    {"unit_number": "2", "unit_title": "My Beautiful World", "start_sequence": 4, "end_sequence": 6},
-    {"unit_number": "3", "unit_title": "Fun with Games", "start_sequence": 7, "end_sequence": 9},
-    {"unit_number": "4", "unit_title": "Up High", "start_sequence": 10, "end_sequence": 12},
-]
 
 FRONT_MATTER_TYPES = {
     1: "cover",
     2: "copyright",
     3: "foreword",
     4: "foreword",
-    5: "about_the_book",
-    6: "about_the_book",
-    7: "about_the_book",
-    8: "about_the_book",
-    9: "nstc",
-    10: "constitution",
-    11: "textbook_development_team",
-    12: "blank_or_art_page",
-    13: "acknowledgements",
-    14: "acknowledgements",
+    5: "about_the_textbook",
+    6: "about_the_textbook",
+    7: "about_the_textbook",
+    8: "about_the_textbook",
+    9: "about_the_textbook",
+    10: "about_the_textbook",
+    11: "about_the_textbook",
+    12: "about_the_textbook",
+    13: "about_the_textbook",
+    14: "textbook_development_team",
     15: "contents",
-    16: "constitution",
+    16: "blank_or_art_page",
 }
 
 
@@ -67,12 +59,13 @@ class UnitInfo:
 
     @property
     def section_number(self) -> str:
-        # Santoor contents page numbers lessons globally: 1, 2, 3 ... 12.
-        # Unit-relative numbers like 1.1 / 1.2 are not used for lessons in the book.
+        # The Our Wondrous World contents page numbers chapters globally:
+        # Chapter 1, Chapter 2, Chapter 3 ... Chapter 10.
+        # Unit-relative numbers like 1.1 / 1.2 are not used as chapter numbers.
         return str(self.sequence)
 
     @property
-    def unit_lesson_number(self) -> str:
+    def unit_chapter_number(self) -> str:
         # Internal/debug-only unit-relative identifier, not the public section_number.
         return f"{self.unit_number}.{self.lesson_index_in_unit}"
 
@@ -94,14 +87,7 @@ def write_json(path: Path, data: Any) -> None:
 
 
 def normalize_basic_text(text: str) -> str:
-    """Normalize selectable PDF text before any production field is built.
-
-    Santoor uses embedded/private-use font glyphs for bullets and checkmarks on
-    some activity pages. Those glyphs are visible in PDF viewers, but selectable
-    extraction returns values such as \uf076, \uf0fc, or \x8f. Leaving those inside
-    production_lesson_text/subsection_text makes the JSON unsafe for strict DB
-    embeddings, so they are converted deterministically here.
-    """
+    """Normalize selectable PDF text before production fields are built."""
     text = text.replace("\r", "\n")
     text = text.replace("\u00a0", " ")
     text = text.replace("\ufeff", "")
@@ -110,13 +96,19 @@ def normalize_basic_text(text: str) -> str:
     text = text.replace("\u200c", "")
     text = text.replace("\u200d", "")
 
-    # Private-use / symbol-font bullets and checkmarks observed in Santoor.
-    text = text.replace("\uf0b7", "•")
-    text = text.replace("\uf071", "•")
-    text = text.replace("\uf076", "•")
-    text = text.replace("\x8f", "•")
-    text = text.replace("\uf0fc", "✓")
-    text = text.replace("", "•")
+    # Private-use / symbol-font bullets and checkmarks commonly observed in NCERT PDFs.
+    replacements = {
+        "\uf0b7": "•",
+        "\uf071": "•",
+        "\uf076": "•",
+        "\x8f": "•",
+        "\uf0fc": "✓",
+        "": "•",
+        "": "•",
+        "�": "",
+    }
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
 
     # Last-resort cleanup: any other private-use glyph becomes a safe bullet.
     text = PRIVATE_USE_RE.sub("•", text)
@@ -130,12 +122,12 @@ def _is_noise_line(line: str, printed_page_number: int | None) -> bool:
         return False
     if REPRINT_RE.match(s):
         return True
-    if SANTOOR_HEADER_RE.match(MULTI_SPACE_RE.sub(" ", s)):
+    if HEADER_RE.match(MULTI_SPACE_RE.sub(" ", s)):
         return True
     if INDD_RE.search(s):
         return True
-    # Standalone page numbers are headers/footers. Do not drop numbers embedded
-    # in real content such as "1. Answer the following".
+    if s in {"The World Around Us", "Textbook for Grade 4"}:
+        return True
     if printed_page_number is not None:
         if s == str(printed_page_number):
             return True
@@ -147,36 +139,44 @@ def _is_noise_line(line: str, printed_page_number: int | None) -> bool:
 
 
 def clean_extracted_text(text: str, *, page_number: int, printed_page_number: int | None) -> str:
-    """Clean selectable PDF text without deleting legitimate lesson content."""
+    """Clean selectable PDF text without deleting legitimate textbook content."""
     text = normalize_basic_text(text)
     out: list[str] = []
     blank_pending = False
     previous_nonblank: str | None = None
+
     for raw in text.splitlines():
-        line = raw.strip()
-        line = MULTI_SPACE_RE.sub(" ", line)
-        # Clean repeated printed page header like "136 Santoor Grade 4".
+        raw_stripped = raw.strip()
+        line = MULTI_SPACE_RE.sub(" ", raw_stripped)
+
+        # Remove combined printed-page headers such as "16 Our Wondrous World".
         if printed_page_number is not None:
-            line = re.sub(rf"^{printed_page_number}\s+Santoor\s+Grade\s+4$", "", line, flags=re.I).strip()
-            line = re.sub(rf"^{printed_page_number}\s+{printed_page_number}\s+Santoor\s+Grade\s+4$", "", line, flags=re.I).strip()
+            line = re.sub(rf"^{printed_page_number}\s+Our\s+Wondrous\s+World$", "", line, flags=re.I).strip()
+            line = re.sub(rf"^{printed_page_number}\s+{printed_page_number}\s+Our\s+Wondrous\s+World$", "", line, flags=re.I).strip()
+
         if _is_noise_line(line, printed_page_number):
             continue
+
         if not line:
             if out and not blank_pending:
                 out.append("")
                 blank_pending = True
             continue
-        # Remove leading printed page number when it is attached to a chapter title:
-        # e.g. "1  Together We Can" -> "Together We Can". Keep numbered questions.
+
+        # Remove leading printed page number when it is part of a running header.
+        # Keep numbered questions like "1. Look around..." unchanged.
         if printed_page_number is not None:
-            line = re.sub(rf"^{printed_page_number}\s{{2,}}", "", raw.strip()).strip() or line
-            line = MULTI_SPACE_RE.sub(" ", line)
+            without_leading_page = re.sub(rf"^{printed_page_number}\s{{2,}}", "", raw_stripped).strip()
+            if without_leading_page:
+                line = MULTI_SPACE_RE.sub(" ", without_leading_page)
+
         if previous_nonblank == line:
             continue
+
         out.append(line)
         previous_nonblank = line
         blank_pending = False
-    # Trim blank lines at ends and collapse repeated blank lines.
+
     while out and not out[0].strip():
         out.pop(0)
     while out and not out[-1].strip():
@@ -184,12 +184,9 @@ def clean_extracted_text(text: str, *, page_number: int, printed_page_number: in
     return "\n".join(out)
 
 
-def extract_page_text(pdf_path: Path, page_number: int) -> str:
+def get_pdf_page_count(pdf_path: Path) -> int:
     with fitz.open(pdf_path) as doc:
-        page = doc[page_number - 1]
-        # "text" gives stable reading order for this NCERT PDF. The code keeps a
-        # single extractor to avoid mixing incompatible ordering models.
-        return page.get_text("text") or ""
+        return doc.page_count
 
 
 def extract_all_pages(pdf_path: Path, pdf_offset: int) -> list[dict[str, Any]]:
@@ -213,19 +210,6 @@ def extract_all_pages(pdf_path: Path, pdf_offset: int) -> list[dict[str, Any]]:
     return pages
 
 
-def get_pdf_page_count(pdf_path: Path) -> int:
-    with fitz.open(pdf_path) as doc:
-        return doc.page_count
-
-
-def unit_info_for_sequence(sequence: int) -> UnitInfo:
-    for spec in UNIT_SPECS:
-        if spec["start_sequence"] <= sequence <= spec["end_sequence"]:
-            lesson_idx = sequence - spec["start_sequence"] + 1
-            return UnitInfo(spec["unit_number"], spec["unit_title"], lesson_idx, sequence)
-    raise ValueError(f"No Santoor unit configured for chapter sequence {sequence}")
-
-
 def page_numbers_between(start: int, end: int) -> list[int]:
     return list(range(int(start), int(end) + 1))
 
@@ -239,11 +223,32 @@ def join_page_texts(page_lookup: dict[int, dict[str, Any]], start: int, end: int
     return "\n\n".join(chunks).strip()
 
 
+def parse_unit_name(unit_name: str) -> tuple[str, str]:
+    match = re.match(r"^\s*Unit\s+(\d+)\s*:\s*(.*?)\s*$", unit_name or "", re.I)
+    if match:
+        return match.group(1), match.group(2)
+    return "0", (unit_name or "Unassigned Unit").strip()
+
+
+def build_unit_lookup(chapters: list[dict[str, Any]]) -> dict[int, UnitInfo]:
+    lookup: dict[int, UnitInfo] = {}
+    counts_by_unit: dict[str, int] = {}
+    for chapter in sorted(chapters, key=lambda c: int(c["sequence"])):
+        unit_number, unit_title = parse_unit_name(str(chapter.get("unit_name") or "Unit 0: Unassigned Unit"))
+        counts_by_unit[unit_number] = counts_by_unit.get(unit_number, 0) + 1
+        lookup[int(chapter["sequence"])] = UnitInfo(unit_number, unit_title, counts_by_unit[unit_number], int(chapter["sequence"]))
+    return lookup
+
+
 def detect_page_content_type(page_number: int, text: str, content_start_page: int) -> str:
     if page_number < content_start_page:
         return FRONT_MATTER_TYPES.get(page_number, "front_matter")
-    if re.search(r"\bSelf\s+Assessment\b", text, flags=re.I):
-        return "self_assessment_merged_with_lesson"
+    if re.search(r"\bAbout\s+the\s+Unit\b", text, flags=re.I):
+        return "unit_intro_merged_with_first_chapter"
+    if re.search(r"\bNote\s+to\s+the\s+Teacher\b", text, flags=re.I):
+        return "teacher_note_merged_with_first_chapter"
+    if re.search(r"^\s*Notes\s*$", text, flags=re.I):
+        return "notes_page_excluded"
     return "lesson_content"
 
 
@@ -264,25 +269,23 @@ def make_front_matter_pages(pages: list[dict[str, Any]], content_start_page: int
     return result
 
 
-def build_section_and_subsections(chapter: dict[str, Any], page_lookup: dict[int, dict[str, Any]]) -> dict[str, Any]:
-    # Use the lesson/chapter sequence from the Santoor contents page as the
-    # public section number. The book numbers lessons globally as 1, 2, 3 ... 12,
-    # even though those lessons are grouped under Units 1-4. Do not derive
-    # section_number from unit_number + lesson_index_in_unit, otherwise lessons
-    # become 1.1, 1.2, 2.1, etc., which does not match the book index.
+def build_section_and_subsections(
+    chapter: dict[str, Any],
+    page_lookup: dict[int, dict[str, Any]],
+    unit_lookup: dict[int, UnitInfo],
+) -> dict[str, Any]:
     sequence = int(chapter["sequence"])
-    ui = unit_info_for_sequence(sequence)
-    section_number = ui.section_number
+    ui = unit_lookup[sequence]
     start_pdf = int(chapter["start_pdf_page"])
     end_pdf = int(chapter["end_pdf_page"])
     start_printed = int(chapter["book_page"])
-    end_printed = int(chapter["days"][-1]["end_book_page"])
+    end_printed = int(chapter.get("end_book_page") or chapter["days"][-1]["end_book_page"])
     lesson_text = join_page_texts(page_lookup, start_pdf, end_pdf)
     page_numbers = page_numbers_between(start_pdf, end_pdf)
     printed_numbers = page_numbers_between(start_printed, end_printed)
 
     section = {
-        "section_number": section_number,
+        "section_number": ui.section_number,
         "section_title": chapter["chapter_name"],
         "unit_number": ui.unit_number,
         "unit_title": ui.unit_title,
@@ -311,6 +314,9 @@ def build_section_and_subsections(chapter: dict[str, Any], page_lookup: dict[int
         "quality_flags": [],
         "include_in_embeddings": True,
         "embedding_readiness": "ready_for_production_embedding",
+        "source_static_sequence": sequence,
+        "source_static_unit_name": chapter.get("unit_name"),
+        "chapter_title_book_page": chapter.get("chapter_title_book_page"),
         "subsections": [],
     }
 
@@ -327,20 +333,18 @@ def build_section_and_subsections(chapter: dict[str, Any], page_lookup: dict[int
         was_clamped = (s_pdf != int(day["start_pdf_page"]) or e_pdf != int(day["end_pdf_page"]))
         source = day.get("range_source", "maintained_static_json")
         notes: list[str] = []
-        if "self_assessment" in source:
-            notes.append("Self Assessment pages are intentionally merged into this previous lesson day so this remains a lesson-plan-capable subsection.")
+        if "unit_intro" in str(source):
+            notes.append("Unit intro and/or teacher note pages are intentionally included in Day 1 of the first chapter of this unit.")
+
         subsection = {
-            "section_number": section_number,
+            "section_number": ui.section_number,
             "section_title": chapter["chapter_name"],
             "unit_number": ui.unit_number,
             "unit_title": ui.unit_title,
             "chapter_type": "unit",
             "chapter_number": ui.chapter_number,
             "chapter_title": ui.chapter_title,
-            # Keep subsection/day IDs unique while the parent section remains
-            # the actual book lesson number. Example: section_number "4" with
-            # Day 1 becomes subsection_number "4.1".
-            "subsection_number": f"{section_number}.{d}",
+            "subsection_number": f"{ui.section_number}.{d}",
             "subsection_title": f"Day {d}",
             "anchor_marker": f"Day {d}",
             "anchor_pdf_page": s_pdf,
@@ -395,44 +399,22 @@ def build_section_and_subsections(chapter: dict[str, Any], page_lookup: dict[int
             subsection["quality_flags"].append("short_subsection_text_review")
             subsection["embedding_readiness"] = "ready_with_review_note"
         subsections.append(subsection)
+
     section["subsections"] = subsections
     return section
 
 
 def assign_page_metadata(page_extractions: list[dict[str, Any]], sections: list[dict[str, Any]], content_start_page: int) -> None:
     by_page: dict[int, dict[str, Any]] = {}
-    self_assessment_ranges: dict[int, bool] = {}
-
     for section in sections:
-        section_has_self_assessment = False
-        for sub in section.get("subsections", []):
-            source = str(sub.get("source_days_json_range_source") or "").lower()
-            notes = " ".join(str(n) for n in sub.get("notes", []))
-            if "self_assessment" in source or "self assessment" in notes.lower():
-                section_has_self_assessment = True
-                for pno in sub.get("page_numbers", []):
-                    self_assessment_ranges[int(pno)] = True
         for pno in section["indexed_page_numbers"]:
             by_page[pno] = section
-
-    # Pages after the first visible "Self Assessment" heading in a section should
-    # remain tagged as self_assessment_merged_with_lesson even when continuation
-    # pages do not repeat the heading. This prevents pages 82 and 152 from being
-    # mislabeled as ordinary lesson content.
-    self_assessment_started_by_section: dict[str, bool] = {}
 
     for page in page_extractions:
         pno = int(page["page_number"])
         text = page.get("text") or ""
         section = by_page.get(pno)
         content_type = detect_page_content_type(pno, text, content_start_page)
-
-        if section is not None:
-            section_key = section["section_number"]
-            if re.search(r"\bSelf\s+Assessment\b", text, flags=re.I):
-                self_assessment_started_by_section[section_key] = True
-            if self_assessment_ranges.get(pno) and self_assessment_started_by_section.get(section_key):
-                content_type = "self_assessment_merged_with_lesson"
 
         if section is None:
             page.update({
@@ -454,6 +436,8 @@ def assign_page_metadata(page_extractions: list[dict[str, Any]], sections: list[
             })
             if pno < content_start_page:
                 page["quality_flags"] = sorted(set(page.get("quality_flags", []) + ["front_matter_not_lesson_content"]))
+            elif content_type == "notes_page_excluded":
+                page["quality_flags"] = sorted(set(page.get("quality_flags", []) + ["notes_page_excluded_from_lesson_content"]))
         else:
             page.update({
                 "chapter_type": section["chapter_type"],
@@ -472,25 +456,28 @@ def assign_page_metadata(page_extractions: list[dict[str, Any]], sections: list[
                 "unit_level_title": None,
                 "embedding_readiness": "ready_for_production_embedding",
             })
-            if content_type == "self_assessment_merged_with_lesson":
-                page["quality_flags"] = sorted(set(page.get("quality_flags", []) + ["self_assessment_merged_into_previous_lesson_day"]))
+            if content_type in {"unit_intro_merged_with_first_chapter", "teacher_note_merged_with_first_chapter"}:
+                page["quality_flags"] = sorted(set(page.get("quality_flags", []) + ["unit_intro_or_teacher_note_merged_into_day_1"]))
 
 
 def group_units(sections: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    unit_order: list[tuple[str, str]] = []
+    for section in sections:
+        key = (section["unit_number"], section["unit_title"])
+        if key not in unit_order:
+            unit_order.append(key)
+
     units: list[dict[str, Any]] = []
-    for spec in UNIT_SPECS:
-        lessons = [deepcopy(s) for s in sections if s["unit_number"] == spec["unit_number"]]
-        for l in lessons:
-            # The unit lesson objects in Poorvi keep subsection details. Keep them here too.
-            pass
+    for unit_number, unit_title in unit_order:
+        lessons = [deepcopy(s) for s in sections if s["unit_number"] == unit_number]
         if not lessons:
             continue
         units.append({
             "chapter_type": "unit",
-            "chapter_number": f"Unit {spec['unit_number']}",
-            "chapter_title": spec["unit_title"],
-            "unit_number": spec["unit_number"],
-            "unit_title": spec["unit_title"],
+            "chapter_number": f"Unit {unit_number}",
+            "chapter_title": unit_title,
+            "unit_number": unit_number,
+            "unit_title": unit_title,
             "start_page": min(l["start_page"] for l in lessons),
             "end_page": max(l["end_page"] for l in lessons),
             "printed_start_page": min(l["printed_start_page"] for l in lessons),
@@ -505,6 +492,7 @@ def validate_static_map(static_map: dict[str, Any], pdf_page_count: int) -> tupl
     warnings: list[str] = []
     if int(static_map.get("pdf_page_count", -1)) != pdf_page_count:
         errors.append(f"Static JSON pdf_page_count={static_map.get('pdf_page_count')} but PDF has {pdf_page_count} pages")
+
     pdf_offset = int(static_map.get("pdf_offset", 0))
     seen_pdf_pages: set[int] = set()
     previous_end = None
@@ -517,6 +505,7 @@ def validate_static_map(static_map: dict[str, Any], pdf_page_count: int) -> tupl
         if previous_end is not None and start != previous_end + 1:
             warnings.append(f"Chapter range gap/overlap before {title}: previous end {previous_end}, next start {start}")
         previous_end = end
+
         day_prev_end = None
         for day in chapter.get("days", []):
             ds = int(day["start_pdf_page"])
@@ -534,12 +523,18 @@ def validate_static_map(static_map: dict[str, Any], pdf_page_count: int) -> tupl
                 if p in seen_pdf_pages:
                     errors.append(f"Duplicate PDF page {p} assigned in static day map")
                 seen_pdf_pages.add(p)
+
+    content_start = int(static_map.get("content_start_pdf_page") or min(int(c["start_pdf_page"]) for c in static_map.get("chapters", [])))
+    content_end = int(static_map.get("content_end_pdf_page") or max(int(c["end_pdf_page"]) for c in static_map.get("chapters", [])))
+    expected_pages = set(range(content_start, content_end + 1))
+    missing = sorted(expected_pages - seen_pdf_pages)
+    if missing:
+        warnings.append(f"Content PDF pages not assigned to day ranges: {missing}")
+
     return errors, warnings
 
 
 def _artifact_count(text: str) -> int:
-    # Count only characters that should never survive in production JSON text.
-    # Normal newlines/tabs are okay; C1 controls and private-use glyphs are not.
     return len(PRIVATE_USE_RE.findall(text or "")) + len(re.findall(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]", text or ""))
 
 
@@ -566,6 +561,7 @@ def validate_output(output: dict[str, Any]) -> tuple[list[str], list[str]]:
                 warnings.append(f"Short subsection text ({len(txt)} chars): {sub.get('subsection_number')} {section.get('section_title')}")
             if _artifact_count(txt):
                 errors.append(f"Production text artifact found in subsection {sub.get('subsection_number')} {section.get('section_title')}")
+
     page_extractions = extraction.get("page_extractions", [])
     assigned_pages = [p for p in page_extractions if p.get("include_in_lesson_text")]
     empty_assigned = [p["page_number"] for p in assigned_pages if not (p.get("text") or "").strip()]
@@ -598,10 +594,11 @@ def build_production_json(
 
     pdf_offset = int(static_map["pdf_offset"])
     pages = extract_all_pages(pdf_path, pdf_offset)
-    content_start_page = min(int(c["start_pdf_page"]) for c in static_map["chapters"])
-    content_end_page = max(int(c["end_pdf_page"]) for c in static_map["chapters"])
+    content_start_page = int(static_map.get("content_start_pdf_page") or min(int(c["start_pdf_page"]) for c in static_map["chapters"]))
+    content_end_page = int(static_map.get("content_end_pdf_page") or max(int(c["end_pdf_page"]) for c in static_map["chapters"]))
     page_lookup = {p["page_number"]: p for p in pages}
-    sections = [build_section_and_subsections(ch, page_lookup) for ch in static_map["chapters"]]
+    unit_lookup = build_unit_lookup(static_map["chapters"])
+    sections = [build_section_and_subsections(ch, page_lookup, unit_lookup) for ch in static_map["chapters"]]
     assign_page_metadata(pages, sections, content_start_page)
     front_matter = make_front_matter_pages(pages, content_start_page)
     units = group_units(sections)
@@ -622,23 +619,24 @@ def build_production_json(
             "document_key": document_key,
         },
         "extraction": {
-            "book_title": "Santoor: Textbook of English for Grade 4",
-            "subject": "English",
+            "book_title": static_map.get("book_title", "Our Wondrous World"),
+            "subject": static_map.get("subject", "Environmental Studies"),
+            "subject_alias": static_map.get("subject_alias", "EVS / The World Around Us"),
             "language": "English",
-            "content_profile": "english_textbook",
+            "content_profile": "evs_textbook_the_world_around_us",
             "structure_type": "unit_section",
             "total_pdf_pages": pdf_page_count,
             "content_start_page": content_start_page,
             "content_end_page": content_end_page,
             "printed_page_offset": pdf_offset,
             "structure_detection": {
-                "method": "curated_static_santoor_map",
+                "method": "curated_static_our_wondrous_world_map",
                 "status": "production_static_map_used",
                 "dynamic_detection_possible": False,
-                "units_detected": len(UNIT_SPECS),
+                "units_detected": len(units),
                 "lessons_detected": len(sections),
-                "reason": "Santoor Grade 4 uses a fixed NCERT table of contents. The maintained static day-range JSON is used as the production source of truth for chapter and day boundaries.",
-                "curated_map_name": "santoor_grade4_english_ncert_2026_27",
+                "reason": "Our Wondrous World Grade 4 uses a fixed NCERT table of contents. The maintained static day-range JSON is used as the production source of truth for chapter and day boundaries.",
+                "curated_map_name": "our_wondrous_world_grade4_evs_ncert_2026_27",
                 "curated_map_status": "verified_against_toc_and_static_day_ranges",
                 "attempts": [
                     {"method": "static_days_json", "status": "used_for_production"},
@@ -646,10 +644,11 @@ def build_production_json(
                 ],
             },
             "notes": [
-                "Production JSON generated from the maintained Santoor static subsection/day JSON.",
-                "Self Assessment 1 and 2 are intentionally merged into the previous lesson day with real lesson text, as requested.",
+                "Production JSON generated from the maintained Our Wondrous World static subsection/day JSON.",
+                "Unit intro and Note to the Teacher pages are intentionally merged into Day 1 of the first chapter in each unit.",
                 "Repeated NCERT headers, footers, page-number-only lines, reprint markers, and INDD artifacts are removed from production text.",
                 "Front matter is classified separately and excluded from embeddings by default.",
+                "The final Notes page is excluded from chapter/day ranges and embeddings by default.",
                 "section_index uses semantic/indexed lesson ranges; physical_* fields preserve source PDF ranges.",
             ],
             "section_index": sections,
@@ -660,8 +659,8 @@ def build_production_json(
             "unit_level_pages": [],
             "detected_transcript_pages": [],
             "quality_summary": {
-                "extraction_version": "santoor-production-v1.1",
-                "production_publish_version": "santoor-production-v1.1",
+                "extraction_version": "our-wondrous-world-production-v1.0",
+                "production_publish_version": "our-wondrous-world-production-v1.0",
                 "document_id_present": bool(document_id),
                 "document_key_present": bool(document_key),
                 "book_title_normalized": True,
@@ -673,16 +672,17 @@ def build_production_json(
                 "subsections_count": total_subsections,
                 "subsections_outside_parent_range": 0,
                 "subsections_with_cross_section_pages": 0,
-                "self_assessment_pages_merged_into_previous_lesson_day": True,
+                "unit_intro_pages_merged_into_first_chapter_day_1": True,
+                "final_notes_page_excluded_from_embeddings": True,
                 "generated_at_utc": generated,
-                "safe_for_production_reindex": True,  # updated after validation below
+                "safe_for_production_reindex": True,
                 "production_validation_error_count": 0,
                 "production_validation_warning_count": 0,
             },
             "generated_at_utc": generated,
             "subsection_generation": {
                 "source": "static_days_json_file_with_parent_boundary_clamp",
-                "policy": "Static JSON day ranges are used; final day ranges are clamped inside the semantic parent lesson; Self Assessment pages remain part of the previous lesson day where requested.",
+                "policy": "Static JSON day ranges are used; final day ranges are clamped inside the semantic parent lesson; unit intro and teacher note pages remain part of Day 1 for the first chapter of each unit.",
                 "sections_with_subsections": len(sections),
                 "total_subsections": total_subsections,
                 "sections_using_static_days_json_subsections": len(sections),
@@ -697,6 +697,7 @@ def build_production_json(
         "documentId": document_id,
         "document_key": document_key,
     }
+
     validation_errors, validation_warnings = validate_output(output)
     all_warnings = static_warnings + validation_warnings
     qs = output["extraction"]["quality_summary"]
@@ -709,18 +710,19 @@ def build_production_json(
 
 def make_report(output: dict[str, Any], errors: list[str], warnings: list[str]) -> str:
     ext = output["extraction"]
-    lines = []
-    lines.append("Santoor Grade 4 English production extraction report")
-    lines.append("=" * 62)
+    lines: list[str] = []
+    lines.append("Our Wondrous World Grade 4 EVS production extraction report")
+    lines.append("=" * 70)
     lines.append(f"document_id: {output.get('documentId')}")
     lines.append(f"document_key: {output.get('document_key')}")
     lines.append(f"book_title: {ext.get('book_title')}")
+    lines.append(f"subject: {ext.get('subject')}")
     lines.append(f"total_pdf_pages: {ext.get('total_pdf_pages')}")
     lines.append(f"content_start_page: {ext.get('content_start_page')}")
     lines.append(f"content_end_page: {ext.get('content_end_page')}")
     lines.append(f"printed_page_offset: {ext.get('printed_page_offset')}")
     lines.append(f"units: {len(ext.get('chapters', []))}")
-    lines.append(f"sections/lessons: {len(ext.get('section_index', []))}")
+    lines.append(f"sections/chapters: {len(ext.get('section_index', []))}")
     lines.append(f"subsections/days: {ext.get('subsection_generation', {}).get('total_subsections')}")
     lines.append(f"page_extractions: {len(ext.get('page_extractions', []))}")
     lines.append(f"safe_for_production_reindex: {ext.get('quality_summary', {}).get('safe_for_production_reindex')}")
